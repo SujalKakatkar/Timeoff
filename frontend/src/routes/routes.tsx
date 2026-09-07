@@ -3,6 +3,7 @@ import Herolayout from '@/layouts/Herolayout'
 import Mainlayout from '@/layouts/Mainlayout'
 import EmployeeDashboardPage from '@/pages/EmployeeDashboardPage'
 import HeroPage from '@/pages/HeroPage'
+import HRDashboardPage from '@/pages/HRDashboardPage'
 import LoginPage from '@/pages/LoginPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 import ProfileCompletePage from '@/pages/ProfileCompletePage'
@@ -31,6 +32,10 @@ const routeConfig: RouteObject[] = [
             {
                 path: "/",
                 element: <EmployeeDashboardPage />
+            },
+            {
+                path:"/hrdash",
+                element:<HRDashboardPage/>
             }
         ]
 
@@ -50,7 +55,7 @@ const routeConfig: RouteObject[] = [
                 element: <SignupPage />
             },
             {
-                path:'/profile-details',
+                path:'/auth/profile-details',
                 element:<ProfileCompletePage/>
             }
             // {

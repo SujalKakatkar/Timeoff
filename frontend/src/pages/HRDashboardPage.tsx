@@ -1,7 +1,10 @@
+import HRDashboard from "@/components/HRDashboard";
 
 function HRDashboardPage() {
   return (
-    <div>HRDashboardPage</div>
+   <>
+    <HRDashboard/>
+   </>
   )
 }
 
