@@ -8,16 +8,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import type { SidebarItem } from "@/types/sidebar"
 
 export function NavSecondary({
   items,
   ...props
 }: {
-  items: {
-    title: string
-    url: string
-    icon: React.ReactNode
-  }[]
+  items:SidebarItem[]
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
   return (
     <SidebarGroup {...props}>
