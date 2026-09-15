@@ -1,0 +1,452 @@
+[
+    {
+        "id": 1,
+        "name": "Ava Thompson",
+        "manager": "Liam García",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 10,
+        "remainingLeaves": 14
+    },
+    {
+        "id": 2,
+        "name": "Noah Patel",
+        "manager": "Olivia Brooks",
+        "role": "Designer",
+        "totalLeaves": 24,
+        "usedLeaves": 18,
+        "remainingLeaves": 6
+    },
+    {
+        "id": 3,
+        "name": "Mia Chen",
+        "manager": "Liam García",
+        "role": "Engineer",
+        "totalLeaves": 20,
+        "usedLeaves": 4,
+        "remainingLeaves": 16
+    },
+    {
+        "id": 4,
+        "name": "Liam García",
+        "manager": "Isabella Novak",
+        "role": "Manager",
+        "totalLeaves": 28,
+        "usedLeaves": 15,
+        "remainingLeaves": 13
+    },
+    {
+        "id": 5,
+        "name": "Zoe Nakamura",
+        "manager": "Olivia Brooks",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 22,
+        "remainingLeaves": 2
+    },
+    {
+        "id": 6,
+        "name": "Ethan Kim",
+        "manager": "Isabella Novak",
+        "role": "Designer",
+        "totalLeaves": 20,
+        "usedLeaves": 9,
+        "remainingLeaves": 11
+    },
+    {
+        "id": 7,
+        "name": "Olivia Brooks",
+        "manager": "Isabella Novak",
+        "role": "Manager",
+        "totalLeaves": 28,
+        "usedLeaves": 20,
+        "remainingLeaves": 8
+    },
+    {
+        "id": 8,
+        "name": "Lucas Ferreira",
+        "manager": "Isabella Novak",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 6,
+        "remainingLeaves": 18
+    },
+    {
+        "id": 9,
+        "name": "Sofia Rossi",
+        "manager": "Liam García",
+        "role": "Designer",
+        "totalLeaves": 20,
+        "usedLeaves": 12,
+        "remainingLeaves": 8
+    },
+    {
+        "id": 10,
+        "name": "Mason Wright",
+        "manager": "Olivia Brooks",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 24,
+        "remainingLeaves": 0
+    },
+    {
+        "id": 11,
+        "name": "Isabella Novak",
+        "manager": "Ethan Kim",
+        "role": "Manager",
+        "totalLeaves": 28,
+        "usedLeaves": 11,
+        "remainingLeaves": 17
+    },
+    {
+        "id": 12,
+        "name": "James Okafor",
+        "manager": "Liam García",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 3,
+        "remainingLeaves": 21
+    },
+    {
+        "id": 13,
+        "name": "Chloe Dubois",
+        "manager": "Olivia Brooks",
+        "role": "Designer",
+        "totalLeaves": 20,
+        "usedLeaves": 17,
+        "remainingLeaves": 3
+    },
+    {
+        "id": 14,
+        "name": "Ryan Murphy",
+        "manager": "Isabella Novak",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 8,
+        "remainingLeaves": 16
+    },
+    {
+        "id": 15,
+        "name": "Amara Johnson",
+        "manager": "Liam García",
+        "role": "Manager",
+        "totalLeaves": 28,
+        "usedLeaves": 25,
+        "remainingLeaves": 3
+    },
+    {
+        "id": 16,
+        "name": "Kenji Watanabe",
+        "manager": "Olivia Brooks",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 14,
+        "remainingLeaves": 10
+    },
+    {
+        "id": 17,
+        "name": "Priya Sharma",
+        "manager": "Isabella Novak",
+        "role": "Designer",
+        "totalLeaves": 20,
+        "usedLeaves": 2,
+        "remainingLeaves": 18
+    },
+    {
+        "id": 18,
+        "name": "Daniel Osei",
+        "manager": "Liam García",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 19,
+        "remainingLeaves": 5
+    },
+    {
+        "id": 19,
+        "name": "Grace Lindqvist",
+        "manager": "Olivia Brooks",
+        "role": "Manager",
+        "totalLeaves": 28,
+        "usedLeaves": 7,
+        "remainingLeaves": 21
+    },
+    {
+        "id": 20,
+        "name": "Hassan Ali",
+        "manager": "Isabella Novak",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 13,
+        "remainingLeaves": 11
+    },
+    {
+        "id": 21,
+        "name": "Emma Petrova",
+        "manager": "Liam García",
+        "role": "Designer",
+        "totalLeaves": 20,
+        "usedLeaves": 20,
+        "remainingLeaves": 0
+    },
+    {
+        "id": 22,
+        "name": "Diego Morales",
+        "manager": "Olivia Brooks",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 5,
+        "remainingLeaves": 19
+    },
+    {
+        "id": 23,
+        "name": "Fatima Rahman",
+        "manager": "Isabella Novak",
+        "role": "Manager",
+        "totalLeaves": 28,
+        "usedLeaves": 16,
+        "remainingLeaves": 12
+    },
+    {
+        "id": 24,
+        "name": "Oliver Nielsen",
+        "manager": "Liam García",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 21,
+        "remainingLeaves": 3
+    },
+    {
+        "id": 25,
+        "name": "Layla Haddad",
+        "manager": "Olivia Brooks",
+        "role": "Designer",
+        "totalLeaves": 20,
+        "usedLeaves": 6,
+        "remainingLeaves": 14
+    },
+    {
+        "id": 26,
+        "name": "Marcus Webb",
+        "manager": "Isabella Novak",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 1,
+        "remainingLeaves": 23
+    },
+    {
+        "id": 27,
+        "name": "Nadia Popescu",
+        "manager": "Liam García",
+        "role": "Manager",
+        "totalLeaves": 28,
+        "usedLeaves": 23,
+        "remainingLeaves": 5
+    },
+    {
+        "id": 28,
+        "name": "Samuel Kariuki",
+        "manager": "Olivia Brooks",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 12,
+        "remainingLeaves": 12
+    },
+    {
+        "id": 29,
+        "name": "Yuki Tanaka",
+        "manager": "Isabella Novak",
+        "role": "Designer",
+        "totalLeaves": 20,
+        "usedLeaves": 15,
+        "remainingLeaves": 5
+    },
+    {
+        "id": 30,
+        "name": "Benjamin Cross",
+        "manager": "Liam García",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 7,
+        "remainingLeaves": 17
+    },
+    {
+        "id": 31,
+        "name": "Aisha Bello",
+        "manager": "Olivia Brooks",
+        "role": "Manager",
+        "totalLeaves": 28,
+        "usedLeaves": 9,
+        "remainingLeaves": 19
+    },
+    {
+        "id": 32,
+        "name": "Tom Fitzgerald",
+        "manager": "Isabella Novak",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 24,
+        "remainingLeaves": 0
+    },
+    {
+        "id": 33,
+        "name": "Valentina Cruz",
+        "manager": "Liam García",
+        "role": "Designer",
+        "totalLeaves": 20,
+        "usedLeaves": 3,
+        "remainingLeaves": 17
+    },
+    {
+        "id": 34,
+        "name": "Adrian Kowalski",
+        "manager": "Olivia Brooks",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 16,
+        "remainingLeaves": 8
+    },
+    {
+        "id": 35,
+        "name": "Naomi Osei-Bonsu",
+        "manager": "Isabella Novak",
+        "role": "Manager",
+        "totalLeaves": 28,
+        "usedLeaves": 4,
+        "remainingLeaves": 24
+    },
+    {
+        "id": 36,
+        "name": "Felix Schneider",
+        "manager": "Liam García",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 20,
+        "remainingLeaves": 4
+    },
+    {
+        "id": 37,
+        "name": "Ines Almeida",
+        "manager": "Olivia Brooks",
+        "role": "Designer",
+        "totalLeaves": 20,
+        "usedLeaves": 11,
+        "remainingLeaves": 9
+    },
+    {
+        "id": 38,
+        "name": "Rohan Mehta",
+        "manager": "Isabella Novak",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 2,
+        "remainingLeaves": 22
+    },
+    {
+        "id": 39,
+        "name": "Camille Laurent",
+        "manager": "Liam García",
+        "role": "Manager",
+        "totalLeaves": 28,
+        "usedLeaves": 18,
+        "remainingLeaves": 10
+    },
+    {
+        "id": 40,
+        "name": "Victor Andrade",
+        "manager": "Olivia Brooks",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 9,
+        "remainingLeaves": 15
+    },
+    {
+        "id": 41,
+        "name": "Hannah Lindberg",
+        "manager": "Isabella Novak",
+        "role": "Designer",
+        "totalLeaves": 20,
+        "usedLeaves": 19,
+        "remainingLeaves": 1
+    },
+    {
+        "id": 42,
+        "name": "Omar Farouk",
+        "manager": "Liam García",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 6,
+        "remainingLeaves": 18
+    },
+    {
+        "id": 43,
+        "name": "Elena Volkova",
+        "manager": "Olivia Brooks",
+        "role": "Manager",
+        "totalLeaves": 28,
+        "usedLeaves": 21,
+        "remainingLeaves": 7
+    },
+    {
+        "id": 44,
+        "name": "Caleb Freeman",
+        "manager": "Isabella Novak",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 17,
+        "remainingLeaves": 7
+    },
+    {
+        "id": 45,
+        "name": "Meera Iyer",
+        "manager": "Liam García",
+        "role": "Designer",
+        "totalLeaves": 20,
+        "usedLeaves": 8,
+        "remainingLeaves": 12
+    },
+    {
+        "id": 46,
+        "name": "Nathaniel Boateng",
+        "manager": "Olivia Brooks",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 23,
+        "remainingLeaves": 1
+    },
+    {
+        "id": 47,
+        "name": "Ingrid Solberg",
+        "manager": "Isabella Novak",
+        "role": "Manager",
+        "totalLeaves": 28,
+        "usedLeaves": 13,
+        "remainingLeaves": 15
+    },
+    {
+        "id": 48,
+        "name": "Andres Vega",
+        "manager": "Liam García",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 4,
+        "remainingLeaves": 20
+    },
+    {
+        "id": 49,
+        "name": "Sana Malik",
+        "manager": "Olivia Brooks",
+        "role": "Designer",
+        "totalLeaves": 20,
+        "usedLeaves": 14,
+        "remainingLeaves": 6
+    },
+    {
+        "id": 50,
+        "name": "Lars Eriksson",
+        "manager": "Isabella Novak",
+        "role": "Engineer",
+        "totalLeaves": 24,
+        "usedLeaves": 10,
+        "remainingLeaves": 14
+    }
+]

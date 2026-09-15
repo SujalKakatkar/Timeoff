@@ -1,4 +1,4 @@
-import ProfileForm from '@/components/auth/ProfileForm'
+import ProfileForm from '@/components/auth/profile-form'
 import React from 'react'
 
 function ProfileCompletePage():React.JSX.Element {

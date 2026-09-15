@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { AnimatePresence, motion, type Variants } from 'framer-motion'
-import { ThemeToggle } from '../Themetoggle'
+import { ThemeToggle } from '../theme-toggle'
 import { Menu, X } from 'lucide-react'
 
 const links = [

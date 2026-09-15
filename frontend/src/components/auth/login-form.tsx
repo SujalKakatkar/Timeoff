@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
-import { LoginSchema, type LoginSchemaType } from "@/schemas/loginSchema"
+import { LoginSchema, type LoginSchemaType } from "@/schemas/login-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Spinner } from "../ui/spinner"
 import { toast } from "../ui/toast"

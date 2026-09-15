@@ -3,7 +3,7 @@ import { UserRound } from "lucide-react";
 
 export function Footer() {
     return (
-        // todo: you should change the color of the footer according to the theme of the website here we use the randome and inline color instead of color mentioned inside index.css file
+        // todo: you should change the color of the footer according to the theme of the website here we use the random and inline color instead of color mentioned inside index.css file
         <footer className="relative overflow-hidden bg-zinc-950 text-zinc-100 pt-fib-55 pb-fib-21">
             <div className="mx-auto max-w-6xl px-fib-21">
 

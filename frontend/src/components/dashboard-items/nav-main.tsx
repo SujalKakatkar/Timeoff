@@ -6,16 +6,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import type { SidebarItem } from "@/types/sidebar"
 import { CirclePlusIcon, MailIcon } from "lucide-react"
 
 export function NavMain({
   items,
 }: {
-  items: {
-    title: string
-    url: string
-    icon?: React.ReactNode
-  }[]
+  items: SidebarItem[]
 }) {
   return (
     <SidebarGroup>

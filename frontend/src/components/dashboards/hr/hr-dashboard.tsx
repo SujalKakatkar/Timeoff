@@ -4,10 +4,10 @@ import { AppSidebar } from '../../dashboard-items/app-sidebar'
 import { SiteHeader } from '../../dashboard-items/site-header'
 import { SectionCards } from '../../dashboard-items/section-cards'
 import { ChartAreaInteractive } from '../../dashboard-items/chart-area-interactive'
-import { DataTable } from '../../dashboard-items/data-table'
+import { DataTable } from '../../dashboard-items/data-table-items/data-table'
 import data from '@/api/data.json'
-import { LayoutDashboardIcon, UsersIcon,   FileChartColumnIcon,  Tag, ClipboardList, CalendarDays, Users, CalendarOff, Clock, TrendingUp } from "lucide-react"
-import type {   SidebarItems, sidebarUserData } from '@/types/sidebar'
+import { LayoutDashboardIcon,   FileChartColumnIcon,  Tag, ClipboardList, CalendarDays, Users, CalendarOff, Clock, TrendingUp } from "lucide-react"
+import type {   SidebarItem, sidebarUserData } from '@/types/sidebar'
 import type {  StatsCardType } from '@/types/staticTypes'
 
 const userData:sidebarUserData = {
@@ -15,60 +15,49 @@ const userData:sidebarUserData = {
     email: "sujal@example.com",
 }
 
-const HRSidebarItems:SidebarItems = {
-    navMain: [
-        {
-            title: "Dashboard",
-            url: "#",
-            icon: (
-                <LayoutDashboardIcon
-                />
-            ),
-        },
-        {
-            title: "Leave Requests",
-            url: "#",
-            icon: (
-                <ClipboardList
-                />
-            ),
-        },
-        {
-            title: "Leave Types",
-            url: "#",
-            icon: (
-                <Tag
-                />
-            ),
-        },
-        {
-            title: "Holidays",
-            url: "#",
-            icon: (
-                <CalendarDays
-                />
-            ),
-        },
-        {
-            title: "Employees",
-            url: "#",
-            icon: (
-                <UsersIcon
-                />
-            ),
-        },
-        {
-            title: "Reports",
-            url: "#",
-            icon: (
-                <FileChartColumnIcon
-                />
-            ),
-        },
-        
-    ] ,
-   
-}
+const HRSidebarItems: SidebarItem[] = [
+    {
+        title: "Dashboard",
+        url: "#",
+        icon: (
+            <LayoutDashboardIcon
+            />
+        ),
+    },
+    {
+        title: "Leave Requests",
+        url: "#",
+        icon: (
+            <ClipboardList
+            />
+        ),
+    },
+    {
+        title: "Leave Types",
+        url: "#",
+        icon: (
+            <Tag
+            />
+        ),
+    },
+    {
+        title: "Holidays",
+        url: "#",
+        icon: (
+            <CalendarDays
+            />
+        ),
+    },
+    {
+        title: "Reports",
+        url: "#",
+        icon: (
+            <FileChartColumnIcon
+            />
+        ),
+    },
+
+]
 
 const hrDashboardStats:StatsCardType[] = [
     {

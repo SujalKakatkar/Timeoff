@@ -22,7 +22,7 @@ import {
     FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { depts, ProfileSchema, type ProfileSchemaType } from '@/schemas/profileSchema'
+import { depts, ProfileSchema, type ProfileSchemaType } from '@/schemas/profile-schema'
 import { Textarea } from '../ui/textarea'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'

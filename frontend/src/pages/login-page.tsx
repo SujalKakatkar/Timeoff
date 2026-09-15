@@ -1,8 +1,8 @@
-import { SignupForm } from '@/components/auth/SignupForm'
+import { LoginForm } from '@/components/auth/login-form'
 import { GalleryVerticalEnd } from 'lucide-react'
 import React, { type JSX } from 'react'
 
-function SignupPage():JSX.Element {
+function LoginPage() :JSX.Element{
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
       <div className="flex w-full max-w-sm flex-col gap-6">
@@ -12,10 +12,10 @@ function SignupPage():JSX.Element {
           </div>
           Acme Inc.
         </a>
-        <SignupForm />
+        <LoginForm />
       </div>
     </div>
   )
 }
 
-export default SignupPage
+export default LoginPage

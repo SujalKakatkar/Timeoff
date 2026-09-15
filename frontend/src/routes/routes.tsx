@@ -1,20 +1,21 @@
-import Authlayout from '@/layouts/Authlayout'
-import Herolayout from '@/layouts/Herolayout'
-import Mainlayout from '@/layouts/Mainlayout'
-import EmployeeDashboardPage from '@/pages/EmployeeDashboardPage'
-import HeroPage from '@/pages/HeroPage'
-import HRDashboardPage from '@/pages/HRDashboardPage'
-import LoginPage from '@/pages/LoginPage'
-import NotFoundPage from '@/pages/NotFoundPage'
-import ProfileCompletePage from '@/pages/ProfileCompletePage'
-import SignupPage from '@/pages/SignupPage'
+import ManagerDashboard from '@/components/dashboards/manager/manager-dashboard'
+import AuthLayout from '@/layouts/auth-layout'
+import HeroLayout from '@/layouts/hero-layout'
+import MainLayout from '@/layouts/main-layout'
+import EmployeeDashboardPage from '@/pages/employee-dashboard-page'
+import HeroPage from '@/pages/hero-page'
+import HRDashboardPage from '@/pages/hr-dashboard.page'
+import LoginPage from '@/pages/login-page'
+import NotFoundPage from '@/pages/not-found-page'
+import ProfileCompletePage from '@/pages/profile-detail-page'
+import SignupPage from '@/pages/signup-page'
 import { createBrowserRouter, type RouteObject } from 'react-router'
 
 
 const routeConfig: RouteObject[] = [
 
     {
-        element: <Herolayout />,
+        element: <HeroLayout />,
         errorElement:<NotFoundPage/>,
         children: [
             {
@@ -25,24 +26,28 @@ const routeConfig: RouteObject[] = [
         ]
     },
 
-    //todo:add layouts base on the role of the user
+    //todo:add a wrapper component to render the correct dashboard base on the role of the user
     {
-        element: <Mainlayout />,
+        element: <MainLayout />,
         children: [
             {
-                path: "/",
+                path: "/employee-dashboard",
                 element: <EmployeeDashboardPage />
             },
             {
-                path:"/hrdash",
+                path:"/hr-dash",
                 element:<HRDashboardPage/>
+            },
+            {
+                path:"/manager-dashboard",
+                element:<ManagerDashboard/>
             }
         ]
 
     },
     //todo:create layout without navbar where only logo is placed on the top left for auth routes
     {
-        element: <Authlayout />,
+        element: <AuthLayout />,
         errorElement:<NotFoundPage/>,
         children: [
             {

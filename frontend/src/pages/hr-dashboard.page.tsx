@@ -1,4 +1,4 @@
-import HRDashboard from "@/components/dashboards/hr/HRDashboard";
+import HRDashboard from "@/components/dashboards/hr/hr-dashboard";
 
 function HRDashboardPage() {
   return (

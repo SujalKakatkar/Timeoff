@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useForm } from 'react-hook-form'
 import type React from "react"
-import { signupSchema, type SignupSchemaType } from "@/schemas/signupSchema"
+import { signupSchema, type SignupSchemaType } from "@/schemas/signup-schema"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { fakeApiCall } from "@/api/auth"
 import { Spinner } from "../ui/spinner"

@@ -7,13 +7,6 @@ export interface SidebarItem {
 }
 
 
-export interface SidebarItems {
-    navMain: SidebarItem[],
-    // navSecondary:SidebarItem[]
-    // documents:SidebarItem[]
-}
-
-
 export interface sidebarUserData {
     fullName: string,
     email: string,
