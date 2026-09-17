@@ -5,10 +5,12 @@ import { SiteHeader } from '../../dashboard-items/site-header'
 import { SectionCards } from '../../dashboard-items/section-cards'
 import { ChartAreaInteractive } from '../../dashboard-items/chart-area-interactive'
 import { DataTable } from '../../dashboard-items/data-table-items/data-table'
-import data from '@/api/data.json'
 import { LayoutDashboardIcon,   FileChartColumnIcon,  Tag, ClipboardList, CalendarDays, Users, CalendarOff, Clock, TrendingUp } from "lucide-react"
 import type {   SidebarItem, sidebarUserData } from '@/types/sidebar'
 import type {  StatsCardType } from '@/types/staticTypes'
+import { fakeEmployees, type EmployeeTableRow } from '@/components/dashboard-items/employee-table-items/employee-table-schema'
+import { EmployeeColumns } from '@/components/dashboard-items/employee-table-items/employee-table-columns'
+import { EmployeeTabs } from '@/components/dashboard-items/employee-table-items/employee-table-tabs'
 
 const userData:sidebarUserData = {
     fullName: "sujal",
@@ -117,7 +119,7 @@ function HRDashboard() {
                           <div className="px-4 lg:px-6">
                               <ChartAreaInteractive />
                           </div>
-                          <DataTable data={data} />
+                          <DataTable<EmployeeTableRow> data={fakeEmployees} columns={EmployeeColumns} tableTabs={EmployeeTabs} />
                       </div>
                   </div>
               </div>

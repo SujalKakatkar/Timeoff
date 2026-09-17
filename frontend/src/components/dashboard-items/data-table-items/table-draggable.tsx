@@ -1,12 +1,12 @@
 import { useSortable } from "@dnd-kit/sortable"
-import {  GripVerticalIcon } from "lucide-react"
+import { GripVerticalIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     TableCell,
     TableRow,
 } from "@/components/ui/table"
 import type { features } from "./table-features"
-import { FlexRender, type Row } from "@tanstack/react-table"
+import { FlexRender, type Row, type RowData } from "@tanstack/react-table"
 import type { tableSchema } from "./table-schema"
 import type z from "zod"
 
@@ -30,10 +30,10 @@ export function DragHandle({ id }: { id: number }) {
     )
 }
 
-export function DraggableRow({
+export function DraggableRow<TData extends RowData & { id: number }>({
     row,
 }: {
-        row: Row<typeof features, z.infer<typeof tableSchema>>
+    row: Row<typeof features, TData>
 }) {
     const { transform, transition, setNodeRef, isDragging } = useSortable({
         id: row.original.id,

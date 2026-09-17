@@ -19,13 +19,13 @@ import {
 import {
   FlexRender,
   useTable,
+  type ColumnDef,
   type ColumnFiltersState,
   type ColumnVisibilityState,
+  type RowData,
   type SortingState,
 } from "@tanstack/react-table"
-import { z } from "zod"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
 import {
@@ -59,19 +59,19 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import {  Columns3Icon, ChevronDownIcon, PlusIcon, ChevronsLeftIcon, ChevronLeftIcon, ChevronRightIcon, ChevronsRightIcon } from "lucide-react"
-import type { tableSchema } from "./table-schema"
+import { Columns3Icon, ChevronDownIcon, PlusIcon, ChevronsLeftIcon, ChevronLeftIcon, ChevronRightIcon, ChevronsRightIcon } from "lucide-react"
 import { features } from "./table-features"
 import { DraggableRow } from "./table-draggable"
-import { columns } from "./table-column"
+import type { TableTabs } from "@/types/table"
 
-// New in v9: declare the features this table uses — anything you don't
-// register is tree-shaken out of the bundle.
-
-export function DataTable({
+export function DataTable<TData extends RowData & { id: number }>({
   data: initialData,
+  columns,
+  tableTabs
 }: {
-  data: z.infer<typeof tableSchema>[]
+  data: TData[],
+  columns: ColumnDef<typeof features, TData>[],
+  tableTabs: TableTabs<TData>[]
 }) {
   const [data, setData] = React.useState(() => initialData)
   const [rowSelection, setRowSelection] = React.useState({})
@@ -124,6 +124,9 @@ export function DataTable({
       })
     }
   }
+
+
+
   return (
     <Tabs
       defaultValue="outline"
@@ -133,41 +136,49 @@ export function DataTable({
         <Label htmlFor="view-selector" className="sr-only">
           View
         </Label>
-        <Select
-          defaultValue="outline"
-          items={[
-            { label: "Outline", value: "outline" },
-            { label: "Past Performance", value: "past-performance" },
-            { label: "Key Personnel", value: "key-personnel" },
-            { label: "Focus Documents", value: "focus-documents" },
-          ]}
-        >
-          <SelectTrigger
-            className="flex w-fit @4xl/main:hidden"
-            size="sm"
-            id="view-selector"
+        {/* //*mobile device menu */}
+       {tableTabs.length > 0 && (
+          <Select
+            defaultValue={tableTabs[0].value}
+            items={tableTabs.map(({ value, label }) => ({ value, label }))}
           >
-            <SelectValue placeholder="Select a view" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="outline">Outline</SelectItem>
-              <SelectItem value="past-performance">Past Performance</SelectItem>
-              <SelectItem value="key-personnel">Key Personnel</SelectItem>
-              <SelectItem value="focus-documents">Focus Documents</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <TabsList className="hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1 @4xl/main:flex">
-          <TabsTrigger value="outline">Outline</TabsTrigger>
-          <TabsTrigger value="past-performance">
-            Past Performance <Badge variant="secondary">3</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="key-personnel">
-            Key Personnel <Badge variant="secondary">2</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
+            <SelectTrigger
+              className="flex w-fit @4xl/main:hidden"
+              size="sm"
+              id="view-selector"
+            >
+              <SelectValue placeholder="Select a view" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {
+                  tableTabs.map(({ value, label }) => (
+                    <SelectItem key={value} value={value}>{label}</SelectItem>
+                  ))
+                }
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+       )
+
+       }
+
+
+        {/* reconsider the badges on the tab */}
+        {/* //*dekstop devices tab menu  */}
+       {
+        tableTabs.length > 0 && (
+           <TabsList className="hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1 @4xl/main:flex">
+          {
+            tableTabs.map(({value,label})=>(
+              <TabsTrigger value={value} key={value}>{label}</TabsTrigger>
+
+            ))
+          }
         </TabsList>
+        )
+       }
+
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger
@@ -201,6 +212,8 @@ export function DataTable({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
+
+          {/* //todo 2. this must be removed or change according to the utility of the table like in holiday and leave type table we need this */}
           <Button variant="outline" size="sm">
             <PlusIcon
             />
@@ -209,7 +222,7 @@ export function DataTable({
         </div>
       </div>
       <TabsContent
-        value="outline"
+        value="all"
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
         <div className="overflow-hidden rounded-lg border">
@@ -346,6 +359,7 @@ export function DataTable({
           </div>
         </div>
       </TabsContent>
+      {/* //todo 3. these tab content must be filled with the filerd data  */}
       <TabsContent
         value="past-performance"
         className="flex flex-col px-4 lg:px-6"
