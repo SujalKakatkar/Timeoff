@@ -2,13 +2,12 @@
 
 import { createColumnHelper } from "@tanstack/react-table";
 import type z from "zod";
-import type { features } from "../data-table-items/table-features";
-import { DragHandle } from "../data-table-items/table-draggable";
-import { CircleCheckIcon, EllipsisVerticalIcon, LoaderIcon } from "lucide-react";
-import type { EmployeeTableSchema } from "./employee-table-schema";
+import type { features } from "../table-features";
+import { DragHandle } from "../table-draggable";
+import {  EllipsisVerticalIcon } from "lucide-react";
+import type { HolidayTableSchema } from "./holiday-table-schema";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox"
-import { Badge } from "@/components/ui/badge"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -21,7 +20,7 @@ import {
 
 export const columnHelper = createColumnHelper<
     typeof features,
-    z.infer<typeof EmployeeTableSchema>
+    z.infer<typeof HolidayTableSchema>
 >()
 
 export const EmployeeColumns = columnHelper.columns([
@@ -57,63 +56,32 @@ export const EmployeeColumns = columnHelper.columns([
         enableSorting: false,
         enableHiding: false,
     }),
-    columnHelper.accessor("name", {
-        header: "Employee Name",
+    columnHelper.accessor("id", {
+        header: "Holiday id",
         cell: ({ row }) => {
-            return <h1>{row.original.name}</h1>
+            return <h1>{row.original.id}</h1>
         },
         enableHiding: false,
     }),
-    columnHelper.accessor("email", {
-        header: "Email",
+    columnHelper.accessor("name", {
+        header: "Name",
         cell: ({ row }) => (
             <div className="w-32">
                 <h1 >
-                    {row.original.email}
+                    {row.original.name}
                 </h1>
             </div>
         ),
     }),
-    columnHelper.accessor("address", {
-        header: "Address",
+    columnHelper.accessor("date", {
+        header: "Date",
         cell: ({ row }) => (
-            
-            <p>{row.original.address}</p>
-        ),
-    }),
-    columnHelper.accessor("phone", {
-        header: "Phone",
-        cell: ({ row }) => (
-            <h1>{row.original.phone}</h1>
-        ),
-    }),
-    columnHelper.accessor("dept", {
-        header: "Department",
-        cell: ({ row }) => (
-           <h1>{row.original.dept}</h1>
-        ),
-    }),
-    //
-    columnHelper.accessor("isActive", {
-        header: "Active",
-        cell: ({ row }) => {
-            return <Badge variant="outline" className="px-1.5 text-muted-foreground">
-                {row.original.isActive ? (
-                    <>
-                        <CircleCheckIcon className="fill-green-500 dark:fill-green-400" />
-                        <span>Active</span>
-                    </>
-                ) : (
-                    <>
-                            <LoaderIcon
-                            />
-                            <span>Not Active</span>
-                    </>
-                )}
 
-            </Badge>
-        },
+            <p>{row.original.date.toString()}</p>
+        ),
     }),
+    
+
     columnHelper.display({
         id: "actions",
         cell: () => (
