@@ -37,3 +37,6 @@ dist-ssr
 # Keep example/template files tracked
 !.env.example
 !.env.sample
+
+
+progress.md
