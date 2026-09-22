@@ -1,19 +1,20 @@
-import ManagerDashboard from '@/components/dashboards/manager/manager-dashboard'
 import AuthLayout from '@/layouts/auth-layout'
 import HeroLayout from '@/layouts/hero-layout'
 import HRDashboardLayout from '@/layouts/hr-dashboard-layout'
 import MainLayout from '@/layouts/main-layout'
 import EmployeeDashboardPage from '@/pages/employee-dashboard-page'
 import HeroPage from '@/pages/hero-page'
-import EmployeesDetailPage from '@/pages/hr-dashboard/employee-details-page'
-import EmployeesPage from '@/pages/hr-dashboard/employee-page'
-import HolidaysPage from '@/pages/hr-dashboard/holiday-page'
-import HROverviewPage from '@/pages/hr-dashboard/hr-overview-page'
-import LeaveRequestsDetailPage from '@/pages/hr-dashboard/leave-request-details-page'
-import LeaveRequestsPage from '@/pages/hr-dashboard/leave-requests-page'
-import LeaveTypesPage from '@/pages/hr-dashboard/leave-type'
-import ReportsPage from '@/pages/hr-dashboard/reports-page'
+import EmployeesDetailPage from '@/pages/hr-dashboard-pages/employee-details-page'
+import EmployeesPage from '@/pages/hr-dashboard-pages/employee-page'
+import HolidaysPage from '@/pages/hr-dashboard-pages/holiday-page'
+import HROverviewPage from '@/pages/hr-dashboard-pages/hr-overview-page'
+import LeaveRequestsDetailPage from '@/pages/hr-dashboard-pages/leave-request-details-page'
+import LeaveRequestsPage from '@/pages/hr-dashboard-pages/leave-requests-page'
+import LeaveTypesPage from '@/pages/hr-dashboard-pages/leave-type'
+import ManagersPage from '@/pages/hr-dashboard-pages/managers-page'
+import ReportsPage from '@/pages/hr-dashboard-pages/reports-page'
 import LoginPage from '@/pages/login-page'
+import ManagerDashboardPage from '@/pages/manager-dashboard-page'
 import NotFoundPage from '@/pages/not-found-page'
 import ProfileCompletePage from '@/pages/profile-detail-page'
 import SignupPage from '@/pages/signup-page'
@@ -39,15 +40,12 @@ const routeConfig: RouteObject[] = [
         element: <MainLayout />,
         children: [
             {
-                path: "/employee-dashboard",
-                element: <EmployeeDashboardPage />
-            },
-            {
                 path: "/hr",
                 element: <HRDashboardLayout />,
                 children: [
                     { index: true, element: <HROverviewPage /> },
                     { path: "leave-requests", element: <LeaveRequestsPage /> },
+                    { path: "managers", element: <ManagersPage /> },
                     { path: "leave-requests/:id", element: <LeaveRequestsDetailPage /> },
                     { path: "leave-types", element: <LeaveTypesPage /> },
                     { path: "holidays", element: <HolidaysPage /> },
@@ -57,8 +55,12 @@ const routeConfig: RouteObject[] = [
                 ]
             },
             {
+                path: "/employee-dashboard",
+                element: <EmployeeDashboardPage />
+            },
+            {
                 path: "/manager-dashboard",
-                element: <ManagerDashboard />
+                element: <ManagerDashboardPage />
             }
         ]
 

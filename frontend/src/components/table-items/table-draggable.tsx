@@ -7,12 +7,11 @@ import {
 } from "@/components/ui/table"
 import type { features } from "./table-features"
 import { FlexRender, type Row, type RowData } from "@tanstack/react-table"
-import type { tableSchema } from "./table-schema"
-import type z from "zod"
+
 
 import { CSS } from "@dnd-kit/utilities"
 
-export function DragHandle({ id }: { id: number }) {
+export function DragHandle({ id }: { id: number | string }) {
     const { attributes, listeners } = useSortable({
         id,
     })
@@ -30,7 +29,7 @@ export function DragHandle({ id }: { id: number }) {
     )
 }
 
-export function DraggableRow<TData extends RowData & { id: number }>({
+export function DraggableRow<TData extends RowData & { id: number | string }>({
     row,
 }: {
     row: Row<typeof features, TData>

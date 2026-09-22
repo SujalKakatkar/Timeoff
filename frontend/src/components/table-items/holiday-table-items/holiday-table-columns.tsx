@@ -3,7 +3,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import type z from "zod";
 import type { features } from "../table-features";
-import { DragHandle } from "../table-draggable";
 import {  EllipsisVerticalIcon } from "lucide-react";
 import type { HolidayTableSchema } from "./holiday-table-schema";
 import { Button } from "@/components/ui/button";
@@ -23,12 +22,8 @@ export const columnHelper = createColumnHelper<
     z.infer<typeof HolidayTableSchema>
 >()
 
-export const EmployeeColumns = columnHelper.columns([
-    columnHelper.display({
-        id: "drag",
-        header: () => null,
-        cell: ({ row }) => <DragHandle id={row.original.id} />,
-    }),
+export const HolidayColumns = columnHelper.columns([
+
     columnHelper.display({
         id: "select",
         header: ({ table }) => (
