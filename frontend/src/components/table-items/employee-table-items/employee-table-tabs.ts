@@ -1,5 +1,5 @@
 import type { TableTabs } from "@/types/table";
-import type { EmployeeTableRow } from "./employee-table-schema";
+import type { EmployeeTableRow } from "./employee-overview-table-schema";
 
 
 export const EmployeeTabs: TableTabs<EmployeeTableRow>[] = [

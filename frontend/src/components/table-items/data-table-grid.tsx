@@ -85,6 +85,7 @@ function DataTableGrid<TData extends RowData & { id: number }>({
                     </Table>
                 </DndContext>
             </div>
+            {/* //todo: there is bug with the filtered data i have send to this component which is resetting the next page to 1 in pagination */}
             <div className="flex items-center justify-between px-4">
                 <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
                     {table.getFilteredSelectedRowModel().rows.length} of{" "}

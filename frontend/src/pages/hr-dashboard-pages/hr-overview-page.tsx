@@ -2,8 +2,8 @@ import { TimeSeriesChart } from "@/components/chart-items/chart-area-interactive
 import { dailyLeaveActivity } from "@/components/chart-items/fake-chart-data"
 import { SectionCards } from "@/components/dashboard-items/section-cards"
 import { DataTable } from "@/components/table-items/data-table";
-import { EmployeeColumns } from "@/components/table-items/employee-table-items/employee-table-columns";
-import { fakeEmployees, type EmployeeTableRow } from "@/components/table-items/employee-table-items/employee-table-schema";
+import { EmployeeColumns } from "@/components/table-items/employee-table-items/employee-overview-table-columns";
+import { fakeEmployees, type EmployeeTableRow } from "@/components/table-items/employee-table-items/employee-overview-table-schema";
 import { EmployeeTabs } from "@/components/table-items/employee-table-items/employee-table-tabs";
 import type { StatsCardType } from "@/types/staticTypes";
 import { CalendarOff, Clock, TrendingUp, Users } from "lucide-react";

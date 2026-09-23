@@ -81,8 +81,8 @@ export function DataTable<TData extends RowData & { id: number }>({
   const filterData = currentTab ? data.filter(currentTab.filter) : data
 
   const dataIds = React.useMemo<UniqueIdentifier[]>(
-    () => data?.map(({ id }) => id) || [],
-    [filterData]
+    () => filterData?.map(({ id }) => id) || [],
+    [filterData, activeTab]
   )
   const table = useTable({
     features,
@@ -151,15 +151,15 @@ export function DataTable<TData extends RowData & { id: number }>({
           </Select>
         )}
         {tableTabs.length > 0 && (
-            <TabsList className="hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1 @4xl/main:flex">
-              {
-                tableTabs.map(({ value, label }) => (
-                  <TabsTrigger value={value} key={value}>{label}</TabsTrigger>
+          <TabsList className="hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1 @4xl/main:flex">
+            {
+              tableTabs.map(({ value, label }) => (
+                <TabsTrigger value={value} key={value}>{label}</TabsTrigger>
 
-                ))
-              }
-            </TabsList>
-          )}
+              ))
+            }
+          </TabsList>
+        )}
 
         <div className="flex items-center gap-2">
           <DropdownMenu>
@@ -204,32 +204,32 @@ export function DataTable<TData extends RowData & { id: number }>({
         </div>
       </div>
       {tableTabs.length > 0 ? (
-          <TabsContent
-            value={activeTab}
-            className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
-          >
-            <DataTableGrid<TData>
-              table={table}
-              dataIds={dataIds}
-              sensors={sensors}
-              sortableId={sortableId}
-              onDragEnd={handleDragEnd}
-              columnsLength={columns.length} />
-          </TabsContent>
-        ) : (
-          <div
-            className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
-          >
-            <DataTableGrid<TData>
-              table={table}
-              dataIds={dataIds}
-              sensors={sensors}
-              sortableId={sortableId}
-              onDragEnd={handleDragEnd}
-              columnsLength={columns.length}
-            />
-          </div>
-        )}
+        <TabsContent
+          value={activeTab}
+          className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
+        >
+          <DataTableGrid<TData>
+            table={table}
+            dataIds={dataIds}
+            sensors={sensors}
+            sortableId={sortableId}
+            onDragEnd={handleDragEnd}
+            columnsLength={columns.length} />
+        </TabsContent>
+      ) : (
+        <div
+          className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
+        >
+          <DataTableGrid<TData>
+            table={table}
+            dataIds={dataIds}
+            sensors={sensors}
+            sortableId={sortableId}
+            onDragEnd={handleDragEnd}
+            columnsLength={columns.length}
+          />
+        </div>
+      )}
     </Tabs>
   )
 }

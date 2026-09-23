@@ -5,7 +5,6 @@ import type z from "zod";
 import type { features } from "../table-features";
 import { DragHandle } from "../table-draggable";
 import { CircleCheckIcon, EllipsisVerticalIcon, LoaderIcon } from "lucide-react";
-import type { EmployeeTableSchema } from "./employee-table-schema";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
@@ -16,12 +15,13 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import type { HrEmployeeTableSchema } from "./hr-employee-table-schema";
 
 
 
 export const columnHelper = createColumnHelper<
     typeof features,
-    z.infer<typeof EmployeeTableSchema>
+    z.infer<typeof HrEmployeeTableSchema>
 >()
 
 export const EmployeeColumns = columnHelper.columns([
@@ -77,7 +77,7 @@ export const EmployeeColumns = columnHelper.columns([
     columnHelper.accessor("address", {
         header: "Address",
         cell: ({ row }) => (
-            
+
             <p>{row.original.address}</p>
         ),
     }),
@@ -90,7 +90,7 @@ export const EmployeeColumns = columnHelper.columns([
     columnHelper.accessor("dept", {
         header: "Department",
         cell: ({ row }) => (
-           <h1>{row.original.dept}</h1>
+            <h1>{row.original.dept}</h1>
         ),
     }),
     //
@@ -105,15 +105,35 @@ export const EmployeeColumns = columnHelper.columns([
                     </>
                 ) : (
                     <>
-                            <LoaderIcon
-                            />
-                            <span>Not Active</span>
+                        <LoaderIcon
+                        />
+                        <span>Not Active</span>
                     </>
                 )}
 
             </Badge>
         },
     }),
+
+
+    columnHelper.accessor("role", {
+        header: "Role",
+        cell: ({ row }) => (
+            <Badge variant="outline" className="px-1.5 text-muted-foreground">
+                {row.original.role}
+            </Badge>
+        ),
+    }),
+    columnHelper.accessor("manager", {
+        header: "Manager",
+        cell: ({ row }) => (
+            <Badge variant="outline" className="px-1.5 text-muted-foreground">
+                {row.original.manager}
+            </Badge>
+        ),
+    }),
+
+
     columnHelper.display({
         id: "actions",
         cell: () => (
