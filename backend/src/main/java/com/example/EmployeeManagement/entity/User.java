@@ -33,6 +33,7 @@ public class User {
     private String phone;
     private String password;
     private String dept;
+    private String refreshToken;
 
     @Enumerated(EnumType.STRING)
     private Role role;

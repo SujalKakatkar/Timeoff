@@ -1,5 +1,6 @@
 package com.example.EmployeeManagement.dto.user;
 
+import com.example.EmployeeManagement.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserLoginResponse extends UserResponse {
+public class UserLoginResponse  {
     private String token;
+    private String email;
+    private Role role;
 }

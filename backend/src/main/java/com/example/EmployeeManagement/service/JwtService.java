@@ -16,17 +16,36 @@ public class JwtService {
     @Value("${secret-key}")
     private String secretKey;
 
+
+    @Value("${jwt.access-token-expiration}")
+    private long accessTokenExpiration;
+
+    @Value("${jwt.refresh-token-expiration}")
+    private long refreshTokenExpiration;
+
     private SecretKey generateKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    public String generateToken(User user) {
+    public String generateAccessToken(User user) {
         return Jwts
                 .builder()
                 .subject(user.getEmail())
                 .claim("role", user.getRole())
+                .claim("type", "access")
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
+                .expiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
+                .signWith(generateKey())
+                .compact();
+    }
+
+    public String generateRefreshToken(User user) {
+        return Jwts
+                .builder()
+                .subject(user.getEmail())
+                .claim("type", "refresh")
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + refreshTokenExpiration))
                 .signWith(generateKey())
                 .compact();
     }
@@ -38,6 +57,10 @@ public class JwtService {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+    }
+
+    public String extractTokenType(String token) {
+        return getClaims(token).get("type", String.class);
     }
 
     public String extractRole(String token) {

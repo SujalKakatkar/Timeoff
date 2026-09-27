@@ -2,6 +2,7 @@ package com.example.EmployeeManagement.mapper;
 
 
 import com.example.EmployeeManagement.dto.*;
+import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.dto.user.UserLoginResponse;
 import com.example.EmployeeManagement.dto.user.UserResponse;
 import com.example.EmployeeManagement.entity.*;
@@ -10,13 +11,7 @@ public class MapToDto {
 
     public static UserLoginResponse mapToLoginResponse(User user, String token) {
         UserLoginResponse newUser = new UserLoginResponse();
-        newUser.setUserId(user.getUserId());
-        newUser.setName(user.getName());
-        newUser.setUsername(user.getUsername());
         newUser.setEmail(user.getEmail());
-        newUser.setAddress(user.getAddress());
-        newUser.setPhone(user.getPhone());
-        newUser.setDept(user.getDept());
         newUser.setRole(user.getRole());
         newUser.setToken(token);
         return newUser;
@@ -26,13 +21,22 @@ public class MapToDto {
         UserResponse newUser = new UserResponse();
         newUser.setUserId(user.getUserId());
         newUser.setName(user.getName());
-        newUser.setUsername(user.getUsername());
         newUser.setEmail(user.getEmail());
-        newUser.setAddress(user.getAddress());
-        newUser.setPhone(user.getPhone());
-        newUser.setDept(user.getDept());
-        newUser.setRole(user.getRole());
         return newUser;
+    }
+
+    public static UserDetailsResponse mapToUserDetailResponse(User user) {
+
+        UserDetailsResponse userDetailsResponse = new UserDetailsResponse();
+        userDetailsResponse.setUserId(user.getUserId());
+        userDetailsResponse.setUsername(user.getUsername());
+        userDetailsResponse.setAddress(user.getAddress());
+        userDetailsResponse.setEmail(user.getEmail());
+        userDetailsResponse.setName(user.getName());
+        userDetailsResponse.setDept(user.getDept());
+        userDetailsResponse.setPhone(user.getPhone());
+        return userDetailsResponse;
+
     }
 
 
@@ -78,8 +82,6 @@ public class MapToDto {
                 leaveType.getCreatedAt()
         );
     }
-
-
 
 
 }

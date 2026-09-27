@@ -1,6 +1,5 @@
 package com.example.EmployeeManagement.dto.user;
 
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -10,11 +9,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-public class UserCreateRequest {
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserSignUpRequest {
+
     @NotBlank(message = "name is required")
     @Size(min = 3, message = "name must be at least 3 characters")
     private String name;
@@ -35,6 +35,4 @@ public class UserCreateRequest {
             message = "password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
     )
     private String password;
-
-
 }

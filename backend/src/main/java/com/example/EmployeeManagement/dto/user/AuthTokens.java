@@ -6,20 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponse {
-
-    private Integer userId;
-    private String name;
-
+public class AuthTokens {
+    private String accessToken;
+    private String refreshToken;
     private String email;
-
-    private LocalDateTime createdAt;
-
-
+    private Role role;
 }

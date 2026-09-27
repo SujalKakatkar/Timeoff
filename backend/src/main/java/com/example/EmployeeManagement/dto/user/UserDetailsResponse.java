@@ -1,25 +1,23 @@
 package com.example.EmployeeManagement.dto.user;
 
-import com.example.EmployeeManagement.enums.Role;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponse {
+public class UserDetailsResponse {
+
 
     private Integer userId;
+    private String username;
     private String name;
-
+    private String phone;
+    private String dept;
+    private String address;
     private String email;
-
-    private LocalDateTime createdAt;
-
-
 }

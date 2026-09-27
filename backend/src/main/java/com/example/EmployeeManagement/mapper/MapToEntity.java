@@ -17,9 +17,6 @@ public class MapToEntity {
         newUser.setName(user.getName());
         newUser.setUsername(user.getUsername());
         newUser.setEmail(user.getEmail());
-        newUser.setAddress(user.getAddress());
-        newUser.setPhone(user.getPhone());
-        newUser.setDept(user.getDept());
         newUser.setEnabled(true);
         //this map only need when it's time to add a new user, so I kept the manger and employee has default
         newUser.setManager(null);

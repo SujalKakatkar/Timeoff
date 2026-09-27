@@ -1,9 +1,6 @@
 package com.example.EmployeeManagement.service;
 
-import com.example.EmployeeManagement.dto.user.UserLoginRequest;
-import com.example.EmployeeManagement.dto.user.UserLoginResponse;
-import com.example.EmployeeManagement.dto.user.UserCreateRequest;
-import com.example.EmployeeManagement.dto.user.UserResponse;
+import com.example.EmployeeManagement.dto.user.*;
 import com.example.EmployeeManagement.entity.User;
 import com.example.EmployeeManagement.exceptions.ResourceAlreadyExistsException;
 import com.example.EmployeeManagement.exceptions.ResourceNotFoundException;
@@ -13,6 +10,7 @@ import com.example.EmployeeManagement.mapper.MapToEntity;
 import com.example.EmployeeManagement.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -47,7 +45,28 @@ public class UserService {
         return MapToDto.mapToUserResponse(temp);
     }
 
-    public UserLoginResponse loginUser(UserLoginRequest login) {
+    public UserDetailsResponse getDetails(String email) {
+        User temp = userRepository.findByEmailAndEnabledTrue(email).orElseThrow(
+                () -> new ResourceNotFoundException("User not found")
+        );
+
+        return MapToDto.mapToUserDetailResponse(temp);
+    }
+
+    @Transactional
+    public void completeProfile(UserProfileRequest userProfileRequest, String email) {
+        User temp = userRepository.findByEmailAndEnabledTrue(email).orElseThrow(
+                () -> new ResourceNotFoundException("User not found")
+        );
+        System.out.println(temp.getUsername());
+        temp.setDept(userProfileRequest.getDept());
+        temp.setAddress(userProfileRequest.getAddress());
+        temp.setPhone(userProfileRequest.getPhone());
+
+    }
+
+    @Transactional
+    public AuthTokens loginUser(UserLoginRequest login) {
         User temp = userRepository.findByUsernameAndEnabledTrue(login.getUsername()).orElseThrow(
                 () -> new ResourceNotFoundException("user not found")
         );
@@ -55,8 +74,9 @@ public class UserService {
 
         boolean isMatch = passwordEncoder.matches(login.getPassword(), temp.getPassword());
         if (!isMatch) throw new ResourceNotFoundException("Invalid username or password");
-        String token = jwtService.generateToken(temp);
-
-        return MapToDto.mapToLoginResponse(temp, token);
+        String accessToken = jwtService.generateAccessToken(temp);
+        String refreshToken = jwtService.generateRefreshToken(temp);
+        temp.setRefreshToken(refreshToken);
+        return new AuthTokens(accessToken, refreshToken, temp.getEmail(), temp.getRole());
     }
 }
