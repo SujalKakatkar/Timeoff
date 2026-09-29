@@ -1,52 +1,12 @@
 import { TimeSeriesChart } from "@/components/chart-items/chart-area-interactive"
-import { dailyLeaveActivity } from "@/components/chart-items/fake-chart-data"
+import { dailyLeaveActivity } from "@/fake-data/fake-chart-data"
 import { SectionCards } from "@/components/dashboard-items/section-cards"
 import { DataTable } from "@/components/table-items/data-table";
 import { EmployeeColumns } from "@/components/table-items/employee-table-items/employee-overview-table-columns";
-import { fakeEmployees, type EmployeeTableRow } from "@/components/table-items/employee-table-items/employee-overview-table-schema";
-import { EmployeeTabs } from "@/components/table-items/employee-table-items/employee-table-tabs";
-import type { StatsCardType } from "@/types/staticTypes";
-import { CalendarOff, Clock, TrendingUp, Users } from "lucide-react";
+import {  type EmployeeTableRow } from "@/components/table-items/employee-table-items/employee-overview-table-schema";
+import { EmployeeTabs } from "@/components/table-items/employee-table-items/employee-overview-table-tabs";
 
-
-//static data for testing
-
-const hrDashboardStats: StatsCardType[] = [
-    {
-        title: "Total Employees",
-        count: 180,
-        description: "12 managers · 168 individual contributors",
-        icon: <Users />,
-        footerHeadline: "4 new joiners this month",
-        footerSubtext: "12 managers · 168 ICs",
-    },
-    {
-        title: "On Leave Today",
-        count: 24,
-        description: "13% of total workforce",
-        icon: <CalendarOff />,
-        footerHeadline: "13% of workforce is out",
-        footerSubtext: "Compared to 18 yesterday",
-
-    },
-    {
-        title: "Pending Approvals",
-        count: 7,
-        description: "3 pending for more than 2 days",
-        icon: <Clock />,
-        footerHeadline: "3 pending for 2+ days",
-        footerSubtext: "Needs manager attention",
-    },
-    {
-        title: "Avg. Leave Balance",
-        count: 12.4,
-        description: "Days remaining per employee",
-        icon: <TrendingUp />,
-        footerHeadline: "Trending down this quarter",
-        footerSubtext: "Per employee, org-wide",
-    },
-];
-
+import { fakeEmployees, hrDashboardStats } from "@/fake-data/fake-data";
 
 
 function HROverviewPage() {
