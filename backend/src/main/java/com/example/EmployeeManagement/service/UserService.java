@@ -77,6 +77,6 @@ public class UserService {
         String accessToken = jwtService.generateAccessToken(temp);
         String refreshToken = jwtService.generateRefreshToken(temp);
         temp.setRefreshToken(refreshToken);
-        return new AuthTokens(accessToken, refreshToken, temp.getEmail(), temp.getRole());
+        return new AuthTokens(accessToken, refreshToken, temp.getUserId(), temp.getEmail(), temp.getRole(),temp.getUsername());
     }
 }

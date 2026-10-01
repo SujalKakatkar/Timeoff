@@ -55,8 +55,10 @@ public class UserController {
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
 
         UserLoginResponse body = new UserLoginResponse(
+                tokens.getUserId(),
                 tokens.getAccessToken(),
                 tokens.getEmail(),
+                tokens.getUsername(),
                 tokens.getRole()
         );
 
