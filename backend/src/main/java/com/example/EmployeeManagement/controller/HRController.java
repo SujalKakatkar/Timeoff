@@ -2,7 +2,7 @@ package com.example.EmployeeManagement.controller;
 
 
 import com.example.EmployeeManagement.dto.DetailedReportResponse;
-import com.example.EmployeeManagement.dto.user.UserResponse;
+import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.service.HRService;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -47,13 +47,13 @@ public class HRController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable Integer userId){
+    public ResponseEntity<UserDetailsResponse> getUser(@PathVariable Integer userId){
         return ResponseEntity.status(HttpStatus.OK).body(hrService.getUser( userId));
     }
 
     //all employees including managers
     @GetMapping("/all")
-    public ResponseEntity<List<UserResponse>> getAll(Authentication authentication) {
+    public ResponseEntity<List<UserDetailsResponse>> getAll(Authentication authentication) {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -63,7 +63,7 @@ public class HRController {
 
     //all managers
     @GetMapping("/managers")
-    public ResponseEntity<List<UserResponse>> getAllManagers(Authentication authentication) {
+    public ResponseEntity<List<UserDetailsResponse>> getAllManagers(Authentication authentication) {
 
         return ResponseEntity
                 .status(HttpStatus.OK)

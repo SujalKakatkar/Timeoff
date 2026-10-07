@@ -32,7 +32,7 @@ public class JwtService {
                 .builder()
                 .subject(user.getEmail())
                 .claim("role", user.getRole())
-                .claim("type", "access")
+                .claim("type", "accessToken")
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
                 .signWith(generateKey())
@@ -43,7 +43,7 @@ public class JwtService {
         return Jwts
                 .builder()
                 .subject(user.getEmail())
-                .claim("type", "refresh")
+                .claim("type", "refreshToken")
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + refreshTokenExpiration))
                 .signWith(generateKey())

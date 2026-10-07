@@ -3,7 +3,7 @@ package com.example.EmployeeManagement.service;
 
 import com.example.EmployeeManagement.dto.DetailedReportResponse;
 import com.example.EmployeeManagement.dto.LeaveTypeDetails;
-import com.example.EmployeeManagement.dto.user.UserResponse;
+import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.entity.LeaveBalance;
 import com.example.EmployeeManagement.entity.User;
 import com.example.EmployeeManagement.enums.LeaveStatus;
@@ -106,27 +106,27 @@ public class HRService {
 
     }
 
-    public UserResponse getUser(Integer userId) {
+    public UserDetailsResponse getUser(Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("user not found")
         );
 
-        return MapToDto.mapToUserResponse(user);
+        return MapToDto.mapToUserDetailResponse(user);
     }
 
 
     //get all employees
-    public List<UserResponse> getAllEmployees() {
+    public List<UserDetailsResponse> getAllEmployees() {
         List<User> userList = userRepository.findAllByRoleInAndEnabledTrue(List.of(Role.EMPLOYEE, Role.MANAGER));
 
-        return userList.stream().map(MapToDto::mapToUserResponse).toList();
+        return userList.stream().map(MapToDto::mapToUserDetailResponse).toList();
 
     }
 
     // get all request
-    public List<UserResponse> getAllManagers() {
+    public List<UserDetailsResponse> getAllManagers() {
         List<User> userList = userRepository.findAllByRoleInAndEnabledTrue(List.of(Role.MANAGER));
-        return userList.stream().map(MapToDto::mapToUserResponse).collect(Collectors.toList());
+        return userList.stream().map(MapToDto::mapToUserDetailResponse).collect(Collectors.toList());
     }
 
     public DetailedReportResponse getEmployeeReport(Integer empId) {

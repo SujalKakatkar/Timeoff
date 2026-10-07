@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -54,6 +55,7 @@ public class SecurityConfig {
         http
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex ->
                         ex.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 )
@@ -61,7 +63,10 @@ public class SecurityConfig {
                         auth
 
                                 //Public endpoints
-                                .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login","/api/auth/logout","/api/auth/refresh").permitAll()
+
+                                //auth private endpoits
+                                .requestMatchers(HttpMethod.PATCH,"/api/auth/profile").authenticated()
 
                                 //hr work
                                 .requestMatchers(HttpMethod.PUT, "/api/hr/*").hasRole("HR")
@@ -73,8 +78,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/leavetype").authenticated()
 
                                 //Holidays post and get
-                                .requestMatchers(HttpMethod.POST, "/api/holidays").hasRole("HR")
-                                .requestMatchers(HttpMethod.DELETE, "/api/holidays").hasRole("HR")
+                                .requestMatchers(HttpMethod.POST, "/api/holidays/**").hasRole("HR")
+                                .requestMatchers(HttpMethod.DELETE, "/api/holidays/**").hasRole("HR")
                                 .requestMatchers(HttpMethod.GET, "/api/holidays").authenticated()
 
                                 //leave balance sheet table
@@ -82,7 +87,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/leavebalance/*").hasAnyRole("HR", "MANAGER")
 
                                 //leave Request
-                                .requestMatchers(HttpMethod.POST, "/api/leaverequest/").hasAnyRole("MANAGER", "EMPLOYEE")
+                                .requestMatchers(HttpMethod.POST, "/api/leaverequest").hasAnyRole("MANAGER", "EMPLOYEE")
                                 .requestMatchers(HttpMethod.GET, "/api/leaverequest/all").hasAnyRole("MANAGER", "HR")
                                 .requestMatchers(HttpMethod.PATCH, "/api/leaverequest/review").hasAnyRole("MANAGER", "HR")
                                 .requestMatchers(HttpMethod.GET, "/api/leaverequest/me").authenticated()

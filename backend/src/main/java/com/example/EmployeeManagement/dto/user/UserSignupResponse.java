@@ -1,6 +1,5 @@
 package com.example.EmployeeManagement.dto.user;
 
-import com.example.EmployeeManagement.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponse {
+public class UserSignupResponse {
 
     private Integer userId;
     private String name;

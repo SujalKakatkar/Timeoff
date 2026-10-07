@@ -4,7 +4,7 @@ package com.example.EmployeeManagement.mapper;
 import com.example.EmployeeManagement.dto.*;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.dto.user.UserLoginResponse;
-import com.example.EmployeeManagement.dto.user.UserResponse;
+import com.example.EmployeeManagement.dto.user.UserSignupResponse;
 import com.example.EmployeeManagement.entity.*;
 
 public class MapToDto {
@@ -17,11 +17,12 @@ public class MapToDto {
         return newUser;
     }
 
-    public static UserResponse mapToUserResponse(User user) {
-        UserResponse newUser = new UserResponse();
+    public static UserSignupResponse mapToUserResponse(User user) {
+        UserSignupResponse newUser = new UserSignupResponse();
         newUser.setUserId(user.getUserId());
         newUser.setName(user.getName());
         newUser.setEmail(user.getEmail());
+        newUser.setCreatedAt(user.getCreatedAt());
         return newUser;
     }
 
@@ -35,6 +36,7 @@ public class MapToDto {
         userDetailsResponse.setName(user.getName());
         userDetailsResponse.setDept(user.getDept());
         userDetailsResponse.setPhone(user.getPhone());
+
         return userDetailsResponse;
 
     }

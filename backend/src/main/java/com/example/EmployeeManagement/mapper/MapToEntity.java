@@ -4,7 +4,7 @@ import com.example.EmployeeManagement.dto.HolidayCreateRequest;
 import com.example.EmployeeManagement.dto.LeaveReviewResponse;
 import com.example.EmployeeManagement.dto.LeaveRequestCreateRequest;
 import com.example.EmployeeManagement.dto.LeaveTypeCreateRequest;
-import com.example.EmployeeManagement.dto.user.UserCreateRequest;
+import com.example.EmployeeManagement.dto.user.UserSignUpRequest;
 import com.example.EmployeeManagement.entity.*;
 import com.example.EmployeeManagement.enums.ApproverRole;
 import com.example.EmployeeManagement.enums.LeaveStatus;
@@ -12,13 +12,12 @@ import com.example.EmployeeManagement.enums.Role;
 
 public class MapToEntity {
 
-    public static User mapToUser(UserCreateRequest user){
+    public static User mapToUser(UserSignUpRequest user){
         User newUser = new User();
         newUser.setName(user.getName());
         newUser.setUsername(user.getUsername());
         newUser.setEmail(user.getEmail());
         newUser.setEnabled(true);
-        //this map only need when it's time to add a new user, so I kept the manger and employee has default
         newUser.setManager(null);
         newUser.setRole(Role.EMPLOYEE);
         return newUser;

@@ -4,6 +4,7 @@ package com.example.EmployeeManagement.controller;
 //authentication check only
 
 import com.example.EmployeeManagement.dto.user.*;
+import com.example.EmployeeManagement.exceptions.InvalidRefreshTokenException;
 import com.example.EmployeeManagement.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Duration;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class UserController {
 
     private final UserService userService;
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> create(@Valid @RequestBody UserCreateRequest userRequest) {
+    public ResponseEntity<UserSignupResponse> create(@Valid @RequestBody UserSignUpRequest userRequest) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userService.createEmployee(userRequest));
@@ -50,7 +51,12 @@ public class UserController {
         AuthTokens tokens = userService.loginUser(loginRequest);
 
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", tokens.getRefreshToken())
-                .httpOnly(true).secure(false).sameSite("strict").path("/refresh").maxAge(Duration.ofDays(7)).build();
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("strict")
+                .path("/api/auth")
+                .maxAge(Duration.ofDays(7))
+                .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
 
@@ -63,6 +69,38 @@ public class UserController {
         );
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
+
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+            @CookieValue(name = "refreshToken",required = false) String token
+    ) {
+
+        userService.revokeRefreshToken(token);
+        ResponseCookie deleteCookie = ResponseCookie.from("refreshToken", "")
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("strict")
+                .path("/api/auth")
+                .maxAge(0)
+                .build();
+
+        return ResponseEntity.noContent()
+                .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
+                .build();
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<String> refreshAccessToken(
+            @CookieValue(name = "refreshToken", required = false) String token
+    ) {
+        if(token == null) throw new InvalidRefreshTokenException();
+
+
+
+        return ResponseEntity.ok(userService.refreshAccessToken(token));
+
 
     }
 
