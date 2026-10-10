@@ -13,8 +13,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserLoginRequest {
 
-    @NotBlank(message = "username can't be blank/null")
-    private String username;
+    @NotBlank(message = "email can't be blank/null")
+    private String email;
 
 
     @NotBlank(message = "password is required")

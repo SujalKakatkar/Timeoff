@@ -20,11 +20,6 @@ public class UserSignUpRequest {
     private String name;
 
     @NotBlank
-    @Size(min = 3, max = 20)
-    @Pattern(regexp = "^[a-z0-9]+$", message = "Username must contain only lowercase letters and numbers")
-    private String username;
-
-    @NotBlank
     @Email(message = "Invalid email format")
     private String email;
 

@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-    boolean existsByUsername(String username);
     boolean existsByEmail(String email);
     Optional<User> findByEmailAndEnabledTrue(String email);
     Optional<User> findByUserIdAndEnabledTrue(Integer userId);
-    Optional<User> findByUsernameAndEnabledTrue(String username);
     List<User> findAllByRoleInAndEnabledTrue(List<Role> roles);
 
     List<User> findAllByManager_UserId(Integer ManagerId);

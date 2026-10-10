@@ -10,10 +10,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserLoginResponse  {
+public class UserLoginResponse {
     private Integer userId;
     private String token;
+    private String name;
     private String email;
-    private String username;
     private Role role;
 }

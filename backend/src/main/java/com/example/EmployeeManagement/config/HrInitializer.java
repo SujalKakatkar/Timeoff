@@ -23,7 +23,6 @@ public class HrInitializer implements CommandLineRunner {
             User admin = new User();
 
             admin.setName("System Admin");
-            admin.setUsername("Hr");
             admin.setEmail("Hr@gmail.com");
             admin.setPassword(
                     passwordEncoder.encode("hr123")

@@ -2,6 +2,7 @@ package com.example.EmployeeManagement.service;
 
 import com.example.EmployeeManagement.entity.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -75,7 +76,7 @@ public class JwtService {
         try {
             getClaims(token);
             return true;
-        } catch (Exception e) {
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }

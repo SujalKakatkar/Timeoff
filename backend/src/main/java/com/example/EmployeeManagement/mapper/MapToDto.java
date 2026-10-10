@@ -2,6 +2,7 @@ package com.example.EmployeeManagement.mapper;
 
 
 import com.example.EmployeeManagement.dto.*;
+import com.example.EmployeeManagement.dto.user.AuthTokens;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.dto.user.UserLoginResponse;
 import com.example.EmployeeManagement.dto.user.UserSignupResponse;
@@ -9,12 +10,15 @@ import com.example.EmployeeManagement.entity.*;
 
 public class MapToDto {
 
-    public static UserLoginResponse mapToLoginResponse(User user, String token) {
-        UserLoginResponse newUser = new UserLoginResponse();
-        newUser.setEmail(user.getEmail());
-        newUser.setRole(user.getRole());
-        newUser.setToken(token);
-        return newUser;
+    public static UserLoginResponse mapToLoginResponse(AuthTokens tokens) {
+        return new UserLoginResponse(
+                tokens.getUserId(),
+                tokens.getAccessToken(),
+                tokens.getName(),
+                tokens.getEmail(),
+                tokens.getRole()
+        );
+
     }
 
     public static UserSignupResponse mapToUserResponse(User user) {
@@ -30,7 +34,6 @@ public class MapToDto {
 
         UserDetailsResponse userDetailsResponse = new UserDetailsResponse();
         userDetailsResponse.setUserId(user.getUserId());
-        userDetailsResponse.setUsername(user.getUsername());
         userDetailsResponse.setAddress(user.getAddress());
         userDetailsResponse.setEmail(user.getEmail());
         userDetailsResponse.setName(user.getName());
@@ -46,7 +49,6 @@ public class MapToDto {
         LeaveBalanceResponse newResponse = new LeaveBalanceResponse();
         newResponse.setBalanceId(leaveBalance.getBalanceId());
         newResponse.setYear(leaveBalance.getYear());
-        newResponse.setUsername(leaveBalance.getUser().getUsername());
         newResponse.setLeaveTypeName(leaveBalance.getLeaveType().getName());
         newResponse.setAllocatedDays(leaveBalance.getAllocatedDays());
         newResponse.setUsedDays(leaveBalance.getUsedDays());

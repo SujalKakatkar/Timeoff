@@ -1,10 +1,11 @@
 package com.example.EmployeeManagement.controller;
 
 
-//authentication check only
+
 
 import com.example.EmployeeManagement.dto.user.*;
 import com.example.EmployeeManagement.exceptions.InvalidRefreshTokenException;
+import com.example.EmployeeManagement.mapper.MapToDto;
 import com.example.EmployeeManagement.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -60,21 +61,13 @@ public class UserController {
 
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
 
-        UserLoginResponse body = new UserLoginResponse(
-                tokens.getUserId(),
-                tokens.getAccessToken(),
-                tokens.getEmail(),
-                tokens.getUsername(),
-                tokens.getRole()
-        );
-
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+        return ResponseEntity.status(HttpStatus.OK).body(MapToDto.mapToLoginResponse(tokens));
 
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
-            @CookieValue(name = "refreshToken",required = false) String token
+            @CookieValue(name = "refreshToken", required = false) String token
     ) {
 
         userService.revokeRefreshToken(token);
@@ -95,8 +88,7 @@ public class UserController {
     public ResponseEntity<String> refreshAccessToken(
             @CookieValue(name = "refreshToken", required = false) String token
     ) {
-        if(token == null) throw new InvalidRefreshTokenException();
-
+        if (token == null) throw new InvalidRefreshTokenException();
 
 
         return ResponseEntity.ok(userService.refreshAccessToken(token));

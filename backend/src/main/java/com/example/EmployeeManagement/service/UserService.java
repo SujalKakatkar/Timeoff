@@ -32,8 +32,8 @@ public class UserService {
 
     public UserSignupResponse createEmployee(UserSignUpRequest user) {
         //if user exists with same username
-        if (userRepository.existsByUsername(user.getUsername()) || userRepository.existsByEmail(user.getEmail())) {
-            throw new ResourceAlreadyExistsException("username or email already used");
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new ResourceAlreadyExistsException("email already used");
         }
 
         //finally mapping the userdata to entity
@@ -60,7 +60,6 @@ public class UserService {
         User temp = userRepository.findByEmailAndEnabledTrue(email).orElseThrow(
                 () -> new ResourceNotFoundException("User not found")
         );
-        System.out.println(temp.getUsername());
         temp.setDept(userProfileRequest.getDept());
         temp.setAddress(userProfileRequest.getAddress());
         temp.setPhone(userProfileRequest.getPhone());
@@ -69,7 +68,7 @@ public class UserService {
 
     @Transactional
     public AuthTokens loginUser(UserLoginRequest login) {
-        User temp = userRepository.findByUsernameAndEnabledTrue(login.getUsername()).orElseThrow(
+        User temp = userRepository.findByEmailAndEnabledTrue(login.getEmail()).orElseThrow(
                 () -> new ResourceNotFoundException("user not found")
         );
 
@@ -79,7 +78,15 @@ public class UserService {
         String accessToken = jwtService.generateAccessToken(temp);
         String refreshToken = jwtService.generateRefreshToken(temp);
         temp.setRefreshToken(refreshToken);
-        return new AuthTokens(accessToken, refreshToken, temp.getUserId(), temp.getEmail(), temp.getRole(), temp.getUsername());
+        return new AuthTokens(
+                accessToken,
+                refreshToken,
+                temp.getUserId(),
+                temp.getName(),
+                temp.getEmail(),
+                temp.getRole()
+        );
+
     }
 
 
