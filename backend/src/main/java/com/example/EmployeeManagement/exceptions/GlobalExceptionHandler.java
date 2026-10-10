@@ -1,6 +1,7 @@
 package com.example.EmployeeManagement.exceptions;
 
 import com.example.EmployeeManagement.dto.ExceptionResponse;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 message,
-                request.getRequestURL().toString()
+                request.getRequestURI()
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
@@ -46,13 +47,13 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 "Malformed Json request",
-                request.getRequestURL().toString()
+                request.getRequestURI()
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
 
-    @ExceptionHandler(InvalidRefreshTokenException.class)
+    @ExceptionHandler({InvalidRefreshTokenException.class, JwtException.class})
     public ResponseEntity<ExceptionResponse> handleRefreshTokenException(RuntimeException ex, HttpServletRequest request) {
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(
@@ -60,7 +61,23 @@ public class GlobalExceptionHandler {
                 HttpStatus.UNAUTHORIZED.value(),
                 HttpStatus.UNAUTHORIZED.getReasonPhrase(),
                 "Invalid or expired session",
-                request.getRequestURL().toString()
+                request.getRequestURI()
+
+        );
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exceptionResponse);
+
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidCredentials(RuntimeException ex, HttpServletRequest request) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                LocalDateTime.now(),
+                HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                "Invalid email or password",
+                request.getRequestURI()
 
         );
 
@@ -77,7 +94,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_FOUND.value(),
                 HttpStatus.NOT_FOUND.getReasonPhrase(),
                 ex.getMessage(),
-                request.getRequestURL().toString()
+                request.getRequestURI()
 
         );
 
@@ -94,7 +111,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 ex.getMessage(),
-                request.getRequestURL().toString()
+                request.getRequestURI()
 
         );
 
@@ -109,7 +126,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 ex.getMessage(),
-                request.getRequestURL().toString()
+                request.getRequestURI()
 
         );
 
@@ -125,7 +142,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 ex.getMessage(),
-                request.getRequestURL().toString()
+                request.getRequestURI()
 
         );
 
@@ -140,7 +157,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.CONFLICT.value(),
                 HttpStatus.CONFLICT.getReasonPhrase(),
                 ex.getMessage(),
-                request.getRequestURL().toString()
+                request.getRequestURI()
 
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionResponse);
@@ -155,7 +172,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 ex.getMessage(),
-                request.getRequestURL().toString()
+                request.getRequestURI()
 
         );
 
@@ -170,7 +187,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 ex.getMessage(),
-                request.getRequestURL().toString()
+                request.getRequestURI()
 
         );
 

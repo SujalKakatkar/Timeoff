@@ -67,6 +67,7 @@ public class SecurityConfig {
 
                                 //auth private endpoits
                                 .requestMatchers(HttpMethod.PATCH,"/api/auth/profile").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated()
 
                                 //hr work
                                 .requestMatchers(HttpMethod.PUT, "/api/hr/*").hasRole("HR")

@@ -14,8 +14,8 @@ public class MapToEntity {
 
     public static User mapToUser(UserSignUpRequest user){
         User newUser = new User();
-        newUser.setName(user.getName());
-        newUser.setEmail(user.getEmail());
+        newUser.setName(user.getName().trim());
+        newUser.setEmail(user.getEmail().trim().toLowerCase());
         newUser.setEnabled(true);
         newUser.setManager(null);
         newUser.setRole(Role.EMPLOYEE);

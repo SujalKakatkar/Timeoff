@@ -1,8 +1,6 @@
 package com.example.EmployeeManagement.controller;
 
 
-
-
 import com.example.EmployeeManagement.dto.user.*;
 import com.example.EmployeeManagement.exceptions.InvalidRefreshTokenException;
 import com.example.EmployeeManagement.mapper.MapToDto;
@@ -37,20 +35,18 @@ public class UserController {
     }
 
     @PatchMapping("/profile")
-    public ResponseEntity<String> completeProfile(@Valid @RequestBody UserProfileRequest userProfileRequest, Authentication authentication) {
+    public ResponseEntity<Void> completeProfile(@Valid @RequestBody UserProfileRequest userProfileRequest, Authentication authentication) {
         String email = authentication.getName();
         userService.completeProfile(userProfileRequest, email);
 
-        return ResponseEntity.ok("completed the profile");
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest loginRequest,
                                                    HttpServletResponse response
     ) {
-
         AuthTokens tokens = userService.loginUser(loginRequest);
-
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", tokens.getRefreshToken())
                 .httpOnly(true)
                 .secure(false)
@@ -58,9 +54,7 @@ public class UserController {
                 .path("/api/auth")
                 .maxAge(Duration.ofDays(7))
                 .build();
-
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
-
         return ResponseEntity.status(HttpStatus.OK).body(MapToDto.mapToLoginResponse(tokens));
 
     }
@@ -85,15 +79,11 @@ public class UserController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<String> refreshAccessToken(
+    public ResponseEntity<AccessTokenResponse> refreshAccessToken(
             @CookieValue(name = "refreshToken", required = false) String token
     ) {
         if (token == null) throw new InvalidRefreshTokenException();
-
-
         return ResponseEntity.ok(userService.refreshAccessToken(token));
-
-
     }
 
 

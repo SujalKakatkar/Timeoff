@@ -15,19 +15,20 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserSignUpRequest {
 
-    @NotBlank(message = "name is required")
-    @Size(min = 3, message = "name must be at least 3 characters")
+    @Size(min = 3, max = 100, message = "name must be 3 to 100 characters")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "email is required")
     @Email(message = "Invalid email format")
+    @Size(max = 254)
     private String email;
 
     @NotBlank(message = "password is required")
-    @Size(min = 8, message = "password must be at least 8 characters")
+    @Size(min = 8, max = 72, message = "password must be 8 to 72 characters")
     @Pattern(
             regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).*$",
             message = "password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
+
     )
     private String password;
 }

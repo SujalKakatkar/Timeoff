@@ -2,6 +2,7 @@ package com.example.EmployeeManagement.service;
 
 import com.example.EmployeeManagement.dto.user.*;
 import com.example.EmployeeManagement.entity.User;
+import com.example.EmployeeManagement.exceptions.InvalidCredentialsException;
 import com.example.EmployeeManagement.exceptions.InvalidRefreshTokenException;
 import com.example.EmployeeManagement.exceptions.ResourceAlreadyExistsException;
 import com.example.EmployeeManagement.exceptions.ResourceNotFoundException;
@@ -69,12 +70,11 @@ public class UserService {
     @Transactional
     public AuthTokens loginUser(UserLoginRequest login) {
         User temp = userRepository.findByEmailAndEnabledTrue(login.getEmail()).orElseThrow(
-                () -> new ResourceNotFoundException("user not found")
+                InvalidCredentialsException::new
         );
 
-
         boolean isMatch = passwordEncoder.matches(login.getPassword(), temp.getPassword());
-        if (!isMatch) throw new ResourceNotFoundException("Invalid username or password");
+        if (!isMatch) throw new InvalidCredentialsException();
         String accessToken = jwtService.generateAccessToken(temp);
         String refreshToken = jwtService.generateRefreshToken(temp);
         temp.setRefreshToken(refreshToken);
@@ -104,15 +104,19 @@ public class UserService {
                     }
             );
 
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidRefreshTokenException();
+        } catch (JwtException | IllegalArgumentException ignored) {
         }
 
     }
 
-    public String refreshAccessToken(String refreshToken) {
+    public AccessTokenResponse refreshAccessToken(String refreshToken) {
 
-        String email = jwtService.extractEmail(refreshToken);
+        String email;
+        try {
+            email = jwtService.extractEmail(refreshToken);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new InvalidRefreshTokenException();
+        }
 
         User temp = userRepository.findByEmailAndEnabledTrue(email).orElseThrow(
                 InvalidRefreshTokenException::new
@@ -122,7 +126,7 @@ public class UserService {
             throw new InvalidRefreshTokenException();
         }
 
-        return jwtService.generateAccessToken(temp);
+        return new AccessTokenResponse(jwtService.generateAccessToken(temp));
 
     }
 }
