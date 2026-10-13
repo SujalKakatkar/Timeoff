@@ -3,10 +3,16 @@ import { RouterProvider } from 'react-router'
 import { routes } from './routes/routes'
 import { Toaster } from './components/ui/toast'
 import { TooltipProvider } from './components/ui/tooltip'
+import { useAuthStore } from './store/UseAuthStore'
+import { useEffect } from 'react'
 
 function Root() {
 
+    const initAuth = useAuthStore((s) => s.initAuth)
 
+    useEffect(() => {
+        initAuth()
+    }, [initAuth])
 
     return (
         <ThemeProvider >
