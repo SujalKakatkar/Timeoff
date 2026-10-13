@@ -11,6 +11,7 @@ import com.example.EmployeeManagement.mapper.MapToEntity;
 
 import com.example.EmployeeManagement.repository.UserRepository;
 import io.jsonwebtoken.JwtException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,21 +32,23 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserSignupResponse createEmployee(UserSignUpRequest user) {
-        //if user exists with same username
-        if (userRepository.existsByEmail(user.getEmail())) {
+    @Transactional
+    public void createEmployee(UserSignUpRequest req) {
+        String email = req.getEmail().trim().toLowerCase();
+
+        if (userRepository.existsByEmail(email)) {
             throw new ResourceAlreadyExistsException("email already used");
         }
 
-        //finally mapping the userdata to entity
-        User newUser = MapToEntity.mapToUser(user);
-        //hashing the password
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        User newUser = MapToEntity.mapToUser(req);
+        newUser.setEmail(email);
+        newUser.setPassword(passwordEncoder.encode(req.getPassword()));
 
-
-        User temp = userRepository.save(newUser);
-
-        return MapToDto.mapToUserResponse(temp);
+        try {
+            userRepository.save(newUser);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResourceAlreadyExistsException("email already used");
+        }
     }
 
     public UserDetailsResponse getDetails(String email) {

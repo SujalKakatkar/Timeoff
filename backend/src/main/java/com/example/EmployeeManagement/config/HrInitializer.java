@@ -23,9 +23,9 @@ public class HrInitializer implements CommandLineRunner {
             User admin = new User();
 
             admin.setName("System Admin");
-            admin.setEmail("Hr@gmail.com");
+            admin.setEmail("hr@gmail.com");
             admin.setPassword(
-                    passwordEncoder.encode("hr123")
+                    passwordEncoder.encode("Hr@0007")
             );
             admin.setPhone("12345678910");
             admin.setAddress("belgavi");

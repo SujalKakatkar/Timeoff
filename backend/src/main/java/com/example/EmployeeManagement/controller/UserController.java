@@ -28,10 +28,11 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserSignupResponse> create(@Valid @RequestBody UserSignUpRequest userRequest) {
+    public ResponseEntity<Void> create(@Valid @RequestBody UserSignUpRequest userRequest) {
+        userService.createEmployee(userRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(userService.createEmployee(userRequest));
+                .build();
     }
 
     @PatchMapping("/profile")
