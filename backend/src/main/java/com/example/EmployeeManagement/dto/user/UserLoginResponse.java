@@ -6,14 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserLoginResponse {
-    private Integer userId;
-    private String token;
-    private String name;
-    private String email;
-    private Role role;
+public class UserLoginResponse extends UserDetailsResponse {
+    private String accessToken;
+
+    public UserLoginResponse(UserDetailsResponse u, String accessToken) {
+        super(u.getUserId(), u.getName(), u.getPhone(), u.getDept(),
+                u.getAddress(), u.getEmail(), u.getRole());
+        this.accessToken = accessToken;
+    }
 }

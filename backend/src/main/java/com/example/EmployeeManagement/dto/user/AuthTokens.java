@@ -13,8 +13,5 @@ import lombok.Setter;
 public class AuthTokens {
     private String accessToken;
     private String refreshToken;
-    private Integer userId;
-    private String name;
-    private String email;
-    private Role role;
+    private UserDetailsResponse user;
 }

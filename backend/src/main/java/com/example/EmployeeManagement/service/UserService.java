@@ -81,17 +81,13 @@ public class UserService {
         String accessToken = jwtService.generateAccessToken(temp);
         String refreshToken = jwtService.generateRefreshToken(temp);
         temp.setRefreshToken(refreshToken);
+        UserDetailsResponse userDTO = MapToDto.mapToUserDetailResponse(temp);
         return new AuthTokens(
                 accessToken,
                 refreshToken,
-                temp.getUserId(),
-                temp.getName(),
-                temp.getEmail(),
-                temp.getRole()
+                userDTO
         );
-
     }
-
 
     @Transactional
     public void revokeRefreshToken(String token) {
@@ -106,14 +102,12 @@ public class UserService {
                         }
                     }
             );
-
         } catch (JwtException | IllegalArgumentException ignored) {
         }
 
     }
 
     public AccessTokenResponse refreshAccessToken(String refreshToken) {
-
         String email;
         try {
             email = jwtService.extractEmail(refreshToken);
@@ -128,8 +122,6 @@ public class UserService {
         if (!refreshToken.equals(temp.getRefreshToken())) {
             throw new InvalidRefreshTokenException();
         }
-
         return new AccessTokenResponse(jwtService.generateAccessToken(temp));
-
     }
 }

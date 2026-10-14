@@ -9,20 +9,11 @@ import com.example.EmployeeManagement.entity.*;
 
 public class MapToDto {
 
-    public static UserLoginResponse mapToLoginResponse(AuthTokens tokens) {
-        return new UserLoginResponse(
-                tokens.getUserId(),
-                tokens.getAccessToken(),
-                tokens.getName(),
-                tokens.getEmail(),
-                tokens.getRole()
-        );
-
+    public static UserLoginResponse mapToLoginResponse(AuthTokens t) {
+        return new UserLoginResponse(t.getUser(), t.getAccessToken());
     }
 
-
     public static UserDetailsResponse mapToUserDetailResponse(User user) {
-
         UserDetailsResponse userDetailsResponse = new UserDetailsResponse();
         userDetailsResponse.setUserId(user.getUserId());
         userDetailsResponse.setAddress(user.getAddress());
@@ -30,11 +21,9 @@ public class MapToDto {
         userDetailsResponse.setName(user.getName());
         userDetailsResponse.setDept(user.getDept());
         userDetailsResponse.setPhone(user.getPhone());
-
+        userDetailsResponse.setRole(user.getRole());
         return userDetailsResponse;
-
     }
-
 
     public static LeaveBalanceResponse mapToLeaveBalanceResponse(LeaveBalance leaveBalance) {
         LeaveBalanceResponse newResponse = new LeaveBalanceResponse();
@@ -43,7 +32,6 @@ public class MapToDto {
         newResponse.setLeaveTypeName(leaveBalance.getLeaveType().getName());
         newResponse.setAllocatedDays(leaveBalance.getAllocatedDays());
         newResponse.setUsedDays(leaveBalance.getUsedDays());
-
         return newResponse;
     }
 
@@ -64,7 +52,6 @@ public class MapToDto {
         holidayResponse.setHolidayId(holiday.getHolidayId());
         holidayResponse.setName(holiday.getName());
         holidayResponse.setDate(holiday.getDate());
-
         return holidayResponse;
     }
 
@@ -77,6 +64,4 @@ public class MapToDto {
                 leaveType.getCreatedAt()
         );
     }
-
-
 }
