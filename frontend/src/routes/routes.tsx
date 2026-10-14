@@ -3,7 +3,6 @@ import {
     NotFoundPage,
     HeroLayout,
     HeroPage,
-    HRDashboardLayout,
     HROverviewPage,
     EmployeesDetailPage,
     EmployeesPage,
@@ -13,7 +12,6 @@ import {
     LeaveTypesPage,
     ManagersPage,
     ReportsPage,
-    ManagerDashboardLayout,
     ManagerEmployeesDetailPage,
     ManagerHolidayPage,
     ManagerLeaveRequestDetailsPage,
@@ -21,7 +19,6 @@ import {
     ManagerLeaveTypePage,
     ManagerReportsPage,
     ManagerOverviewPage,
-    EmployeeDashboardLayout,
     EmployeeHistoryPage,
     EmployeeHolidayPage,
     EmployeeLeaveBalancePage,
@@ -31,14 +28,14 @@ import {
     EmployeeReportPage,
     SignupPage,
     LoginPage,
-    ProfileCompletePage,
-    ProtectedLayout
+    ProtectedLayout,
+    DashboardLayout
 } from './index'
 import { createBrowserRouter, type RouteObject } from 'react-router'
+import { EmployeeSidebarItems, HRSidebarItems, managerSidebarItems } from '@/constants/sidebar-items';
 
 
 const routeConfig: RouteObject[] = [
-
     {
         element: <HeroLayout />,
         errorElement: <NotFoundPage />,
@@ -49,7 +46,6 @@ const routeConfig: RouteObject[] = [
             }
         ]
     },
-
     {
         element: <ProtectedLayout />,
         errorElement: <NotFoundPage />,
@@ -59,7 +55,7 @@ const routeConfig: RouteObject[] = [
                 children:[
                     {
                         path: "/hr",
-                        element: <HRDashboardLayout />,
+                        element: <DashboardLayout sidebarItems={HRSidebarItems} />,
                         children: [
                             { index: true, element: <HROverviewPage /> },
                             { path: "leave-requests", element: <LeaveRequestsPage /> },
@@ -79,7 +75,7 @@ const routeConfig: RouteObject[] = [
                 children:[
                     {
                         path: "/manager",
-                        element: <ManagerDashboardLayout />,
+                        element: <DashboardLayout sidebarItems={managerSidebarItems} />,
                         children: [
                             { index: true, element: <ManagerOverviewPage /> },
                             { path: "leave-requests", element: <ManagerLeaveRequestPage /> },
@@ -88,7 +84,6 @@ const routeConfig: RouteObject[] = [
                             { path: "holidays", element: <ManagerHolidayPage /> },
                             { path: "reports", element: <ManagerReportsPage /> },
                             { path: "employees/:id", element: <ManagerEmployeesDetailPage /> },
-
                         ]
                     }
                 ]
@@ -98,7 +93,7 @@ const routeConfig: RouteObject[] = [
                 children:[
                     {
                         path: "/employee",
-                        element: <EmployeeDashboardLayout />,
+                        element: <DashboardLayout sidebarItems={EmployeeSidebarItems} />,
                         children: [
                             { index: true, element: <EmployeeOverviewPage /> },
                             { path: "create-leave", element: <EmployeeLeaveRequestPage /> },
@@ -128,10 +123,6 @@ const routeConfig: RouteObject[] = [
             {
                 path: "/auth/signup",
                 element: <SignupPage />
-            },
-            {
-                path: '/auth/profile-details',
-                element: <ProfileCompletePage />
             }
         ]
     },

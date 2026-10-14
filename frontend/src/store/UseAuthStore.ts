@@ -6,7 +6,8 @@ import type {
     LoginResponse,
     AccessTokenResponse,
 } from "../types/auth";
-import type { SignupSchemaType } from "@/schemas/signup-schema";
+import type { RegisterPayloadType } from "@/schemas/signup-schema";
+import type { LoginSchemaType } from "@/schemas/login-schema";
 
 type Status = "loading" | "authenticated" | "anonymous";
 
@@ -15,8 +16,8 @@ interface AuthState {
     user: User | null;
     status: Status;
 
-    register: (data: SignupSchemaType) => Promise<{ error: string | null }>;
-    login: (email: string, password: string) => Promise<{ error: string | null }>;
+    register: (data: RegisterPayloadType) => Promise<{ error: string | null }>;
+    login: (payload: LoginSchemaType) => Promise<{ error: string | null }>;
     logout: () => Promise<void>;
     initAuth: () => Promise<void>;
     setAccessToken: (token: string) => void;
@@ -39,12 +40,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         }
     },
 
-    login: async (email, password) => {
+    login: async (payload) => {
         try {
-            const { data } = await api.post<LoginResponse>("/auth/login", {
-                email,
-                password,
-            });
+            const { data } = await api.post<LoginResponse>("/auth/login", payload);
             const { accessToken, ...userData } = data
             set({
                 accessToken: accessToken,
@@ -68,9 +66,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     initAuth: async () => {
         try {
             const { data } = await api.post<AccessTokenResponse>("/auth/refresh");
+            console.log(data);
+            
             const token = data.accessToken;
             const me = await api.get<User>("/auth/me", { headers: authHeader(token) });
-
+            console.log(me.data);
+            
             if (get().status !== "loading") return;
             set({ accessToken: token, user: me.data, status: "authenticated" });
         } catch {

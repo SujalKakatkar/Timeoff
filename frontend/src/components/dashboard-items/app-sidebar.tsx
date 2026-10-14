@@ -12,15 +12,14 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import {  CommandIcon } from "lucide-react"
-import type {  sidebarUserData, SidebarItem } from "@/types/sidebar"
+import type {   SidebarItem } from "@/types/sidebar"
 
 
 type AppSidebarTypes = React.ComponentProps<typeof Sidebar> & {
   sidebarItems: SidebarItem[],
-  userData:sidebarUserData
 };
 
-export function AppSidebar({ sidebarItems,userData, ...props }: AppSidebarTypes) {
+export function AppSidebar({ sidebarItems, ...props }: AppSidebarTypes) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -40,7 +39,7 @@ export function AppSidebar({ sidebarItems,userData, ...props }: AppSidebarTypes)
         <NavMain items={sidebarItems} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={userData} />
+        <NavUser  />
       </SidebarFooter>
     </Sidebar>
   )

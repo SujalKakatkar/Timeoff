@@ -3,19 +3,10 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import type z from "zod";
 import type { features } from "../table-features";
-import { DragHandle } from "../table-draggable";
-import { CircleCheckIcon, EllipsisVerticalIcon, LoaderIcon } from "lucide-react";
+import { CircleCheckIcon, LoaderIcon } from "lucide-react";
 import type { EmployeeTableSchema } from "./employee-overview-table-schema";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+
 
 
 

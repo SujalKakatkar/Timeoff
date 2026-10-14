@@ -17,14 +17,12 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import type {  sidebarUserData } from "@/types/sidebar"
+import { useAuthStore } from "@/store/UseAuthStore"
 import { EllipsisVerticalIcon, CircleUserRoundIcon, LogOutIcon } from "lucide-react"
 
-export function NavUser({
-  user,
-}: {
-  user:sidebarUserData
-}) {
+export function NavUser() {
+  const user = useAuthStore(s => s.user)
+  const logout = useAuthStore(s => s.logout)
   const { isMobile } = useSidebar()
   return (
     <SidebarMenu>
@@ -40,9 +38,9 @@ export function NavUser({
               <AvatarFallback className="rounded-lg">CN</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{user.fullName}</span>
+              <span className="truncate font-medium">{user?.name}</span>
               <span className="truncate text-xs text-foreground/70">
-                {user.email}
+                {user?.email}
               </span>
             </div>
             <EllipsisVerticalIcon className="ml-auto size-4" />
@@ -61,9 +59,9 @@ export function NavUser({
                     <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">{user.fullName}</span>
+                    <span className="truncate font-medium">{user?.name}</span>
                     <span className="truncate text-xs text-muted-foreground">
-                      {user.email}
+                      {user?.email}
                     </span>
                   </div>
                 </div>
@@ -76,10 +74,10 @@ export function NavUser({
                 />
                 Account
               </DropdownMenuItem>
-              
+
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={logout}>
               <LogOutIcon
               />
               Log out

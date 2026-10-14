@@ -16,44 +16,46 @@ import {
 import { Input } from "@/components/ui/input"
 import { useForm } from 'react-hook-form'
 import type React from "react"
-import { signupSchema, type SignupSchemaType } from "@/schemas/signup-schema"
+import { registerPayload, signupSchema, type SignupSchemaType } from "@/schemas/signup-schema"
 import { zodResolver } from '@hookform/resolvers/zod'
-import { fakeApiCall } from "@/api/auth"
 import { Spinner } from "../ui/spinner"
 import { toast } from "../ui/toast"
+import { useAuthStore } from "@/store/UseAuthStore"
+import { useNavigate } from "react-router"
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">): React.JSX.Element {
-
-  const { register, handleSubmit,  formState: { errors, isValid, isSubmitting }, } = useForm<SignupSchemaType>({
+  const signUp = useAuthStore(s => s.register)
+  const navigate = useNavigate()
+  const { register, handleSubmit, formState: { errors, isValid, isSubmitting }, } = useForm<SignupSchemaType>({
     resolver: zodResolver(signupSchema),
-    mode:"onChange",
-   
+    mode: "onChange",
+
   });
 
   const handleSignup = async (formData: SignupSchemaType) => {
-    console.log(formData);
-
+    const payload = registerPayload.parse(formData);
     try {
-      const result = await fakeApiCall();
-
-      if (!result.success) {
+      const { error } = await signUp(payload);
+      if (error) {
         toast.add({
-          type:"error",
-          description:"somthing went wrong"
-        })
-        
-      
-
-        return;
+          type: "error",
+          description: "something went wrong"
+        });
+        return
       }
-      console.log("Signup successful!", formData);
+      toast.add({
+        type: "success",
+        description: "Account created. Please sign in."
+      })
+      navigate("/auth/signin")
+
     } catch (error) {
       toast.add({
-        type:"error",
-        description:"something went wrong"
+        type: "error",
+        description: "something went wrong"
       })
     }
 
@@ -71,15 +73,15 @@ export function SignupForm({
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(handleSignup)}>
-           
+
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="username">Username</FieldLabel>
+                <FieldLabel htmlFor="name">Full Name</FieldLabel>
                 <Input
-                  {...register("username")}
-                  id="username" type="text" placeholder="jhon007" required maxLength={20} />
-                {errors.username && <FieldDescription className="text-destructive">
-                  {errors.username.message}
+                  {...register("name")}
+                  id="name" type="text" placeholder="Alex Xu" required maxLength={20} />
+                {errors.name && <FieldDescription className="text-destructive">
+                  {errors.name.message}
                 </FieldDescription>}
               </Field>
               <Field>
@@ -125,7 +127,7 @@ export function SignupForm({
                   {isSubmitting ? < >
                     <Spinner />
                     Creating account
-                  </> :"Create Account"}
+                  </> : "Create Account"}
                 </Button>
                 <FieldDescription className="text-center">
                   Already have an account? <a href="/auth/signin">Sign in</a>

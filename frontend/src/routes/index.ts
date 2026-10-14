@@ -1,8 +1,5 @@
 import AuthLayout from '@/layouts/auth-layout'
-import EmployeeDashboardLayout from '@/layouts/employee-dashboard-layout'
 import HeroLayout from '@/layouts/hero-layout'
-import HRDashboardLayout from '@/layouts/hr-dashboard-layout'
-import ManagerDashboardLayout from '@/layouts/manager-dashboard-layout'
 import ProtectedLayout from '@/layouts/protected-layout'
 import EmployeeHistoryPage from '@/pages/employee-dashboard-pages/employee-history-page'
 import EmployeeHolidayPage from '@/pages/employee-dashboard-pages/employee-holiday-page'
@@ -32,6 +29,7 @@ import ManagerOverviewPage from '@/pages/manager-dashboard-pages/manger-overview
 import NotFoundPage from '@/pages/not-found-page'
 import ProfileCompletePage from '@/pages/profile-detail-page'
 import SignupPage from '@/pages/signup-page'
+import DashboardLayout from '@/layouts/dashboard-layout'
 
 
 
@@ -40,7 +38,6 @@ export {
     NotFoundPage,
     HeroLayout,
     HeroPage,
-    HRDashboardLayout,
     HROverviewPage,
     EmployeesDetailPage,
     EmployeesPage,
@@ -50,7 +47,6 @@ export {
     LeaveTypesPage,
     ManagersPage,
     ReportsPage,
-    ManagerDashboardLayout,
     ManagerEmployeesDetailPage,
     ManagerHolidayPage,
     ManagerLeaveRequestDetailsPage,
@@ -58,7 +54,6 @@ export {
     ManagerLeaveTypePage,
     ManagerReportsPage,
     ManagerOverviewPage,
-    EmployeeDashboardLayout,
     EmployeeHistoryPage,
     EmployeeHolidayPage,
     EmployeeLeaveBalancePage,
@@ -69,5 +64,6 @@ export {
     SignupPage,
     LoginPage,
     ProfileCompletePage,
-    ProtectedLayout
+    ProtectedLayout,
+    DashboardLayout
 }

@@ -10,6 +10,12 @@ export const api = axios.create({
     withCredentials: true,
 })
 
+const refreshInstance = axios.create({
+    baseURL: BASE_URL,
+    withCredentials:true,
+    timeout: 15000,
+})
+
 
 export function getErrorMessage(err: unknown): string {
     if (axios.isAxiosError(err)) {
@@ -40,11 +46,8 @@ function isAuthUrl(config: RetryConfig): boolean {
 let refreshPromise: Promise<string> | null = null;
 
 function refreshAccessToken(): Promise<string> {
-    refreshPromise ??= axios
-        .post<AccessTokenResponse>(`${BASE_URL}/auth/refresh`, null, {
-            withCredentials: true,
-            timeout: 15000,
-        })
+    refreshPromise ??= refreshInstance
+        .post<AccessTokenResponse>(`/auth/refresh`)
         .then((res) => {
             if (useAuthStore.getState().status !== "authenticated") {
                 throw new Error("Session ended during refresh");
