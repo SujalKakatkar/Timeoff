@@ -1,6 +1,7 @@
 package com.example.EmployeeManagement.service;
 
 import com.example.EmployeeManagement.dto.user.*;
+import com.example.EmployeeManagement.entity.Department;
 import com.example.EmployeeManagement.entity.User;
 import com.example.EmployeeManagement.exceptions.InvalidCredentialsException;
 import com.example.EmployeeManagement.exceptions.InvalidRefreshTokenException;
@@ -9,6 +10,7 @@ import com.example.EmployeeManagement.exceptions.ResourceNotFoundException;
 import com.example.EmployeeManagement.mapper.MapToDto;
 import com.example.EmployeeManagement.mapper.MapToEntity;
 
+import com.example.EmployeeManagement.repository.DepartmentRepository;
 import com.example.EmployeeManagement.repository.UserRepository;
 import io.jsonwebtoken.JwtException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,13 +26,15 @@ public class UserService {
 
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final DepartmentRepository departmentRepository;
 
-
-    public UserService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder, DepartmentRepository departmentRepository) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.departmentRepository = departmentRepository;
     }
+
 
     @Transactional
     public void createEmployee(UserSignUpRequest req) {
@@ -64,10 +68,12 @@ public class UserService {
         User temp = userRepository.findByEmailAndEnabledTrue(email).orElseThrow(
                 () -> new ResourceNotFoundException("User not found")
         );
-        temp.setDept(userProfileRequest.getDept());
+        Department department = departmentRepository.findById(userProfileRequest.getDepartmentId()).orElseThrow(
+                () -> new ResourceNotFoundException("Department not found")
+        );
+        temp.setDepartment(department);
         temp.setAddress(userProfileRequest.getAddress());
         temp.setPhone(userProfileRequest.getPhone());
-
     }
 
     @Transactional

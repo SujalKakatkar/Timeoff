@@ -19,10 +19,19 @@ public class MapToDto {
         userDetailsResponse.setAddress(user.getAddress());
         userDetailsResponse.setEmail(user.getEmail());
         userDetailsResponse.setName(user.getName());
-        userDetailsResponse.setDept(user.getDept());
+        userDetailsResponse.setDept(
+                user.getDepartment() != null ? user.getDepartment().getName() : null
+        );
         userDetailsResponse.setPhone(user.getPhone());
         userDetailsResponse.setRole(user.getRole());
         return userDetailsResponse;
+    }
+
+    public static DepartmentResponse mapToDepartmentResponse(Department department) {
+        return new DepartmentResponse(
+                department.getDeptId(),
+                department.getName()
+        );
     }
 
     public static LeaveBalanceResponse mapToLeaveBalanceResponse(LeaveBalance leaveBalance) {

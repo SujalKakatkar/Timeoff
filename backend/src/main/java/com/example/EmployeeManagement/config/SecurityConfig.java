@@ -74,6 +74,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PATCH, "/api/hr/*").hasRole("HR")
                                 .requestMatchers(HttpMethod.GET, "/api/hr/*").hasRole("HR")
 
+                                //departments
+                                .requestMatchers(HttpMethod.POST,"/api/department").hasRole("HR")
+                                .requestMatchers(HttpMethod.GET, "/api/department").authenticated()
+
                                 //leave type post and get
                                 .requestMatchers(HttpMethod.POST, "/api/leavetype").hasRole("HR")
                                 .requestMatchers(HttpMethod.GET, "/api/leavetype").authenticated()

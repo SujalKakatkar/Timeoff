@@ -1,8 +1,9 @@
 package com.example.EmployeeManagement.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class UserProfileRequest {
     @NotBlank(message = "address is required")
     private String address;
 
-    @NotBlank(message = "department is required")
-    private String dept;
+    @NotNull(message = "department is required")
+    @Positive(message = "invalid department")
+    private Integer departmentId;
 }

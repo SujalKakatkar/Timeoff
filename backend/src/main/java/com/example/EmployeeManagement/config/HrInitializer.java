@@ -31,7 +31,7 @@ public class HrInitializer implements CommandLineRunner {
             admin.setAddress("belgavi");
             admin.setRole(Role.HR);
             admin.setEnabled(true);
-            admin.setDept("company");
+
 
             userRepository.save(admin);
             System.out.println("Default Hr is created");

@@ -30,7 +30,10 @@ public class User {
     private String address;
     private String phone;
     private String password;
-    private String dept;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
     private String refreshToken;
 
     @Enumerated(EnumType.STRING)
