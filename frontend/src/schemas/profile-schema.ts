@@ -1,15 +1,9 @@
 import z from "zod";
 
-export const depts = z.enum(["HR", "SALES", "DEV", "MARKETING"]);
 
-export type Dept = z.infer<typeof depts>
 
 export const ProfileSchema = z.object({
-    fullName: z
-        .string()
-        .trim()
-        .min(2, "Minimum 2 characters required")
-        .max(50, "Name is too long"),
+
 
     phone: z
         .string()
@@ -24,8 +18,15 @@ export const ProfileSchema = z.object({
         .max(100, "Address is too long"),
 
     // department list not finalized yet — using test values for now
-    department: depts,
+    departmentId: z.string().min(1, "select the department"),
 })
+export type ProfileSchemaType = z.infer<typeof ProfileSchema>
 
+export const ProfilePayload = ProfileSchema.transform((v) => ({
+    phone: v.phone,
+    address: v.address,
+    departmentId: Number(v.departmentId)
+}))
 
-export type ProfileSchemaType =z.infer<typeof ProfileSchema>
+export type ProfilePayloadType = z.infer<typeof ProfilePayload>
+

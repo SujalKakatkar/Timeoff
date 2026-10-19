@@ -52,7 +52,7 @@ export function SignupForm({
       })
       navigate("/auth/signin")
 
-    } catch (error) {
+    } catch{
       toast.add({
         type: "error",
         description: "something went wrong"

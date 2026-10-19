@@ -82,7 +82,7 @@ export function DataTable<TData extends RowData & { id: number }>({
 
   const dataIds = React.useMemo<UniqueIdentifier[]>(
     () => filterData?.map(({ id }) => id) || [],
-    [filterData, activeTab]
+    [filterData]
   )
   const table = useTable({
     features,

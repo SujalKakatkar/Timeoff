@@ -22,6 +22,7 @@ import { toast } from "../ui/toast"
 import { useAuthStore } from "@/store/UseAuthStore"
 import { useNavigate } from "react-router"
 import { HOME } from "@/constants/routes"
+import { isProfileComplete } from "@/lib/profile"
 
 export function LoginForm({
     className,
@@ -35,7 +36,6 @@ export function LoginForm({
     });
     const handleLogin = async (data: LoginSchemaType) => {
         clearErrors("root")
-        console.log(data);
         try {
             const { error } = await login(data);
             if (error) {
@@ -47,13 +47,13 @@ export function LoginForm({
             }
             toast.add({
                 type: "success",
-                description: "you logged int."
+                description: "you logged in."
             })
             const user = useAuthStore.getState().user
-            console.log(user);
+            if (!user) return
 
-            if (user) navigate(HOME[user.role], { replace: true })
-        } catch (error) {
+            if (user) navigate(isProfileComplete(user) ? HOME[user.role] : "/complete-profile", { replace: true })
+        } catch {
             toast.add({
                 type: "error",
                 description: "something went wrong"

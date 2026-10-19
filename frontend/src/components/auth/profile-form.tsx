@@ -22,118 +22,125 @@ import {
     FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { depts, ProfileSchema, type ProfileSchemaType } from '@/schemas/profile-schema'
+import { ProfilePayload, ProfileSchema, type ProfileSchemaType } from '@/schemas/profile-schema'
 import { Textarea } from '../ui/textarea'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Spinner } from '../ui/spinner'
 import { toast } from '../ui/toast'
+import { useDepartment } from '@/hooks/use-departments'
+import { useAuthStore } from '@/store/UseAuthStore'
+import { useNavigate } from 'react-router'
+import { HOME } from '@/constants/routes'
 
-function ProfileForm():React.JSX.Element {
-
-    const {register, handleSubmit, formState:{errors,isSubmitting, isValid}, control} = useForm(
+function ProfileForm(): React.JSX.Element {
+    const navigate = useNavigate()
+    const { departments, loading, error } = useDepartment();
+    const updateProfile = useAuthStore((s) => s.updateProfile)
+    const { register, handleSubmit, formState: { errors, isSubmitting, isValid }, control } = useForm(
         {
-            resolver:zodResolver(ProfileSchema),
-            mode:"onTouched",
-            
+            resolver: zodResolver(ProfileSchema),
+            mode: "onTouched",
+
         }
     );
 
-    const profileSubmit= async (profileData:ProfileSchemaType) => {
-        console.log(profileData);
-        try {
-            //todo:backend api call
-        } catch (error) {
-            toast.add({
-                type:"error",
-                description:"somthing went wrong"
-            })
-        }
-    }
+    const profileSubmit = async (values: ProfileSchemaType) => {
+        const { error } = await updateProfile(ProfilePayload.parse(values));
 
-  return (
-      <Card >
-          <CardHeader>
-              <CardTitle>Profile Details</CardTitle>
-              <CardDescription>
-                  Enter your information below 
-              </CardDescription>
-          </CardHeader>
-          <CardContent>
-              <form onSubmit={handleSubmit(profileSubmit)}>
-                  <FieldGroup>
-                      <Field>
-                          <FieldLabel htmlFor="name">Full Name</FieldLabel>
-                          <Input {...register("fullName")}  id="name" type="text" placeholder="John Doe" required />
-                          {errors.fullName && <FieldDescription className='text-destructive'>
-                            {errors.fullName.message}
+        if (error) {
+            toast.add({ type: "error", description: error });
+            return;
+        }
+
+        toast.add({ type: "success", description: "Profile completed" });
+
+        const user = useAuthStore.getState().user;
+        if (user) navigate(HOME[user.role], { replace: true });
+    };
+
+    return (
+        <Card >
+            <CardHeader>
+                <CardTitle>Profile Details</CardTitle>
+                <CardDescription>
+                    Enter your information below
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <form onSubmit={handleSubmit(profileSubmit)}>
+                    <FieldGroup>
+
+                        <Field>
+                            <FieldLabel htmlFor="phone">Phone</FieldLabel>
+                            <Input
+                                {...register("phone")}
+                                id="phone"
+                                type="text"
+                                maxLength={10}
+                                placeholder="+91 9036060606"
+                                required
+                            />
+                            {errors.phone && <FieldDescription className='text-destructive'>
+                                {errors.phone.message}
                             </FieldDescription>}
-                      </Field>
-                      <Field>
-                          <FieldLabel htmlFor="phone">Phone</FieldLabel>
-                          <Input
-                          {...register("phone")}
-                              id="phone"
-                              type="text"
-                              maxLength={10}
-                              placeholder="+91 9036060606"
-                              required
-                          />
-                          {errors.phone && <FieldDescription className='text-destructive'>
-                            {errors.phone.message}
-                          </FieldDescription>}
-                      </Field>
-                      <Field>
-                          <FieldLabel htmlFor="address">Address</FieldLabel>
-                          <Textarea {...register("address")} id="address" placeholder='#401, 5th street, Mumbai' required />
-                          {errors.address && <FieldDescription className='text-destructive'>
-                              {errors.address.message}
-                          </FieldDescription>}
-                      </Field>
-                      <Field>
-                        {/* //todo:  make this department as select menu and store all the depts inside the table */}
-                          <FieldLabel htmlFor="department">
-                              Department
-                          </FieldLabel>
-                        <Controller
-                        name='department'
-                        control={control}
-                        render={({field})=>(
-                            <Select onValueChange={field.onChange} value={field.value} >
-                                <SelectTrigger className="w-45">
-                                    <SelectValue placeholder="Department" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        {depts.options.map((item) => (
-                                            <SelectItem key={item} value={item}>
-                                                {item}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                        )}
-                        />
-                          {errors.department && <FieldDescription className='text-destructive'>
-                              {errors.department?.message}
-                          </FieldDescription>}
-                      </Field>
-                      <FieldGroup>
-                          <Field>
-                              <Button disabled={!isValid || isSubmitting} type="submit">
-                                {isSubmitting? <>
-                                <Spinner/>
-                                Updating the data
-                                </>: "Update data"}
-                              </Button>
-                          </Field>
-                      </FieldGroup>
-                  </FieldGroup>
-              </form>
-          </CardContent>
-      </Card>
-  )
+                        </Field>
+                        <Field>
+                            <FieldLabel htmlFor="address">Address</FieldLabel>
+                            <Textarea {...register("address")} id="address" placeholder='#401, 5th street, Mumbai' required />
+                            {errors.address && <FieldDescription className='text-destructive'>
+                                {errors.address.message}
+                            </FieldDescription>}
+                        </Field>
+                        <Field>
+                            <FieldLabel htmlFor="department">
+                                Department
+                            </FieldLabel>
+                            <Controller
+                                name='departmentId'
+                                control={control}
+                                render={({ field }) => (
+                                    <Select onValueChange={(v) => field.onChange(v ?? "")} value={field.value || null} items={departments.map((d) => ({
+                                        value: String(d.deptId),
+                                        label: d.name
+                                    }))} >
+                                        <SelectTrigger className="w-45">
+                                            <SelectValue placeholder={loading ? "Loading..." : "Select department"} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                {departments.map((item) => (
+                                                    <SelectItem key={item.deptId} value={String(item.deptId)}>
+                                                        {item.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            />
+                            {errors.departmentId && <FieldDescription className='text-destructive'>
+                                {errors.departmentId?.message}
+                            </FieldDescription>}
+                            {error && <FieldDescription className='text-destructive'>
+                                Could not load the departments
+                            </FieldDescription>}
+                        </Field>
+                        <FieldGroup>
+                            <Field>
+                                <Button disabled={!isValid || isSubmitting} type="submit">
+                                    {isSubmitting ? <>
+                                        <Spinner />
+                                        Updating the data
+                                    </> : "Update data"}
+                                </Button>
+                            </Field>
+                        </FieldGroup>
+                    </FieldGroup>
+                </form>
+            </CardContent>
+        </Card>
+    )
 }
 
 export default ProfileForm

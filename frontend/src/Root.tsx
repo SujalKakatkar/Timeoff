@@ -11,8 +11,6 @@ function Root() {
     const initAuth = useAuthStore((s) => s.initAuth)
 
     useEffect(() => {
-        console.log("initi oalkskdfjl");
-        
         initAuth()
     }, [initAuth])
 

@@ -8,6 +8,7 @@ import type {
 } from "../types/auth";
 import type { RegisterPayloadType } from "@/schemas/signup-schema";
 import type { LoginSchemaType } from "@/schemas/login-schema";
+import type { ProfilePayloadType } from "@/schemas/profile-schema";
 
 type Status = "loading" | "authenticated" | "anonymous";
 
@@ -18,6 +19,7 @@ interface AuthState {
 
     register: (data: RegisterPayloadType) => Promise<{ error: string | null }>;
     login: (payload: LoginSchemaType) => Promise<{ error: string | null }>;
+    updateProfile: (payload: ProfilePayloadType) => Promise<{ error: string | null }>
     logout: () => Promise<void>;
     initAuth: () => Promise<void>;
     setAccessToken: (token: string) => void;
@@ -54,6 +56,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             return { error: getErrorMessage(err) };
         }
     },
+    updateProfile: async (payload) => {
+        try {
+            
+            await api.patch("/auth/profile", payload)
+            return { error: null }
+        } catch (error) {
+            return { error: getErrorMessage(error) }
+        }
+    },
 
     logout: async () => {
         try {
@@ -64,14 +75,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     },
 
     initAuth: async () => {
+        
         try {
             const { data } = await api.post<AccessTokenResponse>("/auth/refresh");
-            console.log(data);
-            
             const token = data.accessToken;
-            const me = await api.get<User>("/auth/me", { headers: authHeader(token) });
-            console.log(me.data);
             
+            const me = await api.get<User>("/auth/me", { headers: authHeader(token) });
             if (get().status !== "loading") return;
             set({ accessToken: token, user: me.data, status: "authenticated" });
         } catch {
