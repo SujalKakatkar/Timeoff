@@ -8,7 +8,7 @@ tabs -- details and leave Details
 
 function EmployeesPage() {
   return (
-    <div>EmployeesPage</div>
+    <div className=''>EmployeesPage</div>
   )
 }
 

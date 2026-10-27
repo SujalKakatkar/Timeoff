@@ -1,89 +1,48 @@
-import {
-  Avatar,
-  AvatarFallback,
-} from "@/components/ui/avatar"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar"
 import { useAuthStore } from "@/store/UseAuthStore"
-import { EllipsisVerticalIcon, CircleUserRoundIcon, LogOutIcon } from "lucide-react"
+import { LogOutIcon } from "lucide-react"
 
 export function NavUser() {
-  const user = useAuthStore(s => s.user)
-  const logout = useAuthStore(s => s.logout)
-  const { isMobile } = useSidebar()
+  const user = useAuthStore((s) => s.user)
+  const logout = useAuthStore((s) => s.logout)
+
+  const initial = user?.name?.[0]?.toUpperCase() ?? "?"
+
   return (
     <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <SidebarMenuButton size="lg" className="aria-expanded:bg-muted" />
-            }
-          >
-            <Avatar className="size-8 rounded-lg grayscale">
-              {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
-              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-            </Avatar>
-            <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{user?.name}</span>
-              <span className="truncate text-xs text-foreground/70">
-                {user?.email}
-              </span>
-            </div>
-            <EllipsisVerticalIcon className="ml-auto size-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="min-w-56"
-            side={isMobile ? "bottom" : "right"}
-            align="end"
-            sideOffset={4}
-          >
-            <DropdownMenuGroup>
-              <DropdownMenuLabel className="p-0 font-normal">
-                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                  <Avatar className="size-8">
-                    {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
-                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                  </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">{user?.name}</span>
-                    <span className="truncate text-xs text-muted-foreground">
-                      {user?.email}
-                    </span>
-                  </div>
-                </div>
-              </DropdownMenuLabel>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <CircleUserRoundIcon
-                />
-                Account
-              </DropdownMenuItem>
+      <SidebarMenuItem className="flex items-center gap-1 hover:bg-accent rounded-lg">
+        <SidebarMenuButton
+          size="lg"
+          render={<div />}
+          className="min-w-0 flex-1 cursor-default hover:bg-transparent active:bg-transparent"
+        >
+          <Avatar className="size-8 rounded-lg grayscale">
+            <AvatarFallback className="rounded-lg">{initial}</AvatarFallback>
+          </Avatar>
+          <div className="grid min-w-0 flex-1 text-left text-sm leading-tight">
+            <span className="truncate font-medium">{user?.name}</span>
+            <span className="truncate text-xs capitalize text-foreground/70">
+              {user?.role}
+            </span>
+          </div>
+        </SidebarMenuButton>
 
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={logout}>
-              <LogOutIcon
-              />
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={logout}
+          aria-label="Log out"
+          title="Log out"
+          className="size-8 shrink-0 text-muted-foreground hover:text-destructive"
+        >
+          <LogOutIcon className="size-4" />
+        </Button>
       </SidebarMenuItem>
     </SidebarMenu>
   )

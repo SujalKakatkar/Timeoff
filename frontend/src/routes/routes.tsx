@@ -34,6 +34,7 @@ import {
 } from './index'
 import { createBrowserRouter, type RouteObject } from 'react-router'
 import { EmployeeSidebarItems, HRSidebarItems, managerSidebarItems } from '@/constants/sidebar-items';
+import AccountInfo from '@/pages/account-info';
 
 
 const routeConfig: RouteObject[] = [
@@ -64,6 +65,7 @@ const routeConfig: RouteObject[] = [
                     { path: "reports", element: <ReportsPage /> },
                     { path: "employees", element: <EmployeesPage /> },
                     { path: "employees/:id", element: <EmployeesDetailPage /> },
+                    { path: "profile", element: <AccountInfo /> }
                 ]
             }
         ]
@@ -83,6 +85,7 @@ const routeConfig: RouteObject[] = [
                     { path: "holidays", element: <ManagerHolidayPage /> },
                     { path: "reports", element: <ManagerReportsPage /> },
                     { path: "employees/:id", element: <ManagerEmployeesDetailPage /> },
+                    { path: "profile", element: <AccountInfo /> }
                 ]
             }
         ]
@@ -102,6 +105,7 @@ const routeConfig: RouteObject[] = [
                     { path: "leave-balance", element: <EmployeeLeaveBalancePage /> },
                     { path: "holidays", element: <EmployeeHolidayPage /> },
                     { path: "reports", element: <EmployeeReportPage /> },
+                    { path: "profile", element: <AccountInfo /> }
 
                 ]
             }
