@@ -8,7 +8,6 @@ import { EmployeeTabs } from "@/components/table-items/employee-table-items/empl
 
 import { fakeEmployees, hrDashboardStats } from "@/fake-data/fake-data";
 
-
 function HROverviewPage() {
     return (
         <>

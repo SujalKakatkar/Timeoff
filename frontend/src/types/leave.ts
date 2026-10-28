@@ -6,7 +6,7 @@ export interface LeaveTypeRequest {
     isPaid: boolean
 }
 
-export interface LeaveTypeResponse extends LeaveTypeRequest {
+export interface LeaveType extends LeaveTypeRequest {
     leaveTypeId: number,
     createdAt: Date
 }
