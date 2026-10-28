@@ -40,7 +40,7 @@ public class HRController {
     }
 
     @PatchMapping("/assign")
-    public ResponseEntity<String> promoteToManger(@RequestParam @Positive(message = "empId must be positive") Integer empId, @RequestParam @Positive(message = "managerId must be positive") Integer managerId) {
+    public ResponseEntity<String> assignToManager(@RequestParam @Positive(message = "empId must be positive") Integer empId, @RequestParam @Positive(message = "managerId must be positive") Integer managerId) {
 
         hrService.assignManger(empId, managerId);
         return ResponseEntity.ok("the employee is prompted to manger");
