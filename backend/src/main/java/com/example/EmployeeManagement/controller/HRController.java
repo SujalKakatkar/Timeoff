@@ -2,6 +2,7 @@ package com.example.EmployeeManagement.controller;
 
 
 import com.example.EmployeeManagement.dto.DetailedReportResponse;
+import com.example.EmployeeManagement.dto.HrStatsResponse;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.service.HRService;
 import jakarta.validation.constraints.NotNull;
@@ -91,5 +92,11 @@ public class HRController {
         return ResponseEntity.ok(hrService.getAllReports(year));
     }
 
+    @GetMapping("/stats")
+    public ResponseEntity<HrStatsResponse> getStats(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                hrService.getStats()
+        );
+    }
 
 }

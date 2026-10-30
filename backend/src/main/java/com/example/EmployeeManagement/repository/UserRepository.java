@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-    boolean existsByEmail(String email);
+    Boolean existsByEmail(String email);
     @EntityGraph(attributePaths = "department")
     Optional<User> findByEmailAndEnabledTrue(String email);
     Optional<User> findByUserIdAndEnabledTrue(Integer userId);
@@ -17,4 +17,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> findAllByRoleInAndEnabledTrue(List<Role> roles);
 
     List<User> findAllByManager_UserId(Integer ManagerId);
+
+    Long countByEnabledTrue();
+    Long countByRoleAndEnabledTrue(Role role);
 }

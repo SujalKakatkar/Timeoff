@@ -2,6 +2,7 @@ package com.example.EmployeeManagement.service;
 
 
 import com.example.EmployeeManagement.dto.DetailedReportResponse;
+import com.example.EmployeeManagement.dto.HrStatsResponse;
 import com.example.EmployeeManagement.dto.LeaveTypeDetails;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.entity.LeaveBalance;
@@ -14,9 +15,13 @@ import com.example.EmployeeManagement.mapper.MapToDto;
 import com.example.EmployeeManagement.repository.LeaveBalanceRepository;
 import com.example.EmployeeManagement.repository.LeaveRequestRepository;
 import com.example.EmployeeManagement.repository.UserRepository;
+import jdk.jshell.Snippet;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -236,5 +241,14 @@ public class HRService {
         }
 
         return reportList;
+    }
+
+    public HrStatsResponse getStats() {
+        Long total = userRepository.countByEnabledTrue();
+        Long managers = userRepository.countByRoleAndEnabledTrue(Role.MANAGER);
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Kolkata"));
+        Long onLeave = leaveRequestRepository.countUsersOnLeave(today);
+        Long pendingLeaveRequests = leaveRequestRepository.countByStatusAndEmployee_EnabledTrue(LeaveStatus.PENDING);
+        return new HrStatsResponse(total, managers, onLeave, pendingLeaveRequests, total - onLeave);
     }
 }
