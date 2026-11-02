@@ -3,13 +3,13 @@ import type { User } from "@/types/auth";
 import type { DepartmentRequest } from "@/types/Department";
 import type { HolidayRequest } from "@/types/holiday";
 import type { LeaveType, LeaveTypeRequest } from "@/types/leave";
-import type { HrStats } from "@/types/stats";
+import type { HrStatsType } from "@/types/stats";
 import { create } from "zustand";
 
 
 interface HRState {
     user: User | null,
-    stats: HrStats | null,
+    stats: HrStatsType | null,
     employees: User[],
     managers: User[],
     leaveTypes: LeaveType[],
