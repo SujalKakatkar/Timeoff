@@ -1,6 +1,4 @@
 import type { EmployeeTableRow } from "@/components/table-items/employee-table-items/employee-overview-table-schema";
-import type { StatsCardType } from "@/types/staticTypes";
-import { CalendarOff, Clock, TrendingUp, Users } from "lucide-react";
 
 export const fakeEmployees: EmployeeTableRow[] = [
     {
@@ -113,38 +111,3 @@ export const fakeEmployees: EmployeeTableRow[] = [
     },
 ]
 
-export const hrDashboardStats: StatsCardType[] = [
-    {
-        title: "Total Employees",
-        count: 180,
-        description: "12 managers · 168 individual contributors",
-        icon: <Users />,
-        footerHeadline: "4 new joiners this month",
-        footerSubtext: "12 managers · 168 ICs",
-    },
-    {
-        title: "On Leave Today",
-        count: 24,
-        description: "13% of total workforce",
-        icon: <CalendarOff />,
-        footerHeadline: "13% of workforce is out",
-        footerSubtext: "Compared to 18 yesterday",
-
-    },
-    {
-        title: "Pending Approvals",
-        count: 7,
-        description: "3 pending for more than 2 days",
-        icon: <Clock />,
-        footerHeadline: "3 pending for 2+ days",
-        footerSubtext: "Needs manager attention",
-    },
-    {
-        title: "Avg. Leave Balance",
-        count: 12.4,
-        description: "Days remaining per employee",
-        icon: <TrendingUp />,
-        footerHeadline: "Trending down this quarter",
-        footerSubtext: "Per employee, org-wide",
-    },
-];

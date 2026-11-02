@@ -3,15 +3,24 @@ import { dailyLeaveActivity } from "@/fake-data/fake-chart-data"
 import { SectionCards } from "@/components/dashboard-items/section-cards"
 import { DataTable } from "@/components/table-items/data-table";
 import { EmployeeColumns } from "@/components/table-items/employee-table-items/employee-overview-table-columns";
-import {  type EmployeeTableRow } from "@/components/table-items/employee-table-items/employee-overview-table-schema";
+import { type EmployeeTableRow } from "@/components/table-items/employee-table-items/employee-overview-table-schema";
 import { EmployeeTabs } from "@/components/table-items/employee-table-items/employee-overview-table-tabs";
 
-import { fakeEmployees, hrDashboardStats } from "@/fake-data/fake-data";
+import { fakeEmployees } from "@/fake-data/fake-data";
+import { useHRStore } from "@/store/useHRStore";
+import { useEffect } from "react";
+import { buildHrStats } from "@/components/stats/buildHrStats";
 
 function HROverviewPage() {
+    const getStats = useHRStore(s => s.getStats)
+    const stats = useHRStore(s => s.stats)
+    useEffect(() => {
+        getStats();
+    }, [])
+
     return (
         <>
-            <SectionCards cardItems={hrDashboardStats} />
+            {stats && <SectionCards cardItems={buildHrStats(stats)} />}
             <div className="px-4 lg:px-6">
                 <TimeSeriesChart
                     title="Leave activity"
