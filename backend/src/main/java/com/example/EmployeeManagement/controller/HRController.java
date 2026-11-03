@@ -3,8 +3,11 @@ package com.example.EmployeeManagement.controller;
 
 import com.example.EmployeeManagement.dto.DetailedReportResponse;
 import com.example.EmployeeManagement.dto.HrStatsResponse;
+import com.example.EmployeeManagement.dto.LeaveActivityResponse;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.service.HRService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
@@ -48,8 +51,8 @@ public class HRController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDetailsResponse> getUser(@PathVariable Integer userId){
-        return ResponseEntity.status(HttpStatus.OK).body(hrService.getUser( userId));
+    public ResponseEntity<UserDetailsResponse> getUser(@PathVariable Integer userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(hrService.getUser(userId));
     }
 
     //all employees including managers
@@ -88,15 +91,19 @@ public class HRController {
     }
 
     @GetMapping("/{year}/reports")
-    public ResponseEntity<List<DetailedReportResponse>> allReports(@PathVariable Integer year){
+    public ResponseEntity<List<DetailedReportResponse>> allReports(@PathVariable Integer year) {
         return ResponseEntity.ok(hrService.getAllReports(year));
     }
 
     @GetMapping("/stats")
-    public ResponseEntity<HrStatsResponse> getStats(){
+    public ResponseEntity<HrStatsResponse> getStats() {
         return ResponseEntity.status(HttpStatus.OK).body(
                 hrService.getStats()
         );
     }
 
+    @GetMapping("/leave-activity")
+    public ResponseEntity<LeaveActivityResponse> getLeaveActivity(@RequestParam(defaultValue = "30") @Min(1) @Max(365) Long days) {
+        return ResponseEntity.status(HttpStatus.OK).body(hrService.getLeaveActivity(days));
+    }
 }
