@@ -61,7 +61,7 @@ function TimeSeriesChartGrid<CData extends Record<string, unknown>>(
                     <Area
                         key={s.key}
                         dataKey={s.key}
-                        type="natural"
+                        type="monotone"
                         fill={`url(#${instanceId}-fill-${s.key})`}
                         stroke={`var(--color-${s.key})`}
                         stackId={stacked ? "a" : undefined}

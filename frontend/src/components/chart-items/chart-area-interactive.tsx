@@ -18,8 +18,9 @@ export function TimeSeriesChart<TData extends Record<string, unknown>>({
   dateKey = "date",
   series,
   ranges,
-  defaultRange,
   stacked = true,
+  days,
+  setDays
 }: {
   title: string
   description: string
@@ -30,28 +31,25 @@ export function TimeSeriesChart<TData extends Record<string, unknown>>({
   ranges?: RangeOption[]
   defaultRange?: string
   stacked?: boolean
+  days: number,
+  setDays: React.Dispatch<React.SetStateAction<number>>
 }) {
-  const isMobile = useIsMobile()
 
-  const shortestRangeValue = ranges?.reduce((a, b) => (a.days < b.days ? a : b))?.value
-  const [rangeValue, setRangeValue] = React.useState(defaultRange ?? ranges?.[0]?.value)
+  const isMobile = useIsMobile();
+
+  const activeValue = ranges?.find((r) => r.days === days)?.value
+
+  const handleRangeChange = (value: string | undefined) => {
+    const range = ranges?.find((r) => r.value === value)
+    if (range) setDays(range.days)
+  }
 
   React.useEffect(() => {
-    if (isMobile && shortestRangeValue) setRangeValue(shortestRangeValue)
-  }, [isMobile, shortestRangeValue])
+    if (!isMobile || !ranges?.length) return
+    setDays(Math.min(...ranges.map((r) => r.days)))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile])
 
-  const referenceDate = React.useMemo(() => {
-    if (!data.length) return new Date()
-    return new Date(Math.max(...data.map((d) => new Date(d[dateKey] as string).getTime())))
-  }, [data, dateKey])
-
-  const filteredData = React.useMemo(() => {
-    const activeRange = ranges?.find((r) => r.value === rangeValue)
-    if (!activeRange) return data
-    const startDate = new Date(referenceDate)
-    startDate.setDate(startDate.getDate() - activeRange.days)
-    return data.filter((d) => new Date(d[dateKey] as string) >= startDate)
-  }, [data, ranges, rangeValue, referenceDate, dateKey])
 
   return (
     <Card className="@container/card">
@@ -71,8 +69,8 @@ export function TimeSeriesChart<TData extends Record<string, unknown>>({
           <CardAction>
             <ToggleGroup
               multiple={false}
-              value={rangeValue ? [rangeValue] : []}
-              onValueChange={(value) => setRangeValue(value[0] ?? ranges[0].value)}
+              value={activeValue ? [activeValue] : []}
+              onValueChange={(value) => handleRangeChange(value[0] ?? ranges[0].value)}
               variant="outline"
               className="hidden *:data-[slot=toggle-group-item]:px-4! @[767px]/card:flex"
             >
@@ -80,7 +78,7 @@ export function TimeSeriesChart<TData extends Record<string, unknown>>({
                 <ToggleGroupItem key={r.value} value={r.value}>{r.label}</ToggleGroupItem>
               ))}
             </ToggleGroup>
-            <Select value={rangeValue} onValueChange={(value) => value && setRangeValue(value)}>
+            <Select value={activeValue} onValueChange={(value) => value && handleRangeChange(value)}>
               <SelectTrigger
                 className="flex w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate @[767px]/card:hidden"
                 size="sm"
@@ -100,7 +98,7 @@ export function TimeSeriesChart<TData extends Record<string, unknown>>({
         )}
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <TimeSeriesChartGrid data={filteredData} dateKey={dateKey} series={series} stacked={stacked} />
+        <TimeSeriesChartGrid data={data} dateKey={dateKey} series={series} stacked={stacked} />
       </CardContent>
     </Card>
   )

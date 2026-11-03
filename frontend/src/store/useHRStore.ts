@@ -1,5 +1,6 @@
 import { api, getErrorMessage } from "@/api/axios";
 import type { User } from "@/types/auth";
+import type { ChartLeaveActivityResponse, LeaveActivityPoint } from "@/types/charts";
 import type { DepartmentRequest } from "@/types/Department";
 import type { HolidayRequest } from "@/types/holiday";
 import type { LeaveType, LeaveTypeRequest } from "@/types/leave";
@@ -10,6 +11,7 @@ import { create } from "zustand";
 interface HRState {
     user: User | null,
     stats: HrStatsType | null,
+    chartData: LeaveActivityPoint[],
     employees: User[],
     managers: User[],
     leaveTypes: LeaveType[],
@@ -20,6 +22,7 @@ interface HRState {
     getManagers: () => Promise<{ error: null | string }>,
     getEmployee: (id: number) => Promise<{ error: null | string }>,
     getStats: () => Promise<{ error: null | string }>
+    getChartData: (days: number) => Promise<{ error: null | string }>
     newLeaveType: (payload: LeaveTypeRequest) => Promise<{ error: null | string }>
     newHoliday: (payload: HolidayRequest) => Promise<{ error: null | string }>,
     newDepartment: (payload: DepartmentRequest) => Promise<{ error: null | string }>
@@ -33,6 +36,7 @@ interface HRState {
 export const useHRStore = create<HRState>((set) => ({
     user: null,
     stats: null,
+    chartData: [],
     employees: [],
     managers: [],
     onLeaveToday: 0,
@@ -79,7 +83,17 @@ export const useHRStore = create<HRState>((set) => ({
             const { data } = await api.get(`/hr/stats`)
             set({ stats: data })
             console.log(data);
-            
+
+            return { error: null }
+        } catch (error) {
+            return { error: getErrorMessage(error) }
+        }
+    },
+    getChartData: async (days) => {
+        try {
+            const { data } = await api.get<ChartLeaveActivityResponse>(`/hr/leave-activity`, { params: { days } })
+            console.log(data);
+            set({ chartData: data.activity })
             return { error: null }
         } catch (error) {
             return { error: getErrorMessage(error) }
