@@ -2,6 +2,7 @@ package com.example.EmployeeManagement.service;
 
 
 import com.example.EmployeeManagement.dto.*;
+import com.example.EmployeeManagement.dto.hr.EmployeeOverviewResponse;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.entity.LeaveBalance;
 import com.example.EmployeeManagement.entity.User;
@@ -129,6 +130,20 @@ public class HRService {
 
         return userList.stream().map(MapToDto::mapToUserDetailResponse).toList();
 
+    }
+
+    public List<EmployeeOverviewResponse> getOverview() {
+        //get a list of employees using query and
+        Set<Integer> onLeaveIds = leaveRequestRepository.findEmployeeIdsOnLeave(LocalDate.now(clock), LeaveStatus.APPROVED);
+
+        return userRepository.findAllByRoleInAndEnabledTrue(List.of(Role.EMPLOYEE, Role.MANAGER)).stream().map(
+                user -> new EmployeeOverviewResponse(
+                        user.getUserId(),
+                        user.getName(),
+                        user.getDepartment() != null ? user.getDepartment().getName() : "-",
+                        !onLeaveIds.contains(user.getUserId())
+                        )
+        ).toList();
     }
 
     // get all request

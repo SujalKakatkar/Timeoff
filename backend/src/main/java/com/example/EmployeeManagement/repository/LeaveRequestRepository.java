@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public interface LeaveRequestRepository extends JpaRepository<LeaveRequest, Integer> {
 
@@ -53,4 +54,13 @@ public interface LeaveRequestRepository extends JpaRepository<LeaveRequest, Inte
     List<LeaveSpan> findSpans(@Param("status") LeaveStatus status,
                               @Param("from") LocalDate from,
                               @Param("to") LocalDate to);
+
+    @Query("""
+    select distinct l.employee.userId
+    from LeaveRequest l
+    where l.status = :status
+      and :today between l.startDate and l.endDate
+    """)
+    Set<Integer> findEmployeeIdsOnLeave(@Param("today") LocalDate today,
+                                        @Param("status") LeaveStatus status);
 }

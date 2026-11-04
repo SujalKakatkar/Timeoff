@@ -4,6 +4,7 @@ package com.example.EmployeeManagement.controller;
 import com.example.EmployeeManagement.dto.DetailedReportResponse;
 import com.example.EmployeeManagement.dto.HrStatsResponse;
 import com.example.EmployeeManagement.dto.LeaveActivityResponse;
+import com.example.EmployeeManagement.dto.hr.EmployeeOverviewResponse;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.service.HRService;
 import jakarta.validation.constraints.Max;
@@ -63,6 +64,12 @@ public class HRController {
                 .status(HttpStatus.OK)
                 .body(hrService.getAllEmployees());
 
+    }
+
+    @GetMapping("/employees/overview")
+    public ResponseEntity<List<EmployeeOverviewResponse>> getOverview(){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(hrService.getOverview());
     }
 
     //all managers

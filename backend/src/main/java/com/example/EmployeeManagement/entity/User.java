@@ -31,7 +31,7 @@ public class User {
     private String phone;
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id")
     private Department department;
     private String refreshToken;
