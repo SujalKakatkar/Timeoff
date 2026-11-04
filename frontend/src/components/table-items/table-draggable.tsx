@@ -29,13 +29,13 @@ export function DragHandle({ id }: { id: number | string }) {
     )
 }
 
-export function DraggableRow<TData extends RowData & { id: number | string }>({
+export function DraggableRow<TData extends RowData & { userId: number | string }>({
     row,
 }: {
     row: Row<typeof features, TData>
 }) {
     const { transform, transition, setNodeRef, isDragging } = useSortable({
-        id: row.original.id,
+        id: row.original.userId,
     })
     return (
         <TableRow

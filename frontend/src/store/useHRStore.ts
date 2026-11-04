@@ -1,4 +1,5 @@
 import { api, getErrorMessage } from "@/api/axios";
+import type { EmployeeTableRow } from "@/components/table-items/employee-table-items/employee-overview-table-schema";
 import type { User } from "@/types/auth";
 import type { ChartLeaveActivityResponse, LeaveActivityPoint } from "@/types/charts";
 import type { DepartmentRequest } from "@/types/Department";
@@ -12,6 +13,7 @@ interface HRState {
     user: User | null,
     stats: HrStatsType | null,
     chartData: LeaveActivityPoint[],
+    overviewTableData: EmployeeTableRow[],
     employees: User[],
     managers: User[],
     leaveTypes: LeaveType[],
@@ -22,6 +24,7 @@ interface HRState {
     getManagers: () => Promise<{ error: null | string }>,
     getEmployee: (id: number) => Promise<{ error: null | string }>,
     getStats: () => Promise<{ error: null | string }>
+    getEmployeeOverview: () => Promise<{ error: null | string }>
     getChartData: (days: number) => Promise<{ error: null | string }>
     newLeaveType: (payload: LeaveTypeRequest) => Promise<{ error: null | string }>
     newHoliday: (payload: HolidayRequest) => Promise<{ error: null | string }>,
@@ -37,6 +40,7 @@ export const useHRStore = create<HRState>((set) => ({
     user: null,
     stats: null,
     chartData: [],
+    overviewTableData: [],
     employees: [],
     managers: [],
     onLeaveToday: 0,
@@ -82,8 +86,15 @@ export const useHRStore = create<HRState>((set) => ({
         try {
             const { data } = await api.get(`/hr/stats`)
             set({ stats: data })
-            console.log(data);
-
+            return { error: null }
+        } catch (error) {
+            return { error: getErrorMessage(error) }
+        }
+    },
+    getEmployeeOverview: async () => {
+        try {
+            const { data } = await api.get(`/hr/employees/overview`)
+            set({ overviewTableData: data })
             return { error: null }
         } catch (error) {
             return { error: getErrorMessage(error) }
@@ -92,7 +103,6 @@ export const useHRStore = create<HRState>((set) => ({
     getChartData: async (days) => {
         try {
             const { data } = await api.get<ChartLeaveActivityResponse>(`/hr/leave-activity`, { params: { days } })
-            console.log(data);
             set({ chartData: data.activity })
             return { error: null }
         } catch (error) {

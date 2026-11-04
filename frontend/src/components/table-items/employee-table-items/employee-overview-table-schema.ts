@@ -1,13 +1,11 @@
 
-
 import z from 'zod'
-import { BaseEmployeeTableSchema } from './base-employee-table-schema';
 
-//
 
-export const EmployeeTableSchema = BaseEmployeeTableSchema
+export const EmployeeTableSchema = z.object({
+    userId: z.number(),
+    name: z.string(),
+    dept: z.string(),
+    active: z.boolean()
+})
 export type EmployeeTableRow = z.infer<typeof EmployeeTableSchema>;
-
-
-//fake data
-

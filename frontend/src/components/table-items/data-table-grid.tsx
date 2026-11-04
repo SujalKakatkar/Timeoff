@@ -24,7 +24,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from 'lucide-react';
 
-function DataTableGrid<TData extends RowData & { id: number }>({
+function DataTableGrid<TData extends RowData & { userId: number }>({
     table, dataIds, sensors, sortableId, onDragEnd, columnsLength
 }: {
     table: ReactTable<typeof features, TData>

@@ -43,7 +43,19 @@ export const EmployeeColumns = columnHelper.columns([
     //     enableSorting: false,
     //     enableHiding: false,
     // }),
+    columnHelper.accessor("userId", {
+        header: "Employee Id",
+        cell: ({ row }) => {
+            return <div className="w-50">
+                <h1 className="pl-2" >
+                    {row.original.userId}
+                </h1>
+            </div>
+        },
+        enableHiding: false,
+    }),
     columnHelper.accessor("name", {
+
         header: "Employee Name",
         cell: ({ row }) => {
             return <div className="w-50">
@@ -54,29 +66,7 @@ export const EmployeeColumns = columnHelper.columns([
         },
         enableHiding: false,
     }),
-    columnHelper.accessor("email", {
-        header: "Email",
-        cell: ({ row }) => (
-            <div className="w-32">
-                <h1 >
-                    {row.original.email}
-                </h1>
-            </div>
-        ),
-    }),
-    columnHelper.accessor("address", {
-        header: "Address",
-        cell: ({ row }) => (
-            
-            <p>{row.original.address}</p>
-        ),
-    }),
-    columnHelper.accessor("phone", {
-        header: "Phone",
-        cell: ({ row }) => (
-            <h1>{row.original.phone}</h1>
-        ),
-    }),
+   
     columnHelper.accessor("dept", {
         header: "Department",
         cell: ({ row }) => (
@@ -84,11 +74,11 @@ export const EmployeeColumns = columnHelper.columns([
         ),
     }),
     //
-    columnHelper.accessor("isActive", {
+    columnHelper.accessor("active", {
         header: "Active",
         cell: ({ row }) => {
             return <Badge variant="outline" className="px-1.5 text-muted-foreground">
-                {row.original.isActive ? (
+                {row.original.active ? (
                     <>
                         <CircleCheckIcon className="fill-green-500 dark:fill-green-400" />
                         <span>Active</span>

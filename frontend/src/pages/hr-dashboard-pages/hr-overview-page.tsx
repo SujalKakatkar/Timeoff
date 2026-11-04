@@ -5,24 +5,26 @@ import { EmployeeColumns } from "@/components/table-items/employee-table-items/e
 import { type EmployeeTableRow } from "@/components/table-items/employee-table-items/employee-overview-table-schema";
 import { EmployeeTabs } from "@/components/table-items/employee-table-items/employee-overview-table-tabs";
 
-import { fakeEmployees } from "@/fake-data/fake-data";
 import { useHRStore } from "@/store/useHRStore";
 import { useEffect, useState } from "react";
 import { buildHrStats } from "@/components/stats/buildHrStats";
 
 function HROverviewPage() {
     const [days, setDays] = useState<number>(7);
-    
+    const getEmployeeOverview = useHRStore((s => s.getEmployeeOverview));
     const getStats = useHRStore(s => s.getStats)
-    const stats = useHRStore(s => s.stats)
     const getChartData = useHRStore(s => s.getChartData);
+    const stats = useHRStore(s => s.stats)
     const chartData = useHRStore(s => s.chartData)
+    const overviewTableData = useHRStore(s => s.overviewTableData)
     useEffect(() => {
         getStats();
+        getEmployeeOverview()
     }, [])
     useEffect(() => {
         getChartData(days);
     }, [days, getChartData])
+
 
     return (
         <>
@@ -44,11 +46,15 @@ function HROverviewPage() {
                 />
 
             </div>
-            <DataTable<EmployeeTableRow>
-                data={fakeEmployees}
-                columns={EmployeeColumns}
-                tableTabs={EmployeeTabs}
-            />
+            {
+                overviewTableData && <DataTable<EmployeeTableRow>
+                    data={overviewTableData}
+                    columns={EmployeeColumns}
+                    tableTabs={EmployeeTabs}
+                />
+              
+                
+            }
         </>
     )
 }

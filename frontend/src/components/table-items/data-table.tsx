@@ -47,7 +47,7 @@ import { features } from "./table-features"
 import type { TableTabs } from "@/types/table"
 import DataTableGrid from "./data-table-grid"
 
-export function DataTable<TData extends RowData & { id: number }>({
+export function DataTable<TData extends RowData & { userId: number }>({
   data: initialData,
   columns,
   tableTabs
@@ -57,6 +57,10 @@ export function DataTable<TData extends RowData & { id: number }>({
   tableTabs: TableTabs<TData>[]
 }) {
   const [data, setData] = React.useState(() => initialData)
+  React.useEffect(() => {
+    setData(initialData)
+  }, [initialData])
+
   const [activeTab, setActiveTab] = React.useState(tableTabs[0]?.value ?? "")
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -64,6 +68,8 @@ export function DataTable<TData extends RowData & { id: number }>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
+
+  
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
@@ -80,8 +86,9 @@ export function DataTable<TData extends RowData & { id: number }>({
   const currentTab = tableTabs.find((tab) => tab.value === activeTab)
   const filterData = currentTab ? data.filter(currentTab.filter) : data
 
+  
   const dataIds = React.useMemo<UniqueIdentifier[]>(
-    () => filterData?.map(({ id }) => id) || [],
+    () => filterData?.map(({ userId }) => userId) || [],
     [filterData]
   )
   const table = useTable({
@@ -95,7 +102,7 @@ export function DataTable<TData extends RowData & { id: number }>({
       columnFilters,
       pagination,
     },
-    getRowId: (row) => row.id.toString(),
+    getRowId: (row) => row.userId.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,

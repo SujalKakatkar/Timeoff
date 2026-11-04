@@ -11,12 +11,12 @@ export const EmployeeTabs: TableTabs<EmployeeTableRow>[] = [
     {
         value: "present",
         label: "Present",
-        filter: (row:EmployeeTableRow) => row.isActive
+        filter: (row:EmployeeTableRow) => row.active
     },
     {
         value: "on-leave",
         label: "On Leave",
-        filter: (row:EmployeeTableRow) => !row.isActive
+        filter: (row:EmployeeTableRow) => !row.active
     },
    
 ]
