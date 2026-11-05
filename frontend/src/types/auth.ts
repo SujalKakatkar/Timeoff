@@ -11,12 +11,6 @@ export interface User {
     role: Role;
 }
 
-export type Department = {
-    deptId: number,
-    name: string
-}
-
-
 export interface LoginResponse extends User {
     accessToken: string;
 }

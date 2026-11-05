@@ -1,11 +1,7 @@
 import z from "zod";
 
-
-
 export const ProfileSchema = z.object({
-
-
-    phone: z
+ phone: z
         .string()
         .trim()
         .length(10, "Mobile number must be exactly 10 digits")

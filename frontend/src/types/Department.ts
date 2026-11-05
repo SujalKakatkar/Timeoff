@@ -4,6 +4,6 @@ export interface DepartmentRequest{
     name:string
 }
 
-export interface DepartmentResponse extends DepartmentRequest{
+export interface Department extends DepartmentRequest{
     deptId:number
 }

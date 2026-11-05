@@ -1,4 +1,4 @@
-import type { SidebarItem } from "@/types/sidebar"
+import type { SidebarItem } from "@/types/types"
 
 // Returns the sidebar item that best matches the current path.
 export function findActiveItem(

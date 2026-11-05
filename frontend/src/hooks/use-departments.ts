@@ -1,5 +1,5 @@
 import { api } from "@/api/axios";
-import type { Department } from "@/types/auth";
+import type { Department } from "@/types/types";
 import { useEffect, useState } from "react";
 
 export function useDepartment() {

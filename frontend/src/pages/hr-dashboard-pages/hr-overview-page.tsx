@@ -20,7 +20,7 @@ function HROverviewPage() {
     useEffect(() => {
         getStats();
         getEmployeeOverview()
-    }, [])
+    }, [getStats, getEmployeeOverview])
     useEffect(() => {
         getChartData(days);
     }, [days, getChartData])
@@ -47,13 +47,11 @@ function HROverviewPage() {
 
             </div>
             {
-                overviewTableData && <DataTable<EmployeeTableRow>
+                overviewTableData.length > 0 && <DataTable<EmployeeTableRow>
                     data={overviewTableData}
                     columns={EmployeeColumns}
                     tableTabs={EmployeeTabs}
                 />
-              
-                
             }
         </>
     )

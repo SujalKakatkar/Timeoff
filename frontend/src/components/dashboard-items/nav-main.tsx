@@ -7,7 +7,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { findActiveItem } from "@/lib/nav"
-import type { SidebarItem } from "@/types/sidebar"
+import type { SidebarItem } from "@/types/staticTypes"
 import { Link, useLocation } from "react-router"
 
 export function NavMain({

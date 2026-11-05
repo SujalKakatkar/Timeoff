@@ -10,7 +10,7 @@ import {
     History,
     Wallet,
 } from "lucide-react"
-import type { SidebarItem } from "@/types/sidebar"
+import type { SidebarItem } from "@/types/types"
 
 export const managerSidebarItems: SidebarItem[] = [
     { title: "Overview", url: "/manager", icon: <LayoutDashboardIcon /> },

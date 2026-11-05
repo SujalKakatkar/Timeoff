@@ -3,7 +3,7 @@ import { AppSidebar } from "@/components/dashboard-items/app-sidebar"
 import { SiteHeader } from "@/components/dashboard-items/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { Outlet } from "react-router"
-import type { SidebarItem } from "@/types/sidebar"
+import type { SidebarItem } from "@/types/types"
 
 interface Props {
     sidebarItems: SidebarItem[]

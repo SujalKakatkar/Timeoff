@@ -1,4 +1,4 @@
-import type { TableTabs } from "@/types/table";
+import type { TableTabs } from "@/types/types";
 import type { EmployeeTableRow } from "./employee-overview-table-schema";
 
 

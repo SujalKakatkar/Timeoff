@@ -44,7 +44,7 @@ import {
 } from "@/components/ui/tabs"
 import { Columns3Icon, ChevronDownIcon, PlusIcon } from "lucide-react"
 import { features } from "./table-features"
-import type { TableTabs } from "@/types/table"
+import type { TableTabs } from "@/types/staticTypes"
 import DataTableGrid from "./data-table-grid"
 
 export function DataTable<TData extends RowData & { userId: number }>({
@@ -56,11 +56,7 @@ export function DataTable<TData extends RowData & { userId: number }>({
   columns: ColumnDef<typeof features, TData>[],
   tableTabs: TableTabs<TData>[]
 }) {
-  const [data, setData] = React.useState(() => initialData)
-  React.useEffect(() => {
-    setData(initialData)
-  }, [initialData])
-
+  const [data, setData] = React.useState<TData[]>(initialData)
   const [activeTab, setActiveTab] = React.useState(tableTabs[0]?.value ?? "")
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -68,8 +64,6 @@ export function DataTable<TData extends RowData & { userId: number }>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
-
-  
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
@@ -82,11 +76,13 @@ export function DataTable<TData extends RowData & { userId: number }>({
     useSensor(KeyboardSensor, {})
   )
 
-
   const currentTab = tableTabs.find((tab) => tab.value === activeTab)
-  const filterData = currentTab ? data.filter(currentTab.filter) : data
+  const filterData = React.useMemo(
+    () => (currentTab ? data.filter(currentTab.filter) : data),
+    [data, currentTab]
+  )
 
-  
+
   const dataIds = React.useMemo<UniqueIdentifier[]>(
     () => filterData?.map(({ userId }) => userId) || [],
     [filterData]
@@ -201,8 +197,6 @@ export function DataTable<TData extends RowData & { userId: number }>({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-
-          {/* //todo 2. this must be removed or change according to the utility of the table like in holiday and leave type table we need this */}
           <Button variant="outline" size="sm">
             <PlusIcon
             />

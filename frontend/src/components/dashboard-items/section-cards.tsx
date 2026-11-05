@@ -42,12 +42,7 @@ export function SectionCards({cardItems}:SectionCardsType) {
           </CardFooter>
         </Card>
       ))}
-
-
-      {/* first card */}
-     
-
-      
+  
     </div>
   )
 }

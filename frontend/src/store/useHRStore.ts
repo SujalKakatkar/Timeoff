@@ -1,11 +1,6 @@
 import { api, getErrorMessage } from "@/api/axios";
 import type { EmployeeTableRow } from "@/components/table-items/employee-table-items/employee-overview-table-schema";
-import type { User } from "@/types/auth";
-import type { ChartLeaveActivityResponse, LeaveActivityPoint } from "@/types/charts";
-import type { DepartmentRequest } from "@/types/Department";
-import type { HolidayRequest } from "@/types/holiday";
-import type { LeaveType, LeaveTypeRequest } from "@/types/leave";
-import type { HrStatsType } from "@/types/stats";
+import type { User, DepartmentRequest, ChartLeaveActivityResponse, LeaveActivityPoint, LeaveType, LeaveTypeRequest, HolidayRequest, HrStatsType } from "@/types/types";
 import { create } from "zustand";
 
 

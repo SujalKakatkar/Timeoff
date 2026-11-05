@@ -11,8 +11,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {  CommandIcon } from "lucide-react"
-import type {   SidebarItem } from "@/types/sidebar"
+import { CommandIcon } from "lucide-react"
+import type { SidebarItem } from "@/types/types"
 
 
 type AppSidebarTypes = React.ComponentProps<typeof Sidebar> & {
@@ -39,7 +39,7 @@ export function AppSidebar({ sidebarItems, ...props }: AppSidebarTypes) {
         <NavMain items={sidebarItems} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser  />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   )

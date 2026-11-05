@@ -1,5 +1,4 @@
-import type { StatsCardType } from "@/types/staticTypes";
-import type { HrStatsType } from "@/types/stats";
+import type { StatsCardType, HrStatsType } from "@/types/types";
 import { CalendarOff, ClipboardCheck, UserCog, Users } from "lucide-react";
 
 export function buildHrStats(data: HrStatsType): StatsCardType[] {

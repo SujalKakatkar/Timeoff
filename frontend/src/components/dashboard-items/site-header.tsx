@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { findActiveItem } from "@/lib/nav"
-import type { SidebarItem } from "@/types/sidebar"
+import type { SidebarItem } from "@/types/staticTypes"
 import { useLocation } from "react-router"
 
 export function SiteHeader({ sidebarItems }: {

@@ -5,7 +5,7 @@ import type {
     User,
     LoginResponse,
     AccessTokenResponse,
-} from "../types/auth";
+} from "../types/types";
 import type { RegisterPayloadType } from "@/schemas/signup-schema";
 import type { LoginSchemaType } from "@/schemas/login-schema";
 import type { ProfilePayloadType } from "@/schemas/profile-schema";
@@ -35,7 +35,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     register: async (data) => {
         try {
-            await api.post("/auth/register", data);
+            await api.post<void>("/auth/register", data);
             return { error: null };
         } catch (err) {
             return { error: getErrorMessage(err) };
@@ -58,8 +58,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     },
     updateProfile: async (payload) => {
         try {
-            
-            await api.patch("/auth/profile", payload)
+
+            await api.patch<void>("/auth/profile", payload)
             return { error: null }
         } catch (error) {
             return { error: getErrorMessage(error) }
@@ -75,11 +75,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     },
 
     initAuth: async () => {
-        
+
         try {
             const { data } = await api.post<AccessTokenResponse>("/auth/refresh");
             const token = data.accessToken;
-            
+
             const me = await api.get<User>("/auth/me", { headers: authHeader(token) });
             if (get().status !== "loading") return;
             set({ accessToken: token, user: me.data, status: "authenticated" });
