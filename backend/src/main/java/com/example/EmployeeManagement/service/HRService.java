@@ -2,6 +2,7 @@ package com.example.EmployeeManagement.service;
 
 
 import com.example.EmployeeManagement.dto.*;
+import com.example.EmployeeManagement.dto.hr.EmployeeDetailedResponse;
 import com.example.EmployeeManagement.dto.hr.EmployeeOverviewResponse;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.entity.LeaveBalance;
@@ -15,7 +16,6 @@ import com.example.EmployeeManagement.repository.HolidayRepository;
 import com.example.EmployeeManagement.repository.LeaveBalanceRepository;
 import com.example.EmployeeManagement.repository.LeaveRequestRepository;
 import com.example.EmployeeManagement.repository.UserRepository;
-import jdk.jshell.Snippet;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -125,24 +125,25 @@ public class HRService {
 
 
     //get all employees
-    public List<UserDetailsResponse> getAllEmployees() {
+    @Transactional(readOnly = true)
+    public List<EmployeeDetailedResponse> getAllEmployees() {
         List<User> userList = userRepository.findAllByRoleInAndEnabledTrue(List.of(Role.EMPLOYEE, Role.MANAGER));
 
-        return userList.stream().map(MapToDto::mapToUserDetailResponse).toList();
+        Set<Integer> onLeaveIds = leaveRequestRepository.findEmployeeIdsOnLeave(LocalDate.now(clock), LeaveStatus.APPROVED);
+        return userList.stream().map(user -> MapToDto.mapToEmployeeDetailedResponse(user, !onLeaveIds.contains(user.getUserId()))).toList();
 
     }
 
+    @Transactional(readOnly = true)
     public List<EmployeeOverviewResponse> getOverview() {
         //get a list of employees using query and
         Set<Integer> onLeaveIds = leaveRequestRepository.findEmployeeIdsOnLeave(LocalDate.now(clock), LeaveStatus.APPROVED);
 
         return userRepository.findAllByRoleInAndEnabledTrue(List.of(Role.EMPLOYEE, Role.MANAGER)).stream().map(
-                user -> new EmployeeOverviewResponse(
-                        user.getUserId(),
-                        user.getName(),
-                        user.getDepartment() != null ? user.getDepartment().getName() : "-",
+                user -> MapToDto.MapToEmployeeOverviewResponse(
+                        user,
                         !onLeaveIds.contains(user.getUserId())
-                        )
+                )
         ).toList();
     }
 

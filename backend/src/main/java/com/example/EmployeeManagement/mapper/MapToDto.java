@@ -2,6 +2,8 @@ package com.example.EmployeeManagement.mapper;
 
 
 import com.example.EmployeeManagement.dto.*;
+import com.example.EmployeeManagement.dto.hr.EmployeeDetailedResponse;
+import com.example.EmployeeManagement.dto.hr.EmployeeOverviewResponse;
 import com.example.EmployeeManagement.dto.user.AuthTokens;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.dto.user.UserLoginResponse;
@@ -19,19 +21,22 @@ public class MapToDto {
         userDetailsResponse.setAddress(user.getAddress());
         userDetailsResponse.setEmail(user.getEmail());
         userDetailsResponse.setName(user.getName());
-        userDetailsResponse.setDept(
-                user.getDepartment() != null ? user.getDepartment().getName() : null
-        );
+        userDetailsResponse.setDept(user.getDepartment() != null ? user.getDepartment().getName() : null);
         userDetailsResponse.setPhone(user.getPhone());
         userDetailsResponse.setRole(user.getRole());
         return userDetailsResponse;
     }
 
+    public static EmployeeDetailedResponse mapToEmployeeDetailedResponse(User user, boolean isActive) {
+        return new EmployeeDetailedResponse(user.getUserId(), user.getName(), user.getDepartment() != null ? user.getDepartment().getName() : null, isActive, user.getPhone(), user.getAddress(), user.getEmail(), user.getRole(), user.getManager() != null ? user.getManager().getName() : null);
+    }
+
+    public static EmployeeOverviewResponse MapToEmployeeOverviewResponse(User user, boolean isActive) {
+        return new EmployeeOverviewResponse(user.getUserId(), user.getName(), user.getDepartment() != null ? user.getDepartment().getName() : null, isActive);
+    }
+
     public static DepartmentResponse mapToDepartmentResponse(Department department) {
-        return new DepartmentResponse(
-                department.getDeptId(),
-                department.getName()
-        );
+        return new DepartmentResponse(department.getDeptId(), department.getName());
     }
 
     public static LeaveBalanceResponse mapToLeaveBalanceResponse(LeaveBalance leaveBalance) {
@@ -65,12 +70,6 @@ public class MapToDto {
     }
 
     public static LeaveTypeResponse mapToLeaveTypeResponse(LeaveType leaveType) {
-        return new LeaveTypeResponse(
-                leaveType.getLeaveTypeId(),
-                leaveType.getName(),
-                leaveType.getDefaultDaysPerYear(),
-                leaveType.getIsPaid(),
-                leaveType.getCreatedAt()
-        );
+        return new LeaveTypeResponse(leaveType.getLeaveTypeId(), leaveType.getName(), leaveType.getDefaultDaysPerYear(), leaveType.getIsPaid(), leaveType.getCreatedAt());
     }
 }

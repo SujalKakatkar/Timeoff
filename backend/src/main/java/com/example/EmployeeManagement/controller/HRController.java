@@ -4,6 +4,7 @@ package com.example.EmployeeManagement.controller;
 import com.example.EmployeeManagement.dto.DetailedReportResponse;
 import com.example.EmployeeManagement.dto.HrStatsResponse;
 import com.example.EmployeeManagement.dto.LeaveActivityResponse;
+import com.example.EmployeeManagement.dto.hr.EmployeeDetailedResponse;
 import com.example.EmployeeManagement.dto.hr.EmployeeOverviewResponse;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.service.HRService;
@@ -58,7 +59,7 @@ public class HRController {
 
     //all employees including managers
     @GetMapping("/all")
-    public ResponseEntity<List<UserDetailsResponse>> getAll(Authentication authentication) {
+    public ResponseEntity<List<EmployeeDetailedResponse>> getAll(Authentication authentication) {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
