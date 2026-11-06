@@ -1,6 +1,6 @@
 import { api, getErrorMessage } from "@/api/axios";
 import type { EmployeeTableRow } from "@/components/table-items/employee-table-items/employee-overview-table-schema";
-import type { User, DepartmentRequest, ChartLeaveActivityResponse, LeaveActivityPoint, LeaveType, LeaveTypeRequest, HolidayRequest, HrStatsType } from "@/types/types";
+import type { User, DepartmentRequest, ChartLeaveActivityResponse, LeaveActivityPoint, LeaveType, LeaveTypeRequest, HolidayRequest, HrStatsType, Employee } from "@/types/types";
 import { create } from "zustand";
 
 
@@ -9,7 +9,7 @@ interface HRState {
     stats: HrStatsType | null,
     chartData: LeaveActivityPoint[],
     overviewTableData: EmployeeTableRow[],
-    employees: User[],
+    employees: Employee[],
     managers: User[],
     leaveTypes: LeaveType[],
     leaveRequests: [],
@@ -45,6 +45,8 @@ export const useHRStore = create<HRState>((set) => ({
     getEmployeeList: async () => {
         try {
             const { data } = await api.get("/hr/all")
+            console.log(data);
+
             set({ employees: data })
 
             return { error: null }

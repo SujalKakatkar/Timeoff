@@ -1,12 +1,9 @@
-
-
 import { createColumnHelper } from "@tanstack/react-table";
 import type z from "zod";
 import type { features } from "../table-features";
 import { DragHandle } from "../table-draggable";
 import { CircleCheckIcon, EllipsisVerticalIcon, LoaderIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
 import {
     DropdownMenu,
@@ -24,37 +21,18 @@ export const columnHelper = createColumnHelper<
     z.infer<typeof HrEmployeeTableSchema>
 >()
 
-export const EmployeeColumns = columnHelper.columns([
+export const HrEmployeeColumns = columnHelper.columns([
     columnHelper.display({
         id: "drag",
         header: () => null,
-        cell: ({ row }) => <DragHandle id={row.original.id} />,
+        cell: ({ row }) => <DragHandle id={row.original.userId} />,
     }),
-    columnHelper.display({
-        id: "select",
-        header: ({ table }) => (
-            <div className="flex items-center justify-center">
-                <Checkbox
-                    checked={table.getIsAllPageRowsSelected()}
-                    indeterminate={
-                        table.getIsSomePageRowsSelected() &&
-                        !table.getIsAllPageRowsSelected()
-                    }
-                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                    aria-label="Select all"
-                />
-            </div>
-        ),
-        cell: ({ row }) => (
-            <div className="flex items-center justify-center">
-                <Checkbox
-                    checked={row.getIsSelected()}
-                    onCheckedChange={(value) => row.toggleSelected(!!value)}
-                    aria-label="Select row"
-                />
-            </div>
-        ),
-        enableSorting: false,
+ 
+    columnHelper.accessor("userId", {
+        header: "Employee Id",
+        cell: ({ row }) => {
+            return <h1>{row.original.userId}</h1>
+        },
         enableHiding: false,
     }),
     columnHelper.accessor("name", {
@@ -93,12 +71,11 @@ export const EmployeeColumns = columnHelper.columns([
             <h1>{row.original.dept}</h1>
         ),
     }),
-    //
-    columnHelper.accessor("isActive", {
+    columnHelper.accessor("active", {
         header: "Active",
         cell: ({ row }) => {
             return <Badge variant="outline" className="px-1.5 text-muted-foreground">
-                {row.original.isActive ? (
+                {row.original.active ? (
                     <>
                         <CircleCheckIcon className="fill-green-500 dark:fill-green-400" />
                         <span>Active</span>
