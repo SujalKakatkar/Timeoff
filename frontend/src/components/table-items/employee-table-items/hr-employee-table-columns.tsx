@@ -27,7 +27,7 @@ export const HrEmployeeColumns = columnHelper.columns([
         header: () => null,
         cell: ({ row }) => <DragHandle id={row.original.userId} />,
     }),
- 
+
     columnHelper.accessor("userId", {
         header: "Employee Id",
         cell: ({ row }) => {
@@ -121,6 +121,7 @@ export const HrEmployeeColumns = columnHelper.columns([
                             variant="ghost"
                             className="flex size-8 text-muted-foreground data-open:bg-muted"
                             size="icon"
+                            onClick={e => e.stopPropagation()}
                         />
                     }
                 >

@@ -23,17 +23,29 @@ import { DraggableRow } from './table-draggable';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from 'lucide-react';
+import React from 'react';
+import { Sheet, SheetContent } from '../ui/sheet';
 
 function DataTableGrid<TData extends RowData & { userId: number }>({
-    table, dataIds, sensors, sortableId, onDragEnd, columnsLength
+    table, dataIds, sensors, sortableId, onDragEnd, columnsLength,renderRowSheet
 }: {
     table: ReactTable<typeof features, TData>
     dataIds: UniqueIdentifier[],
     sensors: SensorDescriptor<SensorOptions>[]
     sortableId: string,
     onDragEnd: (event: DragEndEvent) => void,
-    columnsLength: number
+    columnsLength: number,
+    renderRowSheet?:(row:TData)=>React.ReactNode
 }) {
+
+    const [selectedRow, setSelectedRow] = React.useState<TData | null>(null)   // ✅ NEW: which row was clicked
+    const [sheetOpen, setSheetOpen] = React.useState(false)                    // ✅ NEW: is the sheet visible
+
+    const handleRowClick = (row: TData) => {                            // ✅ NEW: called by DraggableRow on click
+        setSelectedRow(row)
+        setSheetOpen(true)
+    }
+
     return (
         <>
             <div className="overflow-hidden rounded-lg border">
@@ -67,7 +79,7 @@ function DataTableGrid<TData extends RowData & { userId: number }>({
                                     strategy={verticalListSortingStrategy}
                                 >
                                     {table.getRowModel().rows.map((row) => (
-                                        <DraggableRow key={row.id} row={row} />
+                                        <DraggableRow key={row.id} row={row} onRowClick={renderRowSheet ? handleRowClick : undefined} />
                                     ))}
                                 </SortableContext>
                             ) : (
@@ -167,6 +179,14 @@ function DataTableGrid<TData extends RowData & { userId: number }>({
                     </div>
                 </div>
             </div>
+
+            {renderRowSheet && (
+                <Sheet  open={sheetOpen} onOpenChange={setSheetOpen}>
+                    <SheetContent side="right" className="inset-y-1.5! right-1.5! h-auto! rounded-lg border">
+                        {selectedRow && renderRowSheet(selectedRow)}
+                    </SheetContent>
+                </Sheet>
+            )}
         </>
     )
 }

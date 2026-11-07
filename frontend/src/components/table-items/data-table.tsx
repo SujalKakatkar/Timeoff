@@ -50,11 +50,13 @@ import DataTableGrid from "./data-table-grid"
 export function DataTable<TData extends RowData & { userId: number }>({
   data: initialData,
   columns,
-  tableTabs
+  tableTabs,
+  renderRowSheet,
 }: {
   data: TData[],
   columns: ColumnDef<typeof features, TData>[],
-  tableTabs: TableTabs<TData>[]
+  tableTabs: TableTabs<TData>[],
+  renderRowSheet?:(row:TData)=>React.ReactNode
 }) {
   const [data, setData] = React.useState<TData[]>(initialData)
   const [activeTab, setActiveTab] = React.useState(tableTabs[0]?.value ?? "")
@@ -215,7 +217,9 @@ export function DataTable<TData extends RowData & { userId: number }>({
             sensors={sensors}
             sortableId={sortableId}
             onDragEnd={handleDragEnd}
-            columnsLength={columns.length} />
+            columnsLength={columns.length} 
+            renderRowSheet={renderRowSheet}
+            />
         </TabsContent>
       ) : (
         <div
@@ -228,6 +232,7 @@ export function DataTable<TData extends RowData & { userId: number }>({
             sortableId={sortableId}
             onDragEnd={handleDragEnd}
             columnsLength={columns.length}
+            renderRowSheet={renderRowSheet}
           />
         </div>
       )}
