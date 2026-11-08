@@ -1,10 +1,11 @@
-package com.example.EmployeeManagement.repository;
+package com.example.EmployeeManagement.service;
 
 import com.example.EmployeeManagement.dto.DepartmentRequest;
 import com.example.EmployeeManagement.dto.DepartmentResponse;
 import com.example.EmployeeManagement.entity.Department;
 import com.example.EmployeeManagement.exceptions.ResourceAlreadyExistsException;
 import com.example.EmployeeManagement.mapper.MapToDto;
+import com.example.EmployeeManagement.repository.DepartmentRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

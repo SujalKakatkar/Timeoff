@@ -2,7 +2,7 @@ package com.example.EmployeeManagement.controller;
 
 import com.example.EmployeeManagement.dto.DepartmentRequest;
 import com.example.EmployeeManagement.dto.DepartmentResponse;
-import com.example.EmployeeManagement.repository.DepartmentService;
+import com.example.EmployeeManagement.service.DepartmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
