@@ -31,7 +31,7 @@ public class JwtService {
     public String generateAccessToken(User user) {
         return Jwts
                 .builder()
-                .subject(user.getEmail())
+                .subject(String.valueOf(user.getUserId()))
                 .claim("role", user.getRole())
                 .claim("type", "accessToken")
                 .issuedAt(new Date())
@@ -68,8 +68,8 @@ public class JwtService {
         return getClaims(token).get("role", String.class);
     }
 
-    public String extractEmail(String token) {
-        return getClaims(token).getSubject();
+    public Integer extractUserId(String token) {
+        return Integer.valueOf(getClaims(token).getSubject());
     }
 
     public boolean validateToken(String token) {

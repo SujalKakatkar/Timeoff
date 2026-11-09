@@ -2,8 +2,10 @@ package com.example.EmployeeManagement.mapper;
 
 
 import com.example.EmployeeManagement.dto.*;
-import com.example.EmployeeManagement.dto.hr.EmployeeDetailedResponse;
-import com.example.EmployeeManagement.dto.hr.EmployeeOverviewResponse;
+import com.example.EmployeeManagement.dto.employee.EmployeeDetailedResponse;
+import com.example.EmployeeManagement.dto.employee.EmployeeOverviewResponse;
+import com.example.EmployeeManagement.dto.employee.ManagerOverviewResponse;
+import com.example.EmployeeManagement.dto.employee.ManagerTeamDetailedResponse;
 import com.example.EmployeeManagement.dto.user.AuthTokens;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.dto.user.UserLoginResponse;
@@ -31,8 +33,17 @@ public class MapToDto {
         return new EmployeeDetailedResponse(user.getUserId(), user.getName(), user.getDepartment() != null ? user.getDepartment().getName() : null, isActive, user.getPhone(), user.getAddress(), user.getEmail(), user.getRole(), user.getManager() != null ? user.getManager().getName() : null);
     }
 
-    public static EmployeeOverviewResponse MapToEmployeeOverviewResponse(User user, boolean isActive) {
-        return new EmployeeOverviewResponse(user.getUserId(), user.getName(), user.getDepartment() != null ? user.getDepartment().getName() : null, isActive);
+
+    public static EmployeeOverviewResponse mapToEmployeeOverviewResponse(User user, boolean isActive) {
+        return new EmployeeOverviewResponse(user.getUserId(), user.getName(), isActive, user.getDepartment() != null ? user.getDepartment().getName() : null);
+    }
+
+    public static ManagerOverviewResponse mapToManagerOverviewResponse(User user, boolean isActive) {
+        return new ManagerOverviewResponse(user.getUserId(), user.getName(), isActive);
+    }
+
+    public static ManagerTeamDetailedResponse mapToManagerTeamDetailedResponse(User user,boolean isActive){
+        return new ManagerTeamDetailedResponse(user.getUserId(), user.getName(),isActive, user.getPhone(), user.getAddress(), user.getEmail(), user.getRole());
     }
 
     public static DepartmentResponse mapToDepartmentResponse(Department department) {

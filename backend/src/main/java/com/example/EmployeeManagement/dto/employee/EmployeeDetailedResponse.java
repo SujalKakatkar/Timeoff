@@ -1,4 +1,4 @@
-package com.example.EmployeeManagement.dto.hr;
+package com.example.EmployeeManagement.dto.employee;
 
 import com.example.EmployeeManagement.enums.Role;
 import lombok.Getter;
@@ -15,8 +15,8 @@ public class EmployeeDetailedResponse extends EmployeeOverviewResponse {
     private Role role;
     private String manager;
 
-    public EmployeeDetailedResponse(Integer userId, String name, String dept, boolean isActive,String phone, String address, String email, Role role, String manager) {
-        super(userId,name,dept,isActive);
+    public EmployeeDetailedResponse(Integer userId, String name, String dept, boolean isActive, String phone, String address, String email, Role role, String manager) {
+        super(userId, name, isActive, dept);
         this.phone = phone;
         this.address = address;
         this.email = email;

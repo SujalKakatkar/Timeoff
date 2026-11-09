@@ -2,8 +2,6 @@ package com.example.EmployeeManagement.service;
 
 
 import com.example.EmployeeManagement.dto.*;
-import com.example.EmployeeManagement.dto.hr.EmployeeDetailedResponse;
-import com.example.EmployeeManagement.dto.hr.EmployeeOverviewResponse;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.entity.LeaveBalance;
 import com.example.EmployeeManagement.entity.User;
@@ -124,28 +122,6 @@ public class HRService {
     }
 
 
-    //get all employees
-    @Transactional(readOnly = true)
-    public List<EmployeeDetailedResponse> getAllEmployees() {
-        List<User> userList = userRepository.findAllByRoleInAndEnabledTrue(List.of(Role.EMPLOYEE, Role.MANAGER));
-
-        Set<Integer> onLeaveIds = leaveRequestRepository.findEmployeeIdsOnLeave(LocalDate.now(clock), LeaveStatus.APPROVED);
-        return userList.stream().map(user -> MapToDto.mapToEmployeeDetailedResponse(user, !onLeaveIds.contains(user.getUserId()))).toList();
-
-    }
-
-    @Transactional(readOnly = true)
-    public List<EmployeeOverviewResponse> getOverview() {
-        //get a list of employees using query and
-        Set<Integer> onLeaveIds = leaveRequestRepository.findEmployeeIdsOnLeave(LocalDate.now(clock), LeaveStatus.APPROVED);
-
-        return userRepository.findAllByRoleInAndEnabledTrue(List.of(Role.EMPLOYEE, Role.MANAGER)).stream().map(
-                user -> MapToDto.MapToEmployeeOverviewResponse(
-                        user,
-                        !onLeaveIds.contains(user.getUserId())
-                )
-        ).toList();
-    }
 
     // get all request
     public List<UserDetailsResponse> getAllManagers() {

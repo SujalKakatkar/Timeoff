@@ -16,6 +16,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @EntityGraph(attributePaths = "department")
     List<User> findAllByRoleInAndEnabledTrue(List<Role> roles);
 
+    @EntityGraph(attributePaths = {"manager", "department"})
     List<User> findAllByManager_UserId(Integer ManagerId);
 
     Long countByEnabledTrue();

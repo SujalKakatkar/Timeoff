@@ -100,8 +100,8 @@ public class UserService {
 
         if (token == null) return;
         try {
-            String email = jwtService.extractEmail(token);
-            userRepository.findByEmailAndEnabledTrue(email).ifPresent(
+            Integer userId = jwtService.extractUserId(token);
+            userRepository.findByUserIdAndEnabledTrue(userId).ifPresent(
                     user -> {
                         if (token.equals(user.getRefreshToken())) {
                             user.setRefreshToken(null);
@@ -114,14 +114,14 @@ public class UserService {
     }
 
     public AccessTokenResponse refreshAccessToken(String refreshToken) {
-        String email;
+        Integer userId;
         try {
-            email = jwtService.extractEmail(refreshToken);
+            userId = jwtService.extractUserId(refreshToken);
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidRefreshTokenException();
         }
 
-        User temp = userRepository.findByEmailAndEnabledTrue(email).orElseThrow(
+        User temp = userRepository.findByUserIdAndEnabledTrue(userId).orElseThrow(
                 InvalidRefreshTokenException::new
         );
 

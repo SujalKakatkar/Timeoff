@@ -69,6 +69,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PATCH,"/api/auth/profile").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated()
 
+                                //employee
+                                .requestMatchers(HttpMethod.GET,"/api/employee/all").hasAnyRole("HR", "MANAGER")
+                                .requestMatchers(HttpMethod.GET,"/api/employee").authenticated()
+
                                 //hr work
                                 .requestMatchers(HttpMethod.PUT, "/api/hr/*").hasRole("HR")
                                 .requestMatchers(HttpMethod.PATCH, "/api/hr/*").hasRole("HR")

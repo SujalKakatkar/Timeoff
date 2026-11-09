@@ -1,4 +1,4 @@
-package com.example.EmployeeManagement.dto.hr;
+package com.example.EmployeeManagement.dto.employee;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,11 +7,10 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
-public class EmployeeOverviewResponse {
+@Setter
+public class EmployeeBase {
     private Integer userId;
     private String name;
-    private String dept;
     private boolean isActive;
 }
