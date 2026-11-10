@@ -1,7 +1,6 @@
 package com.example.EmployeeManagement.controller;
 
 
-
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.service.EmployeeService;
 import com.example.EmployeeManagement.utils.Utilities;
@@ -39,8 +38,6 @@ public class EmployeeController {
         }
     }
 
-    //get all employees
-
     //all employees including managers
     @GetMapping("/all")
     public ResponseEntity<List<?>> getAll(@AuthenticationPrincipal Integer userId, Authentication authentication) {
@@ -54,8 +51,20 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(employeeService.getTeamOfTheManager(userId));
         }
-
     }
+
+    @GetMapping("/stats")
+    public ResponseEntity<?> getStats(@AuthenticationPrincipal Integer userId, Authentication authentication) {
+        boolean isHr = Utilities.isHr(authentication);
+        if (isHr) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    employeeService.getHrStats()
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(employeeService.getManagerStats(userId));
+    }
+
+   //needs to add stats for each individual employee
 
     @GetMapping
     public ResponseEntity<UserDetailsResponse> getUser(@RequestParam Integer employeeId) {

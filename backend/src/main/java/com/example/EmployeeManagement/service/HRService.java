@@ -2,14 +2,10 @@ package com.example.EmployeeManagement.service;
 
 
 import com.example.EmployeeManagement.dto.*;
-import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.entity.LeaveBalance;
 import com.example.EmployeeManagement.entity.User;
 import com.example.EmployeeManagement.enums.LeaveStatus;
-import com.example.EmployeeManagement.enums.Role;
 import com.example.EmployeeManagement.exceptions.ResourceNotFoundException;
-import com.example.EmployeeManagement.exceptions.RoleMismatchException;
-import com.example.EmployeeManagement.mapper.MapToDto;
 import com.example.EmployeeManagement.repository.HolidayRepository;
 import com.example.EmployeeManagement.repository.LeaveBalanceRepository;
 import com.example.EmployeeManagement.repository.LeaveRequestRepository;
@@ -20,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -42,92 +37,6 @@ public class HRService {
         this.holidayRepository = holidayRepository;
     }
 
-
-    //Create a manger with existing employee
-    public void promoteManger(Integer empId, String email) {
-        //get the employee
-        //if it is null return
-        User user = userRepository.findById(empId).orElseThrow(
-                () -> new ResourceNotFoundException("can't find employee")
-        );
-
-        if (user.getRole() == Role.MANAGER) {
-            throw new RoleMismatchException("user is already manger");
-        }
-
-        User Hr = userRepository.findByEmailAndEnabledTrue(email).orElseThrow(
-                () -> new ResourceNotFoundException("can't find hr")
-        );
-
-        //set role to manger
-        user.setRole(Role.MANAGER);
-        user.setManager(Hr);
-        userRepository.save(user);
-
-    }
-
-
-    // assign the manger
-    public void assignManger(Integer empId, Integer mangerId) {
-        //get the employee
-        User user = userRepository.findById(empId).orElseThrow(
-                () -> new ResourceNotFoundException("can't find employee")
-        );
-
-        if (user.getRole() == Role.MANAGER) {
-            throw new RoleMismatchException("one manager can't assign to other manager");
-        }
-
-        //passing them a manger which is existed with manger id
-        User manager = userRepository.findById(mangerId).orElseThrow(
-                () -> new ResourceNotFoundException("can't find employee")
-        );
-        if (manager.getRole() == Role.EMPLOYEE || manager.getRole() == Role.HR) {
-            throw new RoleMismatchException("the manger id is invalid");
-        }
-        user.setManager(manager);
-        userRepository.save(user);
-
-
-    }
-
-    //disable employee
-    public void disableEmployee(Integer userId) {
-        //check if exists
-        User user = userRepository.findByUserIdAndEnabledTrue(userId).orElseThrow(
-                () -> new ResourceNotFoundException("user not found")
-        );
-        //check is it a manager
-        if (user.getRole() == Role.MANAGER) {
-            //add null the manger id refenced by this manager
-            List<User> userList = userRepository.findAllByManager_UserId(user.getUserId());
-
-            userList.forEach(u -> u.setManager(null));
-
-
-            userRepository.saveAll(userList);
-        }
-        //isEnable false
-        user.setEnabled(false);
-        userRepository.save(user);
-
-    }
-
-    public UserDetailsResponse getUser(Integer userId) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new ResourceNotFoundException("user not found")
-        );
-
-        return MapToDto.mapToUserDetailResponse(user);
-    }
-
-
-
-    // get all request
-    public List<UserDetailsResponse> getAllManagers() {
-        List<User> userList = userRepository.findAllByRoleInAndEnabledTrue(List.of(Role.MANAGER));
-        return userList.stream().map(MapToDto::mapToUserDetailResponse).collect(Collectors.toList());
-    }
 
     public DetailedReportResponse getEmployeeReport(Integer empId) {
 
@@ -238,14 +147,6 @@ public class HRService {
         return reportList;
     }
 
-    public HrStatsResponse getStats() {
-        Long total = userRepository.countByEnabledTrue();
-        Long managers = userRepository.countByRoleAndEnabledTrue(Role.MANAGER);
-        LocalDate today = LocalDate.now(ZoneId.of("Asia/Kolkata"));
-        Long onLeave = leaveRequestRepository.countUsersOnLeave(today);
-        Long pendingLeaveRequests = leaveRequestRepository.countByStatusAndEmployee_EnabledTrue(LeaveStatus.PENDING);
-        return new HrStatsResponse(total, managers, onLeave, pendingLeaveRequests, total - onLeave);
-    }
 
 
     private Predicate<LocalDate> workingDayFilter(LocalDate from, LocalDate to) {

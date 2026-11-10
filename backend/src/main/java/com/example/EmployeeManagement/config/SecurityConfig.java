@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -54,7 +55,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex ->
                         ex.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
@@ -71,6 +72,8 @@ public class SecurityConfig {
 
                                 //employee
                                 .requestMatchers(HttpMethod.GET,"/api/employee/all").hasAnyRole("HR", "MANAGER")
+                                .requestMatchers(HttpMethod.GET,"/api/employee/overview").hasAnyRole("HR", "MANAGER")
+                                .requestMatchers(HttpMethod.GET,"/api/employee/stats").hasAnyRole("HR", "MANAGER")
                                 .requestMatchers(HttpMethod.GET,"/api/employee").authenticated()
 
                                 //hr work

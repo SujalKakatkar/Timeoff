@@ -1,10 +1,7 @@
 package com.example.EmployeeManagement.service;
 
 
-import com.example.EmployeeManagement.dto.employee.EmployeeDetailedResponse;
-import com.example.EmployeeManagement.dto.employee.EmployeeOverviewResponse;
-import com.example.EmployeeManagement.dto.employee.ManagerOverviewResponse;
-import com.example.EmployeeManagement.dto.employee.ManagerTeamDetailedResponse;
+import com.example.EmployeeManagement.dto.employee.*;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.entity.User;
 import com.example.EmployeeManagement.enums.LeaveStatus;
@@ -89,6 +86,24 @@ public class EmployeeService {
                 )
         ).toList();
     }
+
+    public HrStatsResponse getHrStats() {
+        Long total = userRepository.countByEnabledTrue();
+        Long managers = userRepository.countByRoleAndEnabledTrue(Role.MANAGER);
+        LocalDate today = LocalDate.now(clock);
+        Long onLeave = leaveRequestRepository.countUsersOnLeave(today);
+        Long pendingLeaveRequests = leaveRequestRepository.countByStatusAndEmployee_EnabledTrue(LeaveStatus.PENDING);
+        return new HrStatsResponse(total, managers, onLeave, pendingLeaveRequests, total - onLeave);
+    }
+
+    public ManagerStatsResponse getManagerStats(Integer managerId) {
+        Long total = userRepository.countByManager_userId(managerId);
+        LocalDate today = LocalDate.now(clock);
+        Long onLeave = leaveRequestRepository.countTeamOnLeave(managerId, today);
+        Long pendingLeaveRequests = leaveRequestRepository.countByStatusAndEmployee_EnabledTrueAndEmployee_Manager_userId(LeaveStatus.PENDING, managerId);
+        return new ManagerStatsResponse(total, onLeave, pendingLeaveRequests, total - onLeave);
+    }
+
 
     //get all employees
 

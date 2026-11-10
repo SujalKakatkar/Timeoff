@@ -1,4 +1,4 @@
-package com.example.EmployeeManagement.dto;
+package com.example.EmployeeManagement.dto.employee;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class HrStatsResponse {
+public class ManagerStatsResponse {
     private Long totalEmployees;
-    private Long managers;
     private Long onLeaveToday;
     private Long pendingLeaveRequests;
     private Long present;

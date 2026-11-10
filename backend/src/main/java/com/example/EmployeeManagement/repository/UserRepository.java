@@ -21,4 +21,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Long countByEnabledTrue();
     Long countByRoleAndEnabledTrue(Role role);
+    Long countByManager_userId(Integer managerId);
 }
