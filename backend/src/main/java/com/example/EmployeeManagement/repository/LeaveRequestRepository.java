@@ -3,7 +3,6 @@ package com.example.EmployeeManagement.repository;
 import com.example.EmployeeManagement.dto.LeaveSpan;
 import com.example.EmployeeManagement.entity.LeaveRequest;
 import com.example.EmployeeManagement.enums.LeaveStatus;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -54,6 +53,23 @@ public interface LeaveRequestRepository extends JpaRepository<LeaveRequest, Inte
     List<LeaveSpan> findSpans(@Param("status") LeaveStatus status,
                               @Param("from") LocalDate from,
                               @Param("to") LocalDate to);
+
+    @Query("""
+    select new com.example.EmployeeManagement.dto.LeaveSpan(
+        l.employee.userId, l.startDate, l.endDate)
+    from LeaveRequest l
+    where l.status = :status
+      and l.employee.manager.userId = :managerId
+      and l.startDate <= :to
+      and l.endDate   >= :from
+""")
+    List<LeaveSpan> findTeamSpans(
+            @Param("status") LeaveStatus status,
+            @Param("managerId") Integer managerId,
+            @Param("from") LocalDate from,
+            @Param("to") LocalDate to
+    );
+
 
     @Query("""
     select distinct l.employee.userId

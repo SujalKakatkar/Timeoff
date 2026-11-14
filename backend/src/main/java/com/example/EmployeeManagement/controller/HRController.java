@@ -37,9 +37,4 @@ public class HRController {
         return ResponseEntity.ok(hrService.getAllReports(year));
     }
 
-
-    @GetMapping("/leave-activity")
-    public ResponseEntity<LeaveActivityResponse> getLeaveActivity(@RequestParam(defaultValue = "30") @Min(1) @Max(365) Long days) {
-        return ResponseEntity.status(HttpStatus.OK).body(hrService.getLeaveActivity(days));
-    }
 }

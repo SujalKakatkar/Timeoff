@@ -7,12 +7,12 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 public interface HolidayRepository extends JpaRepository<Holiday, Integer> {
     List<Holiday> findByDateBetween(LocalDate start, LocalDate end);
 
     @Query("select h.date from Holiday h where h.date between :from and :to")
-    List<LocalDate> findDatesBetween(@Param("from") LocalDate from,
-                                     @Param("to") LocalDate to);
+    Set<LocalDate> findDatesBetween(@Param("from") LocalDate from,
+                                    @Param("to") LocalDate to);
 }

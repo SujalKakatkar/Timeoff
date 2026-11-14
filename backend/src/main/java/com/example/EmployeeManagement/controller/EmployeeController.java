@@ -1,9 +1,12 @@
 package com.example.EmployeeManagement.controller;
 
 
+import com.example.EmployeeManagement.dto.LeaveActivityResponse;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.service.EmployeeService;
 import com.example.EmployeeManagement.utils.Utilities;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -64,11 +67,25 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).body(employeeService.getManagerStats(userId));
     }
 
-   //needs to add stats for each individual employee
-
     @GetMapping
     public ResponseEntity<UserDetailsResponse> getUser(@RequestParam Integer employeeId) {
         return ResponseEntity.status(HttpStatus.OK).body(employeeService.getUser(employeeId));
     }
+
+
+    //Leave activity
+    @GetMapping("/leave-activity")
+    public ResponseEntity<LeaveActivityResponse> getLeaveActivity(
+            @AuthenticationPrincipal Integer userId,
+            Authentication authentication,
+            @RequestParam(defaultValue = "30") @Min(1) @Max(365) Long days) {
+
+        boolean isHr = Utilities.isHr(authentication);
+        if (isHr) {
+            return ResponseEntity.status(HttpStatus.OK).body(employeeService.getLeaveActivity(days));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(employeeService.getTeamLeaveActivity(days, userId));
+    }
+
 
 }

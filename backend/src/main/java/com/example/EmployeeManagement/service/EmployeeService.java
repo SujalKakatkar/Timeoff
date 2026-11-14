@@ -1,6 +1,9 @@
 package com.example.EmployeeManagement.service;
 
 
+import com.example.EmployeeManagement.dto.LeaveActivityPoint;
+import com.example.EmployeeManagement.dto.LeaveActivityResponse;
+import com.example.EmployeeManagement.dto.LeaveSpan;
 import com.example.EmployeeManagement.dto.employee.*;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.entity.User;
@@ -8,6 +11,7 @@ import com.example.EmployeeManagement.enums.LeaveStatus;
 import com.example.EmployeeManagement.enums.Role;
 import com.example.EmployeeManagement.exceptions.ResourceNotFoundException;
 import com.example.EmployeeManagement.mapper.MapToDto;
+import com.example.EmployeeManagement.repository.HolidayRepository;
 import com.example.EmployeeManagement.repository.LeaveBalanceRepository;
 import com.example.EmployeeManagement.repository.LeaveRequestRepository;
 import com.example.EmployeeManagement.repository.UserRepository;
@@ -16,9 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -27,6 +32,7 @@ public class EmployeeService {
     public final UserRepository userRepository;
     public final LeaveRequestRepository leaveRequestRepository;
     public final LeaveBalanceRepository leaveBalanceRepository;
+    public final HolidayRepository holidayRepository;
     private final Clock clock;
 
 
@@ -105,13 +111,109 @@ public class EmployeeService {
     }
 
 
-    //get all employees
+    @Transactional(readOnly = true)
+    public LeaveActivityResponse getLeaveActivity(Long days) {
+        if (days < 1 || days > 365) {
+            throw new IllegalArgumentException("days must be between 1 and 365");
+        }
 
-    //get stats of employees
+        LocalDate to = LocalDate.now(clock);
+        LocalDate from = to.minusDays(days - 1);
 
-    //get all team members of the manager
+        // 1. Build a working-day lookup set (weekends + holidays excluded)
+        Set<LocalDate> holidays = holidayRepository.findDatesBetween(from, to);
+        Set<LocalDate> workingDays = from.datesUntil(to.plusDays(1))
+                .filter(d -> d.getDayOfWeek() != DayOfWeek.SATURDAY
+                        && d.getDayOfWeek() != DayOfWeek.SUNDAY
+                        && !holidays.contains(d))
+                .collect(Collectors.toCollection(HashSet::new));
+
+        // 2. Fetch spans for this manager's team
+        List<LeaveSpan> spans = leaveRequestRepository.findSpans(
+                LeaveStatus.APPROVED, from, to
+        );
+
+        // 3. Expand each span into dates, keep only working days, count per date
+        Map<LocalDate, Long> leaveCountByDate = spans.stream()
+                .filter(span -> span.getStartDate() != null
+                        && span.getEndDate() != null
+                        && !span.getEndDate().isBefore(span.getStartDate()))
+                .flatMap(span -> {
+                    LocalDate start = span.getStartDate().isBefore(from) ? from : span.getStartDate();
+                    LocalDate end = span.getEndDate().isAfter(to) ? to : span.getEndDate();
+                    return start.datesUntil(end.plusDays(1));
+                })
+                .filter(workingDays::contains)
+                .collect(Collectors.groupingBy(
+                        date -> date,
+                        Collectors.counting()
+                ));
+
+        // 4. Build points only for working days (change if you want calendar days too)
+        List<LeaveActivityPoint> points = from.datesUntil(to.plusDays(1))
+                .filter(workingDays::contains)
+                .map(date -> new LeaveActivityPoint(
+                        date,
+                        leaveCountByDate.getOrDefault(date, 0L)
+                ))
+                .toList();
+
+        return new LeaveActivityResponse(from, to, points);
+    }
 
 
-    //get stats of the
+
+
+    @Transactional(readOnly = true)
+    public LeaveActivityResponse getTeamLeaveActivity(Long days, Integer managerId) {
+        if (days < 1 || days > 365) {
+            throw new IllegalArgumentException("days must be between 1 and 365");
+        }
+
+        LocalDate to = LocalDate.now(clock);
+        LocalDate from = to.minusDays(days - 1);
+
+        // 1. Build a working-day lookup set (weekends + holidays excluded)
+        Set<LocalDate> holidays = holidayRepository.findDatesBetween(from, to);
+        Set<LocalDate> workingDays = from.datesUntil(to.plusDays(1))
+                .filter(d -> d.getDayOfWeek() != DayOfWeek.SATURDAY
+                        && d.getDayOfWeek() != DayOfWeek.SUNDAY
+                        && !holidays.contains(d))
+                .collect(Collectors.toCollection(HashSet::new));
+
+        // 2. Fetch spans for this manager's team
+        List<LeaveSpan> spans = leaveRequestRepository.findTeamSpans(
+                LeaveStatus.APPROVED, managerId, from, to
+        );
+
+        // 3. Expand each span into dates, keep only working days, count per date
+        Map<LocalDate, Long> leaveCountByDate = spans.stream()
+                .filter(span -> span.getStartDate() != null
+                        && span.getEndDate() != null
+                        && !span.getEndDate().isBefore(span.getStartDate()))
+                .flatMap(span -> {
+                    LocalDate start = span.getStartDate().isBefore(from) ? from : span.getStartDate();
+                    LocalDate end = span.getEndDate().isAfter(to) ? to : span.getEndDate();
+                    return start.datesUntil(end.plusDays(1));
+                })
+                .filter(workingDays::contains)
+                .collect(Collectors.groupingBy(
+                        date -> date,
+                        Collectors.counting()
+                ));
+
+        // 4. Build points only for working days (change if you want calendar days too)
+        List<LeaveActivityPoint> points = from.datesUntil(to.plusDays(1))
+                .filter(workingDays::contains)
+                .map(date -> new LeaveActivityPoint(
+                        date,
+                        leaveCountByDate.getOrDefault(date, 0L)
+                ))
+                .toList();
+
+        return new LeaveActivityResponse(from, to, points);
+    }
+
+
 
 }

@@ -149,49 +149,7 @@ public class HRService {
 
 
 
-    private Predicate<LocalDate> workingDayFilter(LocalDate from, LocalDate to) {
-        Set<LocalDate> holidays = new HashSet<>(holidayRepository.findDatesBetween(from, to));
-        return d -> d.getDayOfWeek() != DayOfWeek.SATURDAY &&
-                d.getDayOfWeek() != DayOfWeek.SUNDAY && !holidays.contains(d);
-    }
-
-    @Transactional(readOnly = true)
-    public LeaveActivityResponse getLeaveActivity(Long days) {
-        if (days < 1 || days > 365) {
-            throw new IllegalArgumentException("days must be between 1 and 365");
-        }
-        LocalDate to = LocalDate.now(clock);
-        LocalDate from = to.minusDays(days - 1);
-
-        //it checks if a day is working day or not
-        Predicate<LocalDate> isWorkingDay = workingDayFilter(from, to);
-        List<LeaveSpan> spans = leaveRequestRepository.findSpans(LeaveStatus.APPROVED, from, to);
-        Map<LocalDate, Set<Integer>> employeesPerDay = new HashMap<>();
-        for (LeaveSpan span : spans) {
-
-            //validating the dates are present or not
-            if (span.getStartDate() == null || span.getEndDate() == null
-                    || span.getEndDate().isBefore(span.getStartDate())) {
-                continue;
-            }
-            //boundaries if start date of leave outside the window what we are looking for
-            LocalDate start = span.getStartDate().isBefore(from) ? from : span.getStartDate();
-            LocalDate end = span.getEndDate().isAfter(to) ? to : span.getEndDate();
 
 
-            //create a hashmap for each date and store each employee's id who was absent that day
-            start.datesUntil(end.plusDays(1))
-                    .filter(isWorkingDay)
-                    .forEach(d -> employeesPerDay
-                            .computeIfAbsent(d, k -> new HashSet<>())
-                            .add(span.getEmployeeId()));
-        }
 
-        //compute every working day leave count
-        List<LeaveActivityPoint> points = from.datesUntil(to.plusDays(1)).map(
-                (d -> new LeaveActivityPoint(d, (long) employeesPerDay.getOrDefault(d, Set.of()).size()))
-
-        ).toList();
-        return new LeaveActivityResponse(from, to, points);
-    }
 }

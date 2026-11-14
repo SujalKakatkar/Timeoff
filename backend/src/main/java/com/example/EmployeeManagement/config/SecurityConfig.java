@@ -66,7 +66,7 @@ public class SecurityConfig {
                                 //Public endpoints
                                 .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login","/api/auth/logout","/api/auth/refresh").permitAll()
 
-                                //auth private endpoits
+                                //auth private
                                 .requestMatchers(HttpMethod.PATCH,"/api/auth/profile").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated()
 
@@ -74,6 +74,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET,"/api/employee/all").hasAnyRole("HR", "MANAGER")
                                 .requestMatchers(HttpMethod.GET,"/api/employee/overview").hasAnyRole("HR", "MANAGER")
                                 .requestMatchers(HttpMethod.GET,"/api/employee/stats").hasAnyRole("HR", "MANAGER")
+                                .requestMatchers(HttpMethod.GET,"/api/employee/leave-activity").hasAnyRole("HR", "MANAGER")
                                 .requestMatchers(HttpMethod.GET,"/api/employee").authenticated()
 
                                 //hr work
