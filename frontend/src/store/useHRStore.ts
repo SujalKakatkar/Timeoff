@@ -10,13 +10,10 @@ interface HRState {
     chartData: LeaveActivityPoint[],
     overviewTableData: EmployeeTableRow[],
     employees: Employee[],
-    managers: User[],
     leaveTypes: LeaveType[],
     leaveRequests: [],
     onLeaveToday: number,
     getEmployeeList: () => Promise<{ error: null | string }>,
-    getOnLeaveToday: () => Promise<{ error: null | string }>,
-    getManagers: () => Promise<{ error: null | string }>,
     getEmployee: (id: number) => Promise<{ error: null | string }>,
     getStats: () => Promise<{ error: null | string }>
     getEmployeeOverview: () => Promise<{ error: null | string }>
@@ -24,9 +21,6 @@ interface HRState {
     newLeaveType: (payload: LeaveTypeRequest) => Promise<{ error: null | string }>
     newHoliday: (payload: HolidayRequest) => Promise<{ error: null | string }>,
     newDepartment: (payload: DepartmentRequest) => Promise<{ error: null | string }>
-    promoteToManger: (id: number) => Promise<{ error: null | string }>,
-    assignToManager: (id: number, managerId: number) => Promise<{ error: null | string }>,
-    disableEmployee: (id: number) => Promise<{ error: null | string }>,
     addLeaveBalance: (id: number, year: number) => Promise<{ error: null | string }>
     //todo:think about reports how do you store them in the state
 }
@@ -44,7 +38,7 @@ export const useHRStore = create<HRState>((set) => ({
 
     getEmployeeList: async () => {
         try {
-            const { data } = await api.get("/hr/all")
+            const { data } = await api.get("/employee/all")
             console.log(data);
 
             set({ employees: data })
@@ -54,25 +48,10 @@ export const useHRStore = create<HRState>((set) => ({
             return { error: getErrorMessage(error) }
         }
     },
-    getManagers: async () => {
-        try {
-            const { data } = await api.get("/hr/managers")
-            set({ managers: data })
-            return { error: null }
-        } catch (error) {
-            return { error: getErrorMessage(error) }
-        }
-    },
-    getOnLeaveToday: async () => {
-        try {
-            return { error: null }
-        } catch (error) {
-            return { error: getErrorMessage(error) }
-        }
-    },
+
     getEmployee: async (id) => {
         try {
-            const { data } = await api.get(`/hr/${id}`)
+            const { data } = await api.get(`/employee`, { params: { userId: id } })
             set({ user: data })
             return { error: null }
         } catch (error) {
@@ -81,7 +60,7 @@ export const useHRStore = create<HRState>((set) => ({
     },
     getStats: async () => {
         try {
-            const { data } = await api.get(`/hr/stats`)
+            const { data } = await api.get(`/employee/stats`)
             set({ stats: data })
             return { error: null }
         } catch (error) {
@@ -90,7 +69,7 @@ export const useHRStore = create<HRState>((set) => ({
     },
     getEmployeeOverview: async () => {
         try {
-            const { data } = await api.get(`/hr/employees/overview`)
+            const { data } = await api.get(`/employee/overview`)
             set({ overviewTableData: data })
             return { error: null }
         } catch (error) {
@@ -99,7 +78,7 @@ export const useHRStore = create<HRState>((set) => ({
     },
     getChartData: async (days) => {
         try {
-            const { data } = await api.get<ChartLeaveActivityResponse>(`/hr/leave-activity`, { params: { days } })
+            const { data } = await api.get<ChartLeaveActivityResponse>(`/employee/leave-activity`, { params: { days } })
             set({ chartData: data.activity })
             return { error: null }
         } catch (error) {
@@ -132,39 +111,7 @@ export const useHRStore = create<HRState>((set) => ({
             return { error: getErrorMessage(error) }
         }
     },
-    promoteToManger: async (empId) => {
-        try {
-            await api.put("/hr/promote", null, { params: { empId } })
-            return { error: null }
-        } catch (error) {
-            return { error: getErrorMessage(error) }
-        }
-    },
-    assignToManager: async (empId, managerId) => {
-        try {
-            await api.patch("/hr/assign", null, {
-                params: {
-                    empId,
-                    managerId
-                }
-            })
-            return { error: null }
-        } catch (error) {
-            return { error: getErrorMessage(error) }
-        }
-    },
-    disableEmployee: async (userId) => {
-        try {
-            await api.patch("/hr/disable", null, {
-                params: {
-                    userId
-                }
-            })
-            return { error: null }
-        } catch (error) {
-            return { error: getErrorMessage(error) }
-        }
-    },
+
     addLeaveBalance: async (id, year) => {
         try {
             await api.post("/leavebalance", null, {
