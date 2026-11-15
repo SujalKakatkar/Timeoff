@@ -1,12 +1,10 @@
 package com.example.EmployeeManagement.mapper;
 
 import com.example.EmployeeManagement.dto.HolidayCreateRequest;
-import com.example.EmployeeManagement.dto.LeaveReviewResponse;
 import com.example.EmployeeManagement.dto.LeaveRequestCreateRequest;
 import com.example.EmployeeManagement.dto.LeaveTypeCreateRequest;
 import com.example.EmployeeManagement.dto.user.UserSignUpRequest;
 import com.example.EmployeeManagement.entity.*;
-import com.example.EmployeeManagement.enums.ApproverRole;
 import com.example.EmployeeManagement.enums.LeaveStatus;
 import com.example.EmployeeManagement.enums.Role;
 
@@ -32,27 +30,16 @@ public class MapToEntity {
         leaveRequest.setEndDate(leaveRequestCreateRequest.getEndDate());
         leaveRequest.setReason(leaveRequestCreateRequest.getReason());
         leaveRequest.setEmployee(user);
+        leaveRequest.setEmployeesManagerId(
+                user.getManager() != null ? user.getManager().getUserId() : null
+        );
         leaveRequest.setLeaveType(leaveType);
         leaveRequest.setStatus(LeaveStatus.PENDING);
         return leaveRequest;
     }
 
 
-    public static LeaveReview mapToLeaveReview(
-            LeaveReviewResponse dto,
-            LeaveRequest leaveRequest,
-            User approver,
-            ApproverRole role
-    ){
-        LeaveReview leaveReview = new LeaveReview();
-        leaveReview.setStatus(dto.getStatus());
-        leaveReview.setReviewer(approver);
-        leaveReview.setLeaveRequest(leaveRequest);
-        leaveReview.setReviewerRole(role);
-        leaveReview.setComments(dto.getComment());
-        return leaveReview;
 
-    }
 
     public static Holiday mapToHoliday(HolidayCreateRequest holidayCreateRequest){
         Holiday holiday = new Holiday();

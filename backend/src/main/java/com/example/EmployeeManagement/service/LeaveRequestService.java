@@ -36,8 +36,16 @@ public class LeaveRequestService {
 
     //request for leave
     @Transactional
-    public LeaveRequestResponse requestLeave(LeaveRequestCreateRequest leaveRequestCreateRequest, String email) {
-        User user = userRepository.findByEmailAndEnabledTrue(email)
+    public LeaveRequestResponse requestLeave(LeaveRequestCreateRequest leaveRequestCreateRequest, Integer userId) {
+
+        LocalDate startDate = leaveRequestCreateRequest.getStartDate();
+        LocalDate endDate = leaveRequestCreateRequest.getEndDate();
+
+        if (startDate.isAfter(endDate)) {
+            throw new InvalidLeaveOperationException("Start date cannot be after end date");
+        }
+
+        User user = userRepository.findByUserIdAndEnabledTrue(userId)
                 .orElseThrow(
                         () -> new ResourceNotFoundException("user not found")
                 );
@@ -46,25 +54,21 @@ public class LeaveRequestService {
         );
 
 
-        if(!leaveBalanceRepository.existsByUser_UserIdAndUser_EnabledTrue(user.getUserId())){
+        if (!leaveBalanceRepository.existsByUser_UserIdAndUser_EnabledTrue(user.getUserId())) {
             throw new InvalidLeaveOperationException("user don't have any balance for repo");
         }
 
         LeaveBalance leaveBalance =
-                leaveBalanceRepository.findByUser_UserIdAndLeaveType_LeaveTypeIdAndYear(user.getUserId(),leaveType.getLeaveTypeId(),leaveRequestCreateRequest.getStartDate().getYear()).orElseThrow(
-                        ()-> new ResourceNotFoundException("leave type balance not found")
+                leaveBalanceRepository.findByUser_UserIdAndLeaveType_LeaveTypeIdAndYear(user.getUserId(), leaveType.getLeaveTypeId(), leaveRequestCreateRequest.getStartDate().getYear()).orElseThrow(
+                        () -> new ResourceNotFoundException("leave type balance not found")
                 );
 
-        if(Objects.equals(leaveBalance.getUsedDays(), leaveBalance.getAllocatedDays())){
+        if (Objects.equals(leaveBalance.getUsedDays(), leaveBalance.getAllocatedDays())) {
             throw new InvalidLeaveOperationException("the user has used all of their leaves");
         }
 
 
         LeaveRequest leaveRequest = MapToEntity.mapToLeaveRequest(leaveRequestCreateRequest, leaveType, user);
-
-        LocalDate startDate = leaveRequest.getStartDate();
-        LocalDate endDate = leaveRequest.getEndDate();
-
 
 
         //validate the span of dates has holidays
@@ -80,7 +84,7 @@ public class LeaveRequestService {
                 .count();
 
 
-        if(leaveBalance.getUsedDays() + actualDays > leaveBalance.getAllocatedDays()){
+        if (leaveBalance.getUsedDays() + actualDays > leaveBalance.getAllocatedDays()) {
             throw new InvalidLeaveOperationException("you don't have that much leaves left");
         }
 
@@ -93,10 +97,10 @@ public class LeaveRequestService {
     }
 
 
-    public List<LeaveRequestResponse> getLeaveRequests(String email){
+    public List<LeaveRequestResponse> getLeaveRequests(String email) {
         //find the user with email
         User user = userRepository.findByEmailAndEnabledTrue(email).orElseThrow(
-                ()->new ResourceNotFoundException("user not found")
+                () -> new ResourceNotFoundException("user not found")
         );
 
         //get the user id and find the leave request
@@ -106,7 +110,6 @@ public class LeaveRequestService {
         //return
         return leaveRequestList.stream().map(MapToDto::mapToLeaveRequestResponse).toList();
     }
-
 
 
 }

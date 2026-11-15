@@ -1,5 +1,5 @@
 package com.example.EmployeeManagement.enums;
 
-public enum ApproverRole {
+public enum ReviewerRole {
     MANAGER, HR
 }

@@ -1,6 +1,7 @@
 package com.example.EmployeeManagement.dto;
 
 import com.example.EmployeeManagement.enums.LeaveStatus;
+import com.example.EmployeeManagement.enums.ReviewerRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,5 +32,10 @@ public class LeaveRequestResponse {
     private LeaveStatus status;
 
     private LocalDateTime appliedAt;
+
+    private String reviewerName;
+    private ReviewerRole reviewerRole;
+    private String reviewComment;
+    private LocalDateTime reviewedAt;
 
 }

@@ -42,8 +42,8 @@ public class MapToDto {
         return new ManagerOverviewResponse(user.getUserId(), user.getName(), isActive);
     }
 
-    public static ManagerTeamDetailedResponse mapToManagerTeamDetailedResponse(User user,boolean isActive){
-        return new ManagerTeamDetailedResponse(user.getUserId(), user.getName(),isActive, user.getPhone(), user.getAddress(), user.getEmail(), user.getRole());
+    public static ManagerTeamDetailedResponse mapToManagerTeamDetailedResponse(User user, boolean isActive) {
+        return new ManagerTeamDetailedResponse(user.getUserId(), user.getName(), isActive, user.getPhone(), user.getAddress(), user.getEmail(), user.getRole());
     }
 
     public static DepartmentResponse mapToDepartmentResponse(Department department) {
@@ -69,6 +69,12 @@ public class MapToDto {
         leaveRequestResponse.setReason(leaveRequest.getReason());
         leaveRequestResponse.setStatus(leaveRequest.getStatus());
         leaveRequestResponse.setAppliedAt(leaveRequest.getAppliedAt());
+
+        if (leaveRequest.getReviewer() != null) {
+            leaveRequestResponse.setReviewerName(leaveRequest.getReviewer().getName());
+            leaveRequestResponse.setReviewerRole(leaveRequest.getReviewerRole());
+            leaveRequestResponse.setReviewComment(leaveRequest.getReviewComment());
+        }
         return leaveRequestResponse;
     }
 
