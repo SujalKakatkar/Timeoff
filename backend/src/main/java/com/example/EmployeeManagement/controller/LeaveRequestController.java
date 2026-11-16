@@ -3,6 +3,7 @@ package com.example.EmployeeManagement.controller;
 
 import com.example.EmployeeManagement.dto.LeaveRequestCreateRequest;
 import com.example.EmployeeManagement.dto.LeaveRequestResponse;
+import com.example.EmployeeManagement.dto.leave.LeaveReviewRequest;
 import com.example.EmployeeManagement.service.EmployeeService;
 import com.example.EmployeeManagement.service.LeaveRequestService;
 import com.example.EmployeeManagement.utils.Utilities;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/leaverequest")
+@RequestMapping("/api/leave-request")
 public class LeaveRequestController {
 
     private final LeaveRequestService leaveRequestService;
@@ -61,15 +62,12 @@ public class LeaveRequestController {
         );
     }
 
-//    @PatchMapping("/review")
-//    public ResponseEntity<String> reviewLeaveRequest(@Valid @RequestBody LeaveReviewResponse leaveReviewResponse, Authentication authentication){
-//        String email = authentication.getName();
-//          leaveApprovalService.reviewTheRequest(leaveReviewResponse, email);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                "done with request"
-//        );
-//
-//    }
+    @PatchMapping("/review")
+    public ResponseEntity<Void> reviewLeaveRequest(@Valid @RequestBody LeaveReviewRequest leaveReviewRequest, @AuthenticationPrincipal Integer userId) {
+        leaveRequestService.leaveRequestReview(leaveReviewRequest, userId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+
+    }
 
 }

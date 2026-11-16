@@ -1,6 +1,8 @@
 package com.example.EmployeeManagement.utils;
 
 
+import com.example.EmployeeManagement.enums.LeaveStatus;
+import com.example.EmployeeManagement.enums.ReviewLeaveStatus;
 import com.example.EmployeeManagement.enums.Role;
 import org.springframework.security.core.Authentication;
 
@@ -27,5 +29,13 @@ public class Utilities {
         Set<LocalDate> holidays = new HashSet<>(dates);
         return d -> d.getDayOfWeek() != DayOfWeek.SATURDAY &&
                 d.getDayOfWeek() != DayOfWeek.SUNDAY && !holidays.contains(d);
+    }
+
+    public static LeaveStatus convertStatus(ReviewLeaveStatus status) {
+        if (status == ReviewLeaveStatus.APPROVED)
+            return LeaveStatus.APPROVED;
+        else if (status == ReviewLeaveStatus.REJECTED)
+            return LeaveStatus.REJECTED;
+        return LeaveStatus.PENDING;
     }
 }

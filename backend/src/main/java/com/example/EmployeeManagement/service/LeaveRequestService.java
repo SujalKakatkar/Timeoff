@@ -2,19 +2,26 @@ package com.example.EmployeeManagement.service;
 
 import com.example.EmployeeManagement.dto.LeaveRequestCreateRequest;
 import com.example.EmployeeManagement.dto.LeaveRequestResponse;
+import com.example.EmployeeManagement.dto.leave.LeaveReviewRequest;
 import com.example.EmployeeManagement.entity.*;
 import com.example.EmployeeManagement.enums.LeaveStatus;
+import com.example.EmployeeManagement.enums.ReviewerRole;
+import com.example.EmployeeManagement.enums.Role;
 import com.example.EmployeeManagement.exceptions.InvalidLeaveOperationException;
 import com.example.EmployeeManagement.exceptions.ResourceNotFoundException;
+import com.example.EmployeeManagement.exceptions.RoleMismatchException;
+import com.example.EmployeeManagement.exceptions.StatusMismatchException;
 import com.example.EmployeeManagement.mapper.MapToDto;
 import com.example.EmployeeManagement.mapper.MapToEntity;
 import com.example.EmployeeManagement.repository.*;
+import com.example.EmployeeManagement.utils.Utilities;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +39,10 @@ public class LeaveRequestService {
     private LeaveTypeRepository leaveTypeRepository;
     private LeaveBalanceRepository leaveBalanceRepository;
     private HolidayRepository holidayRepository;
+    private LeaveBalanceService leaveBalanceService;
+
+    //todo: think about the system where hr only approves the managers request and further mangers approve the employees
+    //todo: make you hr can't edit the employees requests
 
 
     //request for leave
@@ -109,6 +120,62 @@ public class LeaveRequestService {
 
         //return
         return leaveRequestList.stream().map(MapToDto::mapToLeaveRequestResponse).toList();
+    }
+
+
+    @Transactional
+    public void leaveRequestReview(LeaveReviewRequest leaveReviewRequest, Integer reviewerId) {
+
+
+        //find the request from the request table
+        LeaveRequest leaveRequest = leaveRequestRepository.findById(leaveReviewRequest.getLeaveRequestId()).orElseThrow(
+                () -> new ResourceNotFoundException("Request not found")
+        );
+
+        if (leaveRequest.getStatus() == LeaveStatus.CANCELLED) {
+            throw new StatusMismatchException("the request is already cancelled");
+        }
+
+
+        if (leaveRequest.getStatus() != LeaveStatus.PENDING) {
+            throw new StatusMismatchException("the request is not pending");
+        }
+
+        User employee = leaveRequest.getEmployee();
+
+        User reviewer = userRepository.findByUserIdAndEnabledTrue(reviewerId).orElseThrow(
+                () -> new ResourceNotFoundException("reviewer not found")
+        );
+
+        //prevent self leave approve
+        if (Objects.equals(employee.getUserId(), reviewer.getUserId())) {
+            throw new RoleMismatchException("you can't manipuate your leave request");
+        }
+
+        if (reviewer.getRole() == Role.HR) {
+            leaveRequest.setReviewerRole(ReviewerRole.HR);
+        } else if (reviewer.getRole() == Role.MANAGER) {
+            leaveRequest.setReviewerRole(ReviewerRole.MANAGER);
+        } else {
+            throw new RoleMismatchException("you not allow to do this");
+        }
+        leaveRequest.setStatus(Utilities.convertStatus(leaveReviewRequest.getStatus()));
+        leaveRequest.setReviewer(reviewer);
+        leaveRequest.setReviewComment(leaveReviewRequest.getComment());
+        leaveRequest.setReviewedAt(LocalDateTime.now());
+
+        //update balance
+
+        if (leaveRequest.getStatus() == LeaveStatus.APPROVED) {
+            leaveBalanceService.updateLeaveBalance(
+                    employee.getUserId(),
+                    leaveRequest.getLeaveType().getLeaveTypeId(),
+                    leaveRequest.getNumberOfDays(),
+                    leaveRequest.getStartDate().getYear()
+            );
+        }
+        leaveRequestRepository.save(leaveRequest);
+
     }
 
 
