@@ -103,7 +103,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/api/leaverequest").hasAnyRole("MANAGER", "EMPLOYEE")
                                 .requestMatchers(HttpMethod.GET, "/api/leaverequest/all").hasAnyRole("MANAGER", "HR")
                                 .requestMatchers(HttpMethod.PATCH, "/api/leaverequest/review").hasAnyRole("MANAGER", "HR")
-                                .requestMatchers(HttpMethod.GET, "/api/leaverequest/me").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/api/leaverequest/employee").authenticated()
                                 .requestMatchers(HttpMethod.PUT, "/api/leavebalance/*").hasAnyRole("MANAGER", "HR")
 
 

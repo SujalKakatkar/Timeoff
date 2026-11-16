@@ -97,9 +97,9 @@ public class LeaveRequestService {
     }
 
 
-    public List<LeaveRequestResponse> getLeaveRequests(String email) {
+    public List<LeaveRequestResponse> getLeaveRequests(Integer userId) {
         //find the user with email
-        User user = userRepository.findByEmailAndEnabledTrue(email).orElseThrow(
+        User user = userRepository.findByUserIdAndEnabledTrue(userId).orElseThrow(
                 () -> new ResourceNotFoundException("user not found")
         );
 

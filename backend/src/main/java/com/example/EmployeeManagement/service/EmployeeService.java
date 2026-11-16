@@ -44,6 +44,13 @@ public class EmployeeService {
         return MapToDto.mapToUserDetailResponse(user);
     }
 
+    public boolean isManagerOfEmployee(Integer employeeId, Integer managerId){
+        User user = userRepository.findByUserIdAndEnabledTrue(employeeId).orElseThrow(
+                ()->new ResourceNotFoundException("User not found")
+        );
+        return user.getManager() != null && user.getManager().getUserId().equals(managerId);
+    }
+
 
     //get all employees
     @Transactional(readOnly = true)
