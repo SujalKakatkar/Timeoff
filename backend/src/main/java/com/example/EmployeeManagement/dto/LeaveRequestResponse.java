@@ -31,11 +31,11 @@ public class LeaveRequestResponse {
     @Enumerated(EnumType.STRING)
     private LeaveStatus status;
 
-    private LocalDateTime appliedAt;
+    private LocalDate appliedAt;
 
     private String reviewerName;
     private ReviewerRole reviewerRole;
     private String reviewComment;
-    private LocalDateTime reviewedAt;
+    private LocalDate reviewedAt;
 
 }
