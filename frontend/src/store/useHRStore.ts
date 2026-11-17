@@ -1,12 +1,13 @@
 import { api, getErrorMessage } from "@/api/axios";
 import type { EmployeeTableRow } from "@/components/table-items/employee-table-items/employee-overview-table-schema";
-import type { User, DepartmentRequest, ChartLeaveActivityResponse, LeaveActivityPoint, LeaveType, LeaveTypeRequest, HolidayRequest, HrStatsType, Employee } from "@/types/types";
+import type { AllStatsType } from "@/types/stats";
+import type { User, DepartmentRequest, ChartLeaveActivityResponse, LeaveActivityPoint, LeaveType, LeaveTypeRequest, HolidayRequest, Employee } from "@/types/types";
 import { create } from "zustand";
 
 
 interface HRState {
     user: User | null,
-    stats: HrStatsType | null,
+    stats: AllStatsType | null,
     chartData: LeaveActivityPoint[],
     overviewTableData: EmployeeTableRow[],
     employees: Employee[],

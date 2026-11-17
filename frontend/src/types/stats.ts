@@ -1,6 +1,6 @@
 
 
-export type HrStatsType = {
+export type AllStatsType = {
     totalEmployees: number,
     managers: number,
     onLeaveToday: number,
