@@ -68,12 +68,13 @@ public class MapToDto {
         leaveRequestResponse.setNumberOfDays(leaveRequest.getNumberOfDays());
         leaveRequestResponse.setReason(leaveRequest.getReason());
         leaveRequestResponse.setStatus(leaveRequest.getStatus());
-        leaveRequestResponse.setAppliedAt(leaveRequest.getAppliedAt());
+        leaveRequestResponse.setAppliedAt(leaveRequest.getAppliedAt().toLocalDate());
 
         if (leaveRequest.getReviewer() != null) {
             leaveRequestResponse.setReviewerName(leaveRequest.getReviewer().getName());
             leaveRequestResponse.setReviewerRole(leaveRequest.getReviewerRole());
             leaveRequestResponse.setReviewComment(leaveRequest.getReviewComment());
+            leaveRequestResponse.setReviewedAt(leaveRequest.getReviewedAt().toLocalDate());
         }
         return leaveRequestResponse;
     }
