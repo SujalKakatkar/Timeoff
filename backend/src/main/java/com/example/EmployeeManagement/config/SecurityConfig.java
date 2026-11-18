@@ -100,10 +100,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/leavebalance/*").hasAnyRole("HR", "MANAGER")
 
                                 //leave Request
-                                .requestMatchers(HttpMethod.POST, "/api/leaverequest").hasAnyRole("MANAGER", "EMPLOYEE")
-                                .requestMatchers(HttpMethod.GET, "/api/leaverequest/all").hasAnyRole("MANAGER", "HR")
-                                .requestMatchers(HttpMethod.PATCH, "/api/leaverequest/review").hasAnyRole("MANAGER", "HR")
-                                .requestMatchers(HttpMethod.GET, "/api/leaverequest/employee").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/leave-request").hasAnyRole("MANAGER", "EMPLOYEE")
+                                .requestMatchers(HttpMethod.GET, "/api/leave-request/all").hasAnyRole("MANAGER", "HR")
+                                .requestMatchers(HttpMethod.PATCH, "/api/leave-request/review").hasAnyRole("MANAGER", "HR")
+                                .requestMatchers(HttpMethod.GET, "/api/leave-request/employee").authenticated()
                                 .requestMatchers(HttpMethod.PUT, "/api/leavebalance/*").hasAnyRole("MANAGER", "HR")
 
 

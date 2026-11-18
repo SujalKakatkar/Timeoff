@@ -13,6 +13,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @EntityGraph(attributePaths = "department")
     Optional<User> findByEmailAndEnabledTrue(String email);
     Optional<User> findByUserIdAndEnabledTrue(Integer userId);
+    boolean existsByUserIdAndManager_userIdAndEnabledTrue(Integer userId,Integer managerId);
     @EntityGraph(attributePaths = "department")
     List<User> findAllByRoleInAndEnabledTrue(List<Role> roles);
 

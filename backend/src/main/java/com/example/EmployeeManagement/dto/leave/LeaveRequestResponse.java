@@ -1,4 +1,4 @@
-package com.example.EmployeeManagement.dto;
+package com.example.EmployeeManagement.dto.leave;
 
 import com.example.EmployeeManagement.enums.LeaveStatus;
 import com.example.EmployeeManagement.enums.ReviewerRole;
@@ -7,9 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 
 @AllArgsConstructor

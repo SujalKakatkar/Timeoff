@@ -1,8 +1,8 @@
 package com.example.EmployeeManagement.mapper;
 
 import com.example.EmployeeManagement.dto.HolidayCreateRequest;
-import com.example.EmployeeManagement.dto.LeaveRequestCreateRequest;
-import com.example.EmployeeManagement.dto.LeaveTypeCreateRequest;
+import com.example.EmployeeManagement.dto.leave.LeaveRequestCreateRequest;
+import com.example.EmployeeManagement.dto.leave.LeaveTypeCreateRequest;
 import com.example.EmployeeManagement.dto.user.UserSignUpRequest;
 import com.example.EmployeeManagement.entity.*;
 import com.example.EmployeeManagement.enums.LeaveStatus;

@@ -1,7 +1,7 @@
 package com.example.EmployeeManagement.controller;
 
 
-import com.example.EmployeeManagement.dto.LeaveActivityResponse;
+import com.example.EmployeeManagement.dto.leave.LeaveActivityResponse;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.service.EmployeeService;
 import com.example.EmployeeManagement.utils.Utilities;

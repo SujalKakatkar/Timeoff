@@ -1,7 +1,8 @@
 package com.example.EmployeeManagement.service;
 
 
-import com.example.EmployeeManagement.dto.*;
+import com.example.EmployeeManagement.dto.employee.DetailedReportResponse;
+import com.example.EmployeeManagement.dto.leave.LeaveTypeDetails;
 import com.example.EmployeeManagement.entity.LeaveBalance;
 import com.example.EmployeeManagement.entity.User;
 import com.example.EmployeeManagement.enums.LeaveStatus;
@@ -11,13 +12,9 @@ import com.example.EmployeeManagement.repository.LeaveBalanceRepository;
 import com.example.EmployeeManagement.repository.LeaveRequestRepository;
 import com.example.EmployeeManagement.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service

@@ -1,7 +1,7 @@
 package com.example.EmployeeManagement.controller;
 
-import com.example.EmployeeManagement.dto.LeaveTypeCreateRequest;
-import com.example.EmployeeManagement.dto.LeaveTypeResponse;
+import com.example.EmployeeManagement.dto.leave.LeaveTypeCreateRequest;
+import com.example.EmployeeManagement.dto.leave.LeaveTypeResponse;
 import com.example.EmployeeManagement.service.LeaveTypeService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

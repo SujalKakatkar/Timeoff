@@ -1,11 +1,8 @@
 package com.example.EmployeeManagement.controller;
 
 
-import com.example.EmployeeManagement.dto.DetailedReportResponse;
-import com.example.EmployeeManagement.dto.LeaveActivityResponse;
+import com.example.EmployeeManagement.dto.employee.DetailedReportResponse;
 import com.example.EmployeeManagement.service.HRService;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

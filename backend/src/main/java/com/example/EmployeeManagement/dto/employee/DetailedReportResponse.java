@@ -1,6 +1,7 @@
-package com.example.EmployeeManagement.dto;
+package com.example.EmployeeManagement.dto.employee;
 
 
+import com.example.EmployeeManagement.dto.leave.LeaveTypeDetails;
 import com.example.EmployeeManagement.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

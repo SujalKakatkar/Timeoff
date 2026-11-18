@@ -1,7 +1,7 @@
 package com.example.EmployeeManagement.service;
 
-import com.example.EmployeeManagement.dto.LeaveTypeCreateRequest;
-import com.example.EmployeeManagement.dto.LeaveTypeResponse;
+import com.example.EmployeeManagement.dto.leave.LeaveTypeCreateRequest;
+import com.example.EmployeeManagement.dto.leave.LeaveTypeResponse;
 import com.example.EmployeeManagement.entity.LeaveType;
 import com.example.EmployeeManagement.exceptions.ResourceNotFoundException;
 import com.example.EmployeeManagement.mapper.MapToDto;
@@ -9,7 +9,6 @@ import com.example.EmployeeManagement.mapper.MapToEntity;
 import com.example.EmployeeManagement.repository.LeaveTypeRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

@@ -1,7 +1,8 @@
 package com.example.EmployeeManagement.service;
 
-import com.example.EmployeeManagement.dto.LeaveRequestCreateRequest;
-import com.example.EmployeeManagement.dto.LeaveRequestResponse;
+import com.example.EmployeeManagement.dto.leave.LeaveRequestCreateRequest;
+import com.example.EmployeeManagement.dto.leave.LeaveRequestResponse;
+import com.example.EmployeeManagement.dto.leave.LeaveStatsResponse;
 import com.example.EmployeeManagement.dto.leave.LeaveReviewRequest;
 import com.example.EmployeeManagement.entity.*;
 import com.example.EmployeeManagement.enums.LeaveStatus;
@@ -22,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -178,5 +177,26 @@ public class LeaveRequestService {
 
     }
 
+    public LeaveStatsResponse getLeaveStats(Integer employeeId) {
+        LeaveStatsResponse balanceStats = leaveBalanceRepository.getBalanceStats(employeeId);
+        LeaveStatsResponse requestStats = leaveRequestRepository.getRequestStats(employeeId);
+        return new LeaveStatsResponse(
+                balanceStats.getTotalLeaves(),
+                balanceStats.getUsedLeaves(),
+                requestStats.getLeaveRequests(),
+                requestStats.getPending(),
+                requestStats.getApproved(),
+                requestStats.getRejected(),
+                requestStats.getCancelled()
+        );
+    }
+
+    public LeaveStatsResponse getTeamMemberStats(Integer employeeId, Integer managerId) {
+        boolean isManager = userRepository.existsByUserIdAndManager_userIdAndEnabledTrue(employeeId, managerId);
+        if (!isManager) {
+            throw new ResourceNotFoundException("your are not a manager of this employee");
+        }
+        return getLeaveStats(employeeId);
+    }
 
 }

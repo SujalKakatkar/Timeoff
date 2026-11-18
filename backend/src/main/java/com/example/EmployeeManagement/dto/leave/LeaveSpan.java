@@ -1,4 +1,4 @@
-package com.example.EmployeeManagement.dto;
+package com.example.EmployeeManagement.dto.leave;
 
 
 import lombok.AllArgsConstructor;

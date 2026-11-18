@@ -1,9 +1,9 @@
 package com.example.EmployeeManagement.service;
 
 
-import com.example.EmployeeManagement.dto.LeaveActivityPoint;
-import com.example.EmployeeManagement.dto.LeaveActivityResponse;
-import com.example.EmployeeManagement.dto.LeaveSpan;
+import com.example.EmployeeManagement.dto.leave.LeaveActivityPoint;
+import com.example.EmployeeManagement.dto.leave.LeaveActivityResponse;
+import com.example.EmployeeManagement.dto.leave.LeaveSpan;
 import com.example.EmployeeManagement.dto.employee.*;
 import com.example.EmployeeManagement.dto.user.UserDetailsResponse;
 import com.example.EmployeeManagement.entity.User;

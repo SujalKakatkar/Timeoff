@@ -1,8 +1,9 @@
 package com.example.EmployeeManagement.controller;
 
 
-import com.example.EmployeeManagement.dto.LeaveRequestCreateRequest;
-import com.example.EmployeeManagement.dto.LeaveRequestResponse;
+import com.example.EmployeeManagement.dto.leave.LeaveRequestCreateRequest;
+import com.example.EmployeeManagement.dto.leave.LeaveRequestResponse;
+import com.example.EmployeeManagement.dto.leave.LeaveStatsResponse;
 import com.example.EmployeeManagement.dto.leave.LeaveReviewRequest;
 import com.example.EmployeeManagement.service.EmployeeService;
 import com.example.EmployeeManagement.service.LeaveRequestService;
@@ -68,6 +69,20 @@ public class LeaveRequestController {
 
         return ResponseEntity.status(HttpStatus.OK).build();
 
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<LeaveStatsResponse> getLeaveStats(@AuthenticationPrincipal Integer userId, Authentication authentication, @RequestParam(required = false) Integer employeeId) {
+        //hr can see all the stats
+        boolean isHr = Utilities.isHr(authentication);
+        boolean isManager = Utilities.isManager(authentication);
+
+        if (isHr && employeeId != null)
+            return ResponseEntity.status(HttpStatus.OK).body(leaveRequestService.getLeaveStats(employeeId));
+        if (isManager && employeeId != null)
+            ResponseEntity.status(HttpStatus.OK).body(leaveRequestService.getTeamMemberStats(employeeId, userId));
+
+        return ResponseEntity.status(HttpStatus.OK).body(leaveRequestService.getLeaveStats(userId));
     }
 
 }

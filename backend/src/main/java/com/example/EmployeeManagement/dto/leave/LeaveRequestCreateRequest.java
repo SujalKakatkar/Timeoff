@@ -1,4 +1,4 @@
-package com.example.EmployeeManagement.dto;
+package com.example.EmployeeManagement.dto.leave;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
