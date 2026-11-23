@@ -28,7 +28,6 @@ function EmployeesPage() {
   React.useEffect(() => {
     getEmployees()
   }, [getEmployees])
-  console.log(employeeData);
   
   return (
     <>

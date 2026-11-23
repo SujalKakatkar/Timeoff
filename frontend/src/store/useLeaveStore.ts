@@ -7,7 +7,7 @@ interface LeaveStore {
     leaveHistory: LeaveHistoryType[]
     leaveStats: LeaveStats | null
     getLeaveHistory: (employeeId: number) => Promise<{ error: string | null }>
-    getLeaveStats: () => Promise<{ error: string | null }>
+    getLeaveStats: (employeeId: number) => Promise<{ error: string | null }>
     newLeaveRequest: (leaveRequest: LeaveRequest) => Promise<{ error: string | null }>
     reviewRequest: (payload: LeaveReview) => Promise<{ error: string | null }>
 }
@@ -24,9 +24,13 @@ export const useLeaveStore = create<LeaveStore>((set) => ({
             return { error: getErrorMessage(error) }
         }
     },
-    getLeaveStats: async () => {
+    getLeaveStats: async (employeeId) => {
         try {
-            const { data } = await api.get("/leave-request/stats")
+            const { data } = await api.get("/leave-request/stats", {
+                params: {
+                    employeeId
+                }
+            })
             set({ leaveStats: data })
 
             return { error: null }

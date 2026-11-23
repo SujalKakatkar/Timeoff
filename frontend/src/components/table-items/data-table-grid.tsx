@@ -25,6 +25,8 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from 'lucide-react';
 import React from 'react';
 import { Sheet, SheetContent } from '../ui/sheet';
+import { useLeaveStore } from '@/store/useLeaveStore';
+import { toast } from '../ui/toast';
 
 function DataTableGrid<TData extends RowData & { userId: number }>({
     table, dataIds, sensors, sortableId, onDragEnd, columnsLength,renderRowSheet
@@ -38,10 +40,19 @@ function DataTableGrid<TData extends RowData & { userId: number }>({
     renderRowSheet?:(row:TData)=>React.ReactNode
 }) {
 
-    const [selectedRow, setSelectedRow] = React.useState<TData | null>(null)   // ✅ NEW: which row was clicked
-    const [sheetOpen, setSheetOpen] = React.useState(false)                    // ✅ NEW: is the sheet visible
+    const [selectedRow, setSelectedRow] = React.useState<TData | null>(null)  
+    const [sheetOpen, setSheetOpen] = React.useState(false)              
 
-    const handleRowClick = (row: TData) => {                            // ✅ NEW: called by DraggableRow on click
+    const getLeaveStats = useLeaveStore((s) => s.getLeaveStats)
+
+    const handleRowClick = async (row: TData) => {
+        const { error } = await getLeaveStats(row.userId)
+        if (error) {
+            toast.add({
+                type: "error",
+                description: error
+            })
+        }
         setSelectedRow(row)
         setSheetOpen(true)
     }
