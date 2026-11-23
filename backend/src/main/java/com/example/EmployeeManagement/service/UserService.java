@@ -55,8 +55,8 @@ public class UserService {
         }
     }
 
-    public UserDetailsResponse getDetails(String email) {
-        User temp = userRepository.findByEmailAndEnabledTrue(email).orElseThrow(
+    public UserDetailsResponse getDetails(Integer userId) {
+        User temp = userRepository.findByUserIdAndEnabledTrue(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User not found")
         );
 
@@ -64,8 +64,8 @@ public class UserService {
     }
 
     @Transactional
-    public void completeProfile(UserProfileRequest userProfileRequest, String email) {
-        User temp = userRepository.findByEmailAndEnabledTrue(email).orElseThrow(
+    public void completeProfile(UserProfileRequest userProfileRequest, Integer userId) {
+        User temp = userRepository.findByUserIdAndEnabledTrue(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User not found")
         );
         Department department = departmentRepository.findById(userProfileRequest.getDepartmentId()).orElseThrow(

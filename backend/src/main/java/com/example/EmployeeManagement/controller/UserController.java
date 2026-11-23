@@ -11,7 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
@@ -36,9 +36,8 @@ public class UserController {
     }
 
     @PatchMapping("/profile")
-    public ResponseEntity<Void> completeProfile(@Valid @RequestBody UserProfileRequest userProfileRequest, Authentication authentication) {
-        String email = authentication.getName();
-        userService.completeProfile(userProfileRequest, email);
+    public ResponseEntity<Void> completeProfile(@Valid @RequestBody UserProfileRequest userProfileRequest, @AuthenticationPrincipal Integer userId) {
+        userService.completeProfile(userProfileRequest, userId);
 
         return ResponseEntity.noContent().build();
     }
@@ -51,7 +50,7 @@ public class UserController {
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", tokens.getRefreshToken())
                 .httpOnly(true)
                 .secure(false)
-                .sameSite("strict")
+                .sameSite("lax")
                 .path("/api/auth")
                 .maxAge(Duration.ofDays(7))
                 .build();
@@ -69,7 +68,7 @@ public class UserController {
         ResponseCookie deleteCookie = ResponseCookie.from("refreshToken", "")
                 .httpOnly(true)
                 .secure(false)
-                .sameSite("strict")
+                .sameSite("lax")
                 .path("/api/auth")
                 .maxAge(0)
                 .build();
@@ -89,10 +88,9 @@ public class UserController {
 
 
     @GetMapping("/me")
-    public ResponseEntity<UserDetailsResponse> me(Authentication authentication) {
-        String email = authentication.getName();
+    public ResponseEntity<UserDetailsResponse> me(@AuthenticationPrincipal Integer userId) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                userService.getDetails(email)
+                userService.getDetails(userId)
         );
     }
 

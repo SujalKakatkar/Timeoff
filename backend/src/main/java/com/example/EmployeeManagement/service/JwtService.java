@@ -43,7 +43,7 @@ public class JwtService {
     public String generateRefreshToken(User user) {
         return Jwts
                 .builder()
-                .subject(user.getEmail())
+                .subject(String.valueOf(user.getUserId()))
                 .claim("type", "refreshToken")
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + refreshTokenExpiration))
